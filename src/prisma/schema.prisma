@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Country {
+  id        String    @id @default(uuid())
+  name      String @unique
+  isoCode   String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model State {
+  id        String    @id @default(uuid())
+  countryId String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model City {
+  id        String    @id @default(uuid())
+  stateId   String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model District {
+  id        String    @id @default(uuid())
+  cityId    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model Sightseeing {
+  id        String    @id @default(uuid())
+  countryId String?
+  stateId   String?
+  cityId    String?
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model Hotel {
+  id        String    @id @default(uuid())
+  countryId String
+  stateId   String
+  cityId    String
+  sightseeingId String?
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model TravelType {
+  id        String    @id @default(uuid())
+  countryId String
+  stateId   String
+  cityId    String
+  sightseeingId String?
+  name      String
+  hotelId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model TravelMode {
+  id        String    @id @default(uuid())
+  countryId String
+  stateId   String
+  cityId    String
+  sightseeingId String?
+  travelTypeId String?
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
