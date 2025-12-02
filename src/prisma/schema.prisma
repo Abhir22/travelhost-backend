@@ -9,6 +9,11 @@ datasource db {
 
 
 
+enum DESTINATIONTYPE_ENUM {
+  INTERNATIONAL
+  DOMESTIC
+}
+
 model Country {
   id        String    @id @default(uuid())
   name      String @unique
@@ -96,6 +101,23 @@ model TravelMode {
   sightseeingId String?
   travelTypeId String?
   name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model Destination {
+  id        String    @id @default(uuid())
+  destinationType DESTINATIONTYPE_ENUM
+  name      String
+  countryId String?
+  stateId   String?
+  cityId    String?
+  priceRange String?
+  thumbnailPhoto String?
+  bannerPhoto String?
+  video     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

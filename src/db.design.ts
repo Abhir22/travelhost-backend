@@ -1,56 +1,33 @@
-
 export const dbDesign = {
-  Hotel: {
+  Destination: {
     columns: {
       id: { type: "String", primary: true, randomUUID: true, nullable: false },
 
-      countryId: { type: "String", nullable: false },
-      stateId: { type: "String", nullable: false },
-      cityId: { type: "String", nullable: false },
-      sightseeingId: { type: "String", nullable: true },
+      destinationType: { 
+        type: "Enum", 
+        values: ["international", "domestic"], 
+        nullable: false 
+      },
 
       name: { type: "String", maxLength: 200, nullable: false },
 
-      createdAt: { type: "DateTime", default: "now()" },
-      updatedAt: { type: "DateTime", default: "now()" }
-    },
-    indexes: [{ fields: ["name"], name: "idx_hotel_name" }],
-  },
+      countryId: { type: "String", nullable: true },
+      stateId: { type: "String", nullable: true },
+      cityId: { type: "String", nullable: true },
 
-  TravelType: {
-    columns: {
-      id: { type: "String", primary: true, randomUUID: true, nullable: false },
+      priceRange: { type: "String", maxLength: 100, nullable: true },
 
-      countryId: { type: "String", nullable: false },
-      stateId: { type: "String", nullable: false },
-      cityId: { type: "String", nullable: false },
-      sightseeingId: { type: "String", nullable: true },
-
-      name: { type: "String", maxLength: 200, nullable: false },       // travel category name
-      hotelId: { type: "String", nullable: true },                      // optional connection with hotel
+      thumbnailPhoto: { type: "String", nullable: true },
+      bannerPhoto: { type: "String", nullable: true },
+      video: { type: "String", nullable: true },
 
       createdAt: { type: "DateTime", default: "now()" },
       updatedAt: { type: "DateTime", default: "now()" }
     },
-    indexes: [{ fields: ["name"], name: "idx_travel_type_name" }],
-  },
 
-  TravelMode: {
-    columns: {
-      id: { type: "String", primary: true, randomUUID: true, nullable: false },
-
-      countryId: { type: "String", nullable: false },
-      stateId: { type: "String", nullable: false },
-      cityId: { type: "String", nullable: false },
-      sightseeingId: { type: "String", nullable: true },
-
-      travelTypeId: { type: "String", nullable: true },
-      name: { type: "String", maxLength: 200, nullable: false },     // mode e.g. Bus, Train, Flight
-
-      createdAt: { type: "DateTime", default: "now()" },
-      updatedAt: { type: "DateTime", default: "now()" }
-    },
-    indexes: [{ fields: ["name"], name: "idx_travel_mode_name" }],
+    indexes: [
+      { fields: ["name"], name: "idx_destination_name" },
+      { fields: ["destinationType"], name: "idx_dest_type" }
+    ]
   }
 };
-
