@@ -122,3 +122,104 @@ model Destination {
   updatedAt DateTime @updatedAt
 
 }
+
+
+model PackageType {
+  id        String    @id @default(uuid())
+  name      String @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packages  Package[]
+
+}
+
+
+model PackageActivity {
+  id        String    @id @default(uuid())
+  name      String @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+
+model Package {
+  id        String    @id @default(uuid())
+  packageTypeId String
+  packageName String
+  countryId String?
+  stateId   String?
+  cityId    String?
+  days      Int
+  nights    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageType PackageType @relation(fields: [packageTypeId], references: [id])
+  packagedaies PackageDay[]
+
+}
+
+
+model PackageDay {
+  id        String    @id @default(uuid())
+  packageId String
+  dayNumber Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  package   Package @relation(fields: [packageId], references: [id])
+  packagedaytraveltypes PackageDayTravelType[]
+  packagedaysightseeings PackageDaySightseeing[]
+  packagedayhotels PackageDayHotel[]
+
+}
+
+
+model PackageDayTravelType {
+  id        String    @id @default(uuid())
+  packageDayId String
+  type      String
+  carpooling String?
+  vehicleType String?
+  timeFrom  String?
+  timeTo    String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageDay PackageDay @relation(fields: [packageDayId], references: [id])
+
+}
+
+
+model PackageDaySightseeing {
+  id        String    @id @default(uuid())
+  packageDayId String
+  sightseeingName String
+  ticket    String?
+  timeFrom  String?
+  timeTo    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageDay PackageDay @relation(fields: [packageDayId], references: [id])
+
+}
+
+
+model PackageDayHotel {
+  id        String    @id @default(uuid())
+  packageDayId String
+  hotelName String
+  starRating Int
+  hotelType String?
+  checkInTime String?
+  checkOutTime String?
+  roomType  String?
+  numberOfRooms Int?
+  actualCheckIn String?
+  actualCheckOut String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageDay PackageDay @relation(fields: [packageDayId], references: [id])
+
+}

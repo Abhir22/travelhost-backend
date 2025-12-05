@@ -6,8 +6,8 @@ import 'dotenv/config'
 const config: AppConfig = {
   modules: [{ name: 'locations', enabled: true, routesPrefix: '/api/v1/locations' },
     { name: 'travels', enabled: true, routesPrefix: '/api/v1/travels' },
-    {name:'destinations' ,enabled:true,routesPrefix:'/api/v1/destinations'}
-  ],
+    {name:'destinations' ,enabled:true,routesPrefix:'/api/v1/destinations'},
+    { name: 'package', enabled: true, routesPrefix: '/api/v1/package' }],
   server: {
     port: parseInt(process.env.PORT || '3001'),
     enableCors: true,

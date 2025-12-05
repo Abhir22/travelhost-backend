@@ -1,0 +1,51 @@
+import { container } from 'tsyringe';
+import { IPackageTypeService } from './services/interfaces/packagetype.service.interface';
+import { PackageTypeService } from './services/packagetype.service';
+import { IPackageTypeRepository } from './repositories/interfaces/packagetype.repository.interface';
+import { PackageTypeRepository } from './repositories/packagetype.repository';
+import { IPackageActivityService } from './services/interfaces/packageactivity.service.interface';
+import { PackageActivityService } from './services/packageactivity.service';
+import { IPackageActivityRepository } from './repositories/interfaces/packageactivity.repository.interface';
+import { PackageActivityRepository } from './repositories/packageactivity.repository';
+import { IPackageService } from './services/interfaces/package.service.interface';
+import { PackageService } from './services/package.service';
+import { IPackageRepository } from './repositories/interfaces/package.repository.interface';
+import { PackageRepository } from './repositories/package.repository';
+import { IPackageDayService } from './services/interfaces/packageday.service.interface';
+import { PackageDayService } from './services/packageday.service';
+import { IPackageDayRepository } from './repositories/interfaces/packageday.repository.interface';
+import { PackageDayRepository } from './repositories/packageday.repository';
+import { IPackageDayTravelTypeService } from './services/interfaces/packagedaytraveltype.service.interface';
+import { PackageDayTravelTypeService } from './services/packagedaytraveltype.service';
+import { IPackageDayTravelTypeRepository } from './repositories/interfaces/packagedaytraveltype.repository.interface';
+import { PackageDayTravelTypeRepository } from './repositories/packagedaytraveltype.repository';
+import { IPackageDaySightseeingService } from './services/interfaces/packagedaysightseeing.service.interface';
+import { PackageDaySightseeingService } from './services/packagedaysightseeing.service';
+import { IPackageDaySightseeingRepository } from './repositories/interfaces/packagedaysightseeing.repository.interface';
+import { PackageDaySightseeingRepository } from './repositories/packagedaysightseeing.repository';
+import { IPackageDayHotelService } from './services/interfaces/packagedayhotel.service.interface';
+import { PackageDayHotelService } from './services/packagedayhotel.service';
+import { IPackageDayHotelRepository } from './repositories/interfaces/packagedayhotel.repository.interface';
+import { PackageDayHotelRepository } from './repositories/packagedayhotel.repository';
+
+export const registerDependencies = () => {
+  container.register<IPackageTypeService>('IPackageTypeService', { useClass: PackageTypeService });
+  container.register<IPackageTypeRepository>('IPackageTypeRepository', { useClass: PackageTypeRepository });
+  container.register<IPackageActivityService>('IPackageActivityService', { useClass: PackageActivityService });
+  container.register<IPackageActivityRepository>('IPackageActivityRepository', { useClass: PackageActivityRepository });
+  container.register<IPackageService>('IPackageService', { useClass: PackageService });
+  container.register<IPackageRepository>('IPackageRepository', { useClass: PackageRepository });
+  container.register<IPackageDayService>('IPackageDayService', { useClass: PackageDayService });
+  container.register<IPackageDayRepository>('IPackageDayRepository', { useClass: PackageDayRepository });
+  container.register<IPackageDayTravelTypeService>('IPackageDayTravelTypeService', { useClass: PackageDayTravelTypeService });
+  container.register<IPackageDayTravelTypeRepository>('IPackageDayTravelTypeRepository', { useClass: PackageDayTravelTypeRepository });
+  container.register<IPackageDaySightseeingService>('IPackageDaySightseeingService', { useClass: PackageDaySightseeingService });
+  container.register<IPackageDaySightseeingRepository>('IPackageDaySightseeingRepository', { useClass: PackageDaySightseeingRepository });
+  container.register<IPackageDayHotelService>('IPackageDayHotelService', { useClass: PackageDayHotelService });
+  container.register<IPackageDayHotelRepository>('IPackageDayHotelRepository', { useClass: PackageDayHotelRepository });
+  console.log('All module dependencies registered');
+};
+
+export const clearDependencies = () => {
+  container.reset();
+};

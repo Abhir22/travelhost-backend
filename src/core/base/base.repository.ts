@@ -131,4 +131,9 @@ export abstract class BaseRepository<T, TCreateInput, TUpdateInput> implements I
     return !!result;
   }
 
+  async deleteMany(options: any): Promise<number> {
+    const result = await this.model.deleteMany(options);
+    return result.count;
+  }
+
 }
