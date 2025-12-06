@@ -3,10 +3,12 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createCitySchema = flatToNestedSchema(
   z.object({
-  stateId: z.string(),
+  countryId: z.string(),
+  stateId: z.string().optional(),
   name: z.string(),
   }),
   data => ({
+    countryId: data.countryId,
     stateId: data.stateId,
     name: data.name,
   })
@@ -14,10 +16,12 @@ export const createCitySchema = flatToNestedSchema(
 
 export const updateCitySchema = flatToNestedSchema(
   z.object({
+    countryId: z.string().optional(),
     stateId: z.string().optional(),
     name: z.string().optional(),
   }),
   data => ({
+    ...(data.countryId !== undefined ? { countryId: data.countryId } : {}),
     ...(data.stateId !== undefined ? { stateId: data.stateId } : {}),
     ...(data.name !== undefined ? { name: data.name } : {}),
   })

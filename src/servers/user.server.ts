@@ -7,7 +7,8 @@ const config: AppConfig = {
   modules: [{ name: 'locations', enabled: true, routesPrefix: '/api/v1/locations' },
     { name: 'travels', enabled: true, routesPrefix: '/api/v1/travels' },
     {name:'destinations' ,enabled:true,routesPrefix:'/api/v1/destinations'},
-    { name: 'package', enabled: true, routesPrefix: '/api/v1/package' }],
+    { name: 'package', enabled: true, routesPrefix: '/api/v1/package' },
+    { name: 'hotels', enabled: true, routesPrefix: '/api/v1/hotels' }],
   server: {
     port: parseInt(process.env.PORT || '3001'),
     enableCors: true,

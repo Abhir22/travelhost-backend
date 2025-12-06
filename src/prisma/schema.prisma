@@ -36,7 +36,8 @@ model State {
 
 model City {
   id        String    @id @default(uuid())
-  stateId   String
+  countryId String
+  stateId   String?
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -73,8 +74,10 @@ model Hotel {
   cityId    String
   sightseeingId String?
   name      String
+  rating    Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  hotelRooms HotelRoom[]
 
 }
 
@@ -120,5 +123,42 @@ model Destination {
   video     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+}
+
+
+model RoomType {
+  id        String    @id @default(uuid())
+  name      String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hotelRooms HotelRoom[]
+
+}
+
+
+model HotelRoom {
+  id        String    @id @default(uuid())
+  hotelId   String
+  roomTypeId String
+  roomNumber String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hotel     Hotel @relation(fields: [hotelId], references: [id])
+  roomType  RoomType @relation(fields: [roomTypeId], references: [id])
+  roomImages RoomImage[]
+
+}
+
+
+model RoomImage {
+  id        String    @id @default(uuid())
+  hotelRoomId String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hotelRoom HotelRoom @relation(fields: [hotelRoomId], references: [id])
 
 }
