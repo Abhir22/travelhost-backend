@@ -8,7 +8,8 @@ const config: AppConfig = {
     { name: 'travels', enabled: true, routesPrefix: '/api/v1/travels' },
     {name:'destinations' ,enabled:true,routesPrefix:'/api/v1/destinations'},
     { name: 'package', enabled: true, routesPrefix: '/api/v1/package' },
-    { name: 'hotels', enabled: true, routesPrefix: '/api/v1/hotels' }],
+    { name: 'hotels', enabled: true, routesPrefix: '/api/v1/hotels' },
+    { name: 'packages', enabled: true, routesPrefix: '/api/v1/packages' }],
   server: {
     port: parseInt(process.env.PORT || '3001'),
     enableCors: true,

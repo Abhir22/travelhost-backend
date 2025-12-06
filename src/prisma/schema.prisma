@@ -162,3 +162,195 @@ model RoomImage {
   hotelRoom HotelRoom @relation(fields: [hotelRoomId], references: [id])
 
 }
+
+
+model PackageType {
+  id        String    @id @default(uuid())
+  name      String @unique
+  image     String?
+  isInternational Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packages  Package[]
+
+}
+
+
+model PackageCategory {
+  id        String    @id @default(uuid())
+  name      String @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packagecategorymappings PackageCategoryMapping[]
+
+}
+
+
+model PackageCategoryMapping {
+  id        String    @id @default(uuid())
+  packageId String
+  categoryId String
+  package   Package @relation(fields: [packageId], references: [id])
+  category  PackageCategory @relation(fields: [categoryId], references: [id])
+
+}
+
+
+model PackageActivity {
+  id        String    @id @default(uuid())
+  name      String @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageactivitymappings PackageActivityMapping[]
+
+}
+
+
+model PackageActivityMapping {
+  id        String    @id @default(uuid())
+  packageId String
+  activityId String
+  package   Package @relation(fields: [packageId], references: [id])
+  activity  PackageActivity @relation(fields: [activityId], references: [id])
+
+}
+
+
+model PackageSnapshot {
+  id        String    @id @default(uuid())
+  name      String @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packagesnapshotmappings PackageSnapshotMapping[]
+
+}
+
+
+model PackageSnapshotMapping {
+  id        String    @id @default(uuid())
+  packageId String
+  snapshotId String
+  package   Package @relation(fields: [packageId], references: [id])
+  snapshot  PackageSnapshot @relation(fields: [snapshotId], references: [id])
+
+}
+
+
+model Package {
+  id        String    @id @default(uuid())
+  packageTypeId String
+  packageName String
+  description String?
+  video     String?
+  basePrice Decimal?
+  days      Int
+  nights    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packagecategorymappings PackageCategoryMapping[]
+  packageactivitymappings PackageActivityMapping[]
+  packagesnapshotmappings PackageSnapshotMapping[]
+  packageType PackageType @relation(fields: [packageTypeId], references: [id])
+  packagecities PackageCity[]
+
+}
+
+
+model PackageCity {
+  id        String    @id @default(uuid())
+  packageId String
+  countryId String
+  stateId   String?
+  cityId    String
+  totalDays Int
+  totalNights Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  package   Package @relation(fields: [packageId], references: [id])
+  packagecitydaies PackageCityDay[]
+
+}
+
+
+model PackageCityDay {
+  id        String    @id @default(uuid())
+  packageCityId String
+  dayNumber Int
+  startTime String?
+  endTime   String?
+  startFrom String?
+  endAt     String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageCity PackageCity @relation(fields: [packageCityId], references: [id])
+  packagecitydaytravels PackageCityDayTravel[]
+  packagecitydaysightseeings PackageCityDaySightseeing[]
+  packagecitydayhotels PackageCityDayHotel[]
+  packagecitydaymeals PackageCityDayMeal[]
+
+}
+
+
+model PackageCityDayTravel {
+  id        String    @id @default(uuid())
+  packageCityDayId String
+  type      String
+  carpooling String?
+  vehicleType String?
+  timeFrom  String?
+  timeTo    String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
+
+}
+
+
+model PackageCityDaySightseeing {
+  id        String    @id @default(uuid())
+  packageCityDayId String
+  sightseeingName String
+  ticket    String?
+  timeFrom  String?
+  timeTo    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
+
+}
+
+
+model PackageCityDayHotel {
+  id        String    @id @default(uuid())
+  packageCityDayId String
+  hotelName String
+  starRating Int
+  hotelType String?
+  checkInTime String?
+  checkOutTime String?
+  roomType  String?
+  numberOfRooms Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
+
+}
+
+
+model PackageCityDayMeal {
+  id        String    @id @default(uuid())
+  packageCityDayId String
+  mealType  String
+  provider  String
+  time      String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
+
+}

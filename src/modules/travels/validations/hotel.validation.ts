@@ -8,6 +8,7 @@ export const createHotelSchema = flatToNestedSchema(
   cityId: z.string(),
   sightseeingId: z.string(),
   name: z.string(),
+  rating: z.number().min(1).max(5).optional(),
   }),
   data => ({
     countryId: data.countryId,
@@ -15,6 +16,7 @@ export const createHotelSchema = flatToNestedSchema(
     cityId: data.cityId,
     sightseeingId: data.sightseeingId,
     name: data.name,
+    ...(data.rating !== undefined ? { rating: data.rating } : {}),
   })
 );
 
@@ -25,6 +27,7 @@ export const updateHotelSchema = flatToNestedSchema(
     cityId: z.string().optional(),
     sightseeingId: z.string().optional(),
     name: z.string().optional(),
+    rating: z.number().min(1).max(5).optional(),
   }),
   data => ({
     ...(data.countryId !== undefined ? { countryId: data.countryId } : {}),
@@ -32,8 +35,10 @@ export const updateHotelSchema = flatToNestedSchema(
     ...(data.cityId !== undefined ? { cityId: data.cityId } : {}),
     ...(data.sightseeingId !== undefined ? { sightseeingId: data.sightseeingId } : {}),
     ...(data.name !== undefined ? { name: data.name } : {}),
+    ...(data.rating !== undefined ? { rating: data.rating } : {}), // ⭐ ADDED
   })
 );
+
 
 export const hotelIdParamSchema = z.object({
   id: z.string().uuid(),

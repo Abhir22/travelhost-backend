@@ -9,6 +9,7 @@ export class HotelResponse {
   stateId: string;
   cityId: string;
   sightseeingId?: string;
+    rating?: number;
   name: string;
 
   constructor(hotel: Hotel) {
@@ -19,6 +20,7 @@ export class HotelResponse {
     this.stateId = hotel.stateId;
     this.cityId = hotel.cityId;
     this.sightseeingId = hotel.sightseeingId || undefined;
+    this.rating = hotel.rating || undefined;
     this.name = hotel.name;
   }
 }

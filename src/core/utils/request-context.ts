@@ -25,10 +25,8 @@ export const getRequestContext = (): RequestContext | undefined => {
 
 
 export function setFunctionName(name: string) {
-    console.log("SET FUNCTION NAME CALLED");
   const store = asyncLocalStorage.getStore();
   if (store) {
-    console.log("ITS STORED");
     store.functionName = name;
   }
 }

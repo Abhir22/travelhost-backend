@@ -17,7 +17,6 @@ export function Repository() {
               return async (...methodArgs: any[]) => {
                 try {
                   const methodName = `${OriginalConstructor.name}.${String(prop)}`;
-                  console.log(`🎯 Decorator intercepted: ${methodName}`);
                   setFunctionName(methodName); // <-- context tracking
                   return await original.apply(target, methodArgs);
                 } catch (error) {
