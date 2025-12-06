@@ -8,9 +8,9 @@ export const createCitySchema = flatToNestedSchema(
   name: z.string(),
   }),
   data => ({
-    countryId: data.countryId,
-    stateId: data.stateId,
     name: data.name,
+    country: { connect: { id: data.countryId } },
+    ...(data.stateId ? { state: { connect: { id: data.stateId } } } : {}),
   })
 );
 
@@ -21,9 +21,9 @@ export const updateCitySchema = flatToNestedSchema(
     name: z.string().optional(),
   }),
   data => ({
-    ...(data.countryId !== undefined ? { countryId: data.countryId } : {}),
-    ...(data.stateId !== undefined ? { stateId: data.stateId } : {}),
     ...(data.name !== undefined ? { name: data.name } : {}),
+    ...(data.countryId !== undefined ? { country: { connect: { id: data.countryId } } } : {}),
+    ...(data.stateId !== undefined ? { state: { connect: { id: data.stateId } } } : {}),
   })
 );
 

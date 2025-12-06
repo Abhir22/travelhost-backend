@@ -15,7 +15,7 @@ export class PackageCityDayMealController extends BaseController<PackageCityDayM
       responseClass: PackageCityDayMealResponse,
       createSchema: packagecitydaymealValidation.create,
       updateSchema: packagecitydaymealValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['mealType', 'provider', 'description'], // Search by meal type, provider, and description
       defaultInclude: {}, // Add default include, can be customized
     });
   }

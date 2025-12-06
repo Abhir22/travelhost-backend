@@ -15,7 +15,7 @@ export class PackageCityDayController extends BaseController<PackageCityDay, Pac
       responseClass: PackageCityDayResponse,
       createSchema: packagecitydayValidation.create,
       updateSchema: packagecitydayValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['description', 'startFrom', 'endAt'], // Search by description and locations
       defaultInclude: {}, // Add default include, can be customized
     });
   }

@@ -15,7 +15,7 @@ export class DestinationController extends BaseController<Destination, Destinati
       responseClass: DestinationResponse,
       createSchema: destinationValidation.create,
       updateSchema: destinationValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['name', 'destinationType', 'priceRange'], // Search by name, type, and price range
       defaultInclude: {}, // Add default include, can be customized
     });
   }

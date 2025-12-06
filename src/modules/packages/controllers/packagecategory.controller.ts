@@ -15,7 +15,7 @@ export class PackageCategoryController extends BaseController<PackageCategory, P
       responseClass: PackageCategoryResponse,
       createSchema: packagecategoryValidation.create,
       updateSchema: packagecategoryValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['name'], // Search by category name
       defaultInclude: {}, // Add default include, can be customized
     });
   }

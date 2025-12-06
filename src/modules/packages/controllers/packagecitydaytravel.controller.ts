@@ -15,7 +15,7 @@ export class PackageCityDayTravelController extends BaseController<PackageCityDa
       responseClass: PackageCityDayTravelResponse,
       createSchema: packagecitydaytravelValidation.create,
       updateSchema: packagecitydaytravelValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['type', 'vehicleType', 'description'], // Search by travel type, vehicle type, and description
       defaultInclude: {}, // Add default include, can be customized
     });
   }

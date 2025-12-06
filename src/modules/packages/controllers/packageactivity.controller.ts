@@ -15,7 +15,7 @@ export class PackageActivityController extends BaseController<PackageActivity, P
       responseClass: PackageActivityResponse,
       createSchema: packageactivityValidation.create,
       updateSchema: packageactivityValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['name'], // Search by activity name
       defaultInclude: {}, // Add default include, can be customized
     });
   }

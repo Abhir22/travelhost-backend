@@ -15,7 +15,7 @@ export class PackageCityDayHotelController extends BaseController<PackageCityDay
       responseClass: PackageCityDayHotelResponse,
       createSchema: packagecitydayhotelValidation.create,
       updateSchema: packagecitydayhotelValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['hotelName', 'hotelType', 'roomType'], // Search by hotel name, type, and room type
       defaultInclude: {}, // Add default include, can be customized
     });
   }

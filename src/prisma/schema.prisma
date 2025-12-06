@@ -7,240 +7,190 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 enum DESTINATIONTYPE_ENUM {
   INTERNATIONAL
   DOMESTIC
 }
 
 model Country {
-  id        String    @id @default(uuid())
-  name      String @unique
+  id        String  @id @default(uuid())
+  name      String  @unique
   isoCode   String? @unique
+  states    State[]
+  cities    City[]
+  hotels    Hotel[]
+  travelTypes TravelType[]
+  travelModes TravelMode[]
+  destinations Destination[]
+  packageCities PackageCity[]
+  sightings Sightseeing[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
-
 
 model State {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   countryId String
   name      String
+  country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  cities    City[]
+  hotels    Hotel[]
+  travelTypes TravelType[]
+  travelModes TravelMode[]
+  destinations Destination[]
+  packageCities PackageCity[]
+  sightings Sightseeing[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
-
 model City {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   countryId String
   stateId   String?
   name      String
+  country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  state   State?  @relation(fields: [stateId], references: [id], onDelete: SetNull)
+  hotels    Hotel[]
+  travelTypes TravelType[]
+  travelModes TravelMode[]
+  destinations Destination[]
+  packageCities PackageCity[]
+  sightings Sightseeing[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
-
-
-model District {
-  id        String    @id @default(uuid())
-  cityId    String
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-}
-
 
 model Sightseeing {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   countryId String?
   stateId   String?
   cityId    String?
   name      String
+  country Country? @relation(fields: [countryId], references: [id], onDelete: SetNull)
+  state   State?   @relation(fields: [stateId], references: [id], onDelete: SetNull)
+  city    City?    @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  travelTypes TravelType[]
+  travelModes TravelMode[]
+  hotels Hotel[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
-
 model Hotel {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   countryId String
   stateId   String
   cityId    String
   sightseeingId String?
   name      String
   rating    Int?
+  country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  state   State   @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  city    City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  sightseeing Sightseeing? @relation(fields: [sightseeingId], references: [id], onDelete: SetNull)
+  hotelRooms HotelRoom[]
+  travelTypes TravelType[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  hotelRooms HotelRoom[]
-
 }
 
+model RoomType {
+  id          String @id @default(uuid())
+  name        String
+  description String?
+  hotelRooms  HotelRoom[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HotelRoom {
+  id         String @id @default(uuid())
+  hotelId    String
+  roomTypeId String
+  roomNumber String
+  description String?
+  hotel    Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+  roomImages RoomImage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RoomImage {
+  id          String @id @default(uuid())
+  hotelRoomId String
+  imageUrl    String
+  hotelRoom HotelRoom @relation(fields: [hotelRoomId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 model TravelType {
-  id        String    @id @default(uuid())
-  countryId String
-  stateId   String
-  cityId    String
-  sightseeingId String?
-  name      String
-  hotelId   String?
+  id             String @id @default(uuid())
+  countryId      String
+  stateId        String
+  cityId         String
+  sightseeingId  String?
+  name           String
+  hotelId        String?
+  country     Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  state       State   @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  city        City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  sightseeing Sightseeing? @relation(fields: [sightseeingId], references: [id], onDelete: SetNull)
+  hotel       Hotel?   @relation(fields: [hotelId], references: [id], onDelete: SetNull)
+  travelModes TravelMode[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
-
 
 model TravelMode {
-  id        String    @id @default(uuid())
-  countryId String
-  stateId   String
-  cityId    String
-  sightseeingId String?
-  travelTypeId String?
-  name      String
+  id             String @id @default(uuid())
+  countryId      String
+  stateId        String
+  cityId         String
+  sightseeingId  String?
+  travelTypeId   String?
+  name           String
+  country     Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  state       State   @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  city        City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  sightseeing Sightseeing? @relation(fields: [sightseeingId], references: [id], onDelete: SetNull)
+  travelType  TravelType? @relation(fields: [travelTypeId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
-
 model Destination {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   destinationType DESTINATIONTYPE_ENUM
   name      String
   countryId String?
   stateId   String?
   cityId    String?
-  priceRange String?
+  country Country? @relation(fields: [countryId], references: [id], onDelete: SetNull)
+  state   State?   @relation(fields: [stateId], references: [id], onDelete: SetNull)
+  city    City?    @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  priceRange     String?
   thumbnailPhoto String?
-  bannerPhoto String?
-  video     String?
+  bannerPhoto    String?
+  video          String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
-
-
-model RoomType {
-  id        String    @id @default(uuid())
-  name      String
-  description String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  hotelRooms HotelRoom[]
-
-}
-
-
-model HotelRoom {
-  id        String    @id @default(uuid())
-  hotelId   String
-  roomTypeId String
-  roomNumber String
-  description String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  hotel     Hotel @relation(fields: [hotelId], references: [id])
-  roomType  RoomType @relation(fields: [roomTypeId], references: [id])
-  roomImages RoomImage[]
-
-}
-
-
-model RoomImage {
-  id        String    @id @default(uuid())
-  hotelRoomId String
-  imageUrl  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  hotelRoom HotelRoom @relation(fields: [hotelRoomId], references: [id])
-
-}
-
 
 model PackageType {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   name      String @unique
   image     String?
   isInternational Boolean @default(false)
+  packages Package[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  packages  Package[]
-
 }
-
-
-model PackageCategory {
-  id        String    @id @default(uuid())
-  name      String @unique
-  icon      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  packagecategorymappings PackageCategoryMapping[]
-
-}
-
-
-model PackageCategoryMapping {
-  id        String    @id @default(uuid())
-  packageId String
-  categoryId String
-  package   Package @relation(fields: [packageId], references: [id])
-  category  PackageCategory @relation(fields: [categoryId], references: [id])
-
-}
-
-
-model PackageActivity {
-  id        String    @id @default(uuid())
-  name      String @unique
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  packageactivitymappings PackageActivityMapping[]
-
-}
-
-
-model PackageActivityMapping {
-  id        String    @id @default(uuid())
-  packageId String
-  activityId String
-  package   Package @relation(fields: [packageId], references: [id])
-  activity  PackageActivity @relation(fields: [activityId], references: [id])
-
-}
-
-
-model PackageSnapshot {
-  id        String    @id @default(uuid())
-  name      String @unique
-  icon      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  packagesnapshotmappings PackageSnapshotMapping[]
-
-}
-
-
-model PackageSnapshotMapping {
-  id        String    @id @default(uuid())
-  packageId String
-  snapshotId String
-  package   Package @relation(fields: [packageId], references: [id])
-  snapshot  PackageSnapshot @relation(fields: [snapshotId], references: [id])
-
-}
-
 
 model Package {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageTypeId String
   packageName String
   description String?
@@ -248,35 +198,85 @@ model Package {
   basePrice Decimal?
   days      Int
   nights    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  packageType PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
   packagecategorymappings PackageCategoryMapping[]
   packageactivitymappings PackageActivityMapping[]
   packagesnapshotmappings PackageSnapshotMapping[]
-  packageType PackageType @relation(fields: [packageTypeId], references: [id])
   packagecities PackageCity[]
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+model PackageCategory {
+  id        String @id @default(uuid())
+  name      String @unique
+  icon      String?
+  packagecategorymappings PackageCategoryMapping[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackageCategoryMapping {
+  id        String @id @default(uuid())
+  packageId String
+  categoryId String
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  category PackageCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model PackageActivity {
+  id        String @id @default(uuid())
+  name      String @unique
+  image     String?
+  packageactivitymappings PackageActivityMapping[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackageActivityMapping {
+  id        String @id @default(uuid())
+  packageId String
+  activityId String
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  activity PackageActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+}
+
+model PackageSnapshot {
+  id        String @id @default(uuid())
+  name      String @unique
+  icon      String?
+  packagesnapshotmappings PackageSnapshotMapping[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackageSnapshotMapping {
+  id        String @id @default(uuid())
+  packageId String
+  snapshotId String
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  snapshot PackageSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+}
 
 model PackageCity {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageId String
   countryId String
   stateId   String?
   cityId    String
   totalDays Int
   totalNights Int
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  cityObj City @relation(fields: [cityId], references: [id])
+  stateObj State? @relation(fields: [stateId], references: [id])
+  countryObj Country @relation(fields: [countryId], references: [id])
+  packagecitydaies PackageCityDay[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  package   Package @relation(fields: [packageId], references: [id])
-  packagecitydaies PackageCityDay[]
-
 }
 
-
 model PackageCityDay {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageCityId String
   dayNumber Int
   startTime String?
@@ -284,19 +284,17 @@ model PackageCityDay {
   startFrom String?
   endAt     String?
   description String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  packageCity PackageCity @relation(fields: [packageCityId], references: [id])
+  packageCity PackageCity @relation(fields: [packageCityId], references: [id], onDelete: Cascade)
   packagecitydaytravels PackageCityDayTravel[]
   packagecitydaysightseeings PackageCityDaySightseeing[]
   packagecitydayhotels PackageCityDayHotel[]
   packagecitydaymeals PackageCityDayMeal[]
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
 model PackageCityDayTravel {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageCityDayId String
   type      String
   carpooling String?
@@ -304,29 +302,25 @@ model PackageCityDayTravel {
   timeFrom  String?
   timeTo    String?
   description String?
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
-
 }
 
-
 model PackageCityDaySightseeing {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageCityDayId String
   sightseeingName String
   ticket    String?
   timeFrom  String?
   timeTo    String?
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
-
 }
 
-
 model PackageCityDayHotel {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageCityDayId String
   hotelName String
   starRating Int
@@ -335,22 +329,19 @@ model PackageCityDayHotel {
   checkOutTime String?
   roomType  String?
   numberOfRooms Int?
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
-
 }
 
-
 model PackageCityDayMeal {
-  id        String    @id @default(uuid())
+  id        String @id @default(uuid())
   packageCityDayId String
   mealType  String
   provider  String
   time      String?
   description String?
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id])
-
 }

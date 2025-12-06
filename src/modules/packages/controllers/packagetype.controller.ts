@@ -15,7 +15,7 @@ export class PackageTypeController extends BaseController<PackageType, PackageTy
       responseClass: PackageTypeResponse,
       createSchema: packagetypeValidation.create,
       updateSchema: packagetypeValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['name'], // Search by package type name
       defaultInclude: {}, // Add default include, can be customized
     });
   }

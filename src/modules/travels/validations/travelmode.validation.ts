@@ -11,12 +11,12 @@ export const createTravelModeSchema = flatToNestedSchema(
   name: z.string(),
   }),
   data => ({
-    countryId: data.countryId,
-    stateId: data.stateId,
-    cityId: data.cityId,
-    sightseeingId: data.sightseeingId,
-    travelTypeId: data.travelTypeId,
     name: data.name,
+    country: { connect: { id: data.countryId } },
+    state: { connect: { id: data.stateId } },
+    city: { connect: { id: data.cityId } },
+    sightseeing: { connect: { id: data.sightseeingId } },
+    travelType: { connect: { id: data.travelTypeId } },
   })
 );
 
@@ -30,12 +30,12 @@ export const updateTravelModeSchema = flatToNestedSchema(
     name: z.string().optional(),
   }),
   data => ({
-    ...(data.countryId !== undefined ? { countryId: data.countryId } : {}),
-    ...(data.stateId !== undefined ? { stateId: data.stateId } : {}),
-    ...(data.cityId !== undefined ? { cityId: data.cityId } : {}),
-    ...(data.sightseeingId !== undefined ? { sightseeingId: data.sightseeingId } : {}),
-    ...(data.travelTypeId !== undefined ? { travelTypeId: data.travelTypeId } : {}),
     ...(data.name !== undefined ? { name: data.name } : {}),
+    ...(data.countryId !== undefined ? { country: { connect: { id: data.countryId } } } : {}),
+    ...(data.stateId !== undefined ? { state: { connect: { id: data.stateId } } } : {}),
+    ...(data.cityId !== undefined ? { city: { connect: { id: data.cityId } } } : {}),
+    ...(data.sightseeingId !== undefined ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
+    ...(data.travelTypeId !== undefined ? { travelType: { connect: { id: data.travelTypeId } } } : {}),
   })
 );
 

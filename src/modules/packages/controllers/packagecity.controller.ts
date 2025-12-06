@@ -15,7 +15,7 @@ export class PackageCityController extends BaseController<PackageCity, PackageCi
       responseClass: PackageCityResponse,
       createSchema: packagecityValidation.create,
       updateSchema: packagecityValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: [], // No searchable text fields - uses location relations
       defaultInclude: {}, // Add default include, can be customized
     });
   }

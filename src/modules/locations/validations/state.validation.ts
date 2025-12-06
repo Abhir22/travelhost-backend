@@ -7,8 +7,8 @@ export const createStateSchema = flatToNestedSchema(
   name: z.string(),
   }),
   data => ({
-    countryId: data.countryId,
     name: data.name,
+    country: { connect: { id: data.countryId } },
   })
 );
 
@@ -18,8 +18,8 @@ export const updateStateSchema = flatToNestedSchema(
     name: z.string().optional(),
   }),
   data => ({
-    ...(data.countryId !== undefined ? { countryId: data.countryId } : {}),
     ...(data.name !== undefined ? { name: data.name } : {}),
+    ...(data.countryId !== undefined ? { country: { connect: { id: data.countryId } } } : {}),
   })
 );
 

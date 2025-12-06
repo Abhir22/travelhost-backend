@@ -15,7 +15,7 @@ export class RoomTypeController extends BaseController<RoomType, RoomTypeCreateD
       responseClass: RoomTypeResponse,
       createSchema: roomtypeValidation.create,
       updateSchema: roomtypeValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['name'], // Add default search fields, can be customized
       defaultInclude: {}, // Add default include, can be customized
     });
   }

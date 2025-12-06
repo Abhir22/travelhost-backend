@@ -15,7 +15,7 @@ export class PackageCityDaySightseeingController extends BaseController<PackageC
       responseClass: PackageCityDaySightseeingResponse,
       createSchema: packagecitydaysightseeingValidation.create,
       updateSchema: packagecitydaysightseeingValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['sightseeingName', 'ticket'], // Search by sightseeing name and ticket info
       defaultInclude: {}, // Add default include, can be customized
     });
   }

@@ -11,12 +11,12 @@ export const createPackageCitySchema = flatToNestedSchema(
   totalNights: z.number(),
   }),
   data => ({
-    countryId: data.countryId,
-    stateId: data.stateId,
-    cityId: data.cityId,
     totalDays: data.totalDays,
     totalNights: data.totalNights,
     package: { connect: { id: data.packageId } },
+    cityObj: { connect: { id: data.cityId } },
+    stateObj: { connect: { id: data.stateId } },
+    countryObj: { connect: { id: data.countryId } },
   })
 );
 
@@ -30,12 +30,12 @@ export const updatePackageCitySchema = flatToNestedSchema(
     totalNights: z.number().optional(),
   }),
   data => ({
-    ...(data.countryId !== undefined ? { countryId: data.countryId } : {}),
-    ...(data.stateId !== undefined ? { stateId: data.stateId } : {}),
-    ...(data.cityId !== undefined ? { cityId: data.cityId } : {}),
     ...(data.totalDays !== undefined ? { totalDays: data.totalDays } : {}),
     ...(data.totalNights !== undefined ? { totalNights: data.totalNights } : {}),
     ...(data.packageId !== undefined ? { package: { connect: { id: data.packageId } } } : {}),
+    ...(data.cityId !== undefined ? { cityObj: { connect: { id: data.cityId } } } : {}),
+    ...(data.stateId !== undefined ? { stateObj: { connect: { id: data.stateId } } } : {}),
+    ...(data.countryId !== undefined ? { countryObj: { connect: { id: data.countryId } } } : {}),
   })
 );
 

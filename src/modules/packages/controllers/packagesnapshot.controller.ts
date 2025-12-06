@@ -15,7 +15,7 @@ export class PackageSnapshotController extends BaseController<PackageSnapshot, P
       responseClass: PackageSnapshotResponse,
       createSchema: packagesnapshotValidation.create,
       updateSchema: packagesnapshotValidation.update,
-      searchFields: ['id'], // Add default search fields, can be customized
+      searchFields: ['name'], // Search by snapshot name
       defaultInclude: {}, // Add default include, can be customized
     });
   }
