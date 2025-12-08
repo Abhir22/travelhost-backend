@@ -5,7 +5,7 @@ export const createPackageCitySchema = flatToNestedSchema(
   z.object({
   packageId: z.string(),
   countryId: z.string(),
-  stateId: z.string(),
+  stateId: z.string().optional(),
   cityId: z.string(),
   totalDays: z.number(),
   totalNights: z.number(),

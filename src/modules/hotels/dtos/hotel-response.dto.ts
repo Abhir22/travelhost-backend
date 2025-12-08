@@ -1,5 +1,5 @@
 
-import { Hotel } from '@/modules/travels/entities/hotel.entity';
+import { Hotel } from '@/modules/hotels/entities/hotel.entity';
 
 export class HotelResponse {
   id?: string;
@@ -9,7 +9,8 @@ export class HotelResponse {
   stateId: string;
   cityId: string;
   sightseeingId?: string;
-    rating?: number;
+  hotelTypeId?: string;
+  rating?: number;
   name: string;
 
   constructor(hotel: Hotel) {
@@ -20,6 +21,7 @@ export class HotelResponse {
     this.stateId = hotel.stateId;
     this.cityId = hotel.cityId;
     this.sightseeingId = hotel.sightseeingId || undefined;
+    this.hotelTypeId = hotel.hotelTypeId || undefined;
     this.rating = hotel.rating || undefined;
     this.name = hotel.name;
   }

@@ -5,8 +5,8 @@ export const createPackageCityDaySchema = flatToNestedSchema(
   z.object({
   packageCityId: z.string(),
   dayNumber: z.number(),
-  startTime: z.string(),
-  endTime: z.string(),
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
   startFrom: z.string(),
   endAt: z.string(),
   description: z.any(),

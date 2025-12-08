@@ -4,11 +4,11 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 export const createPackageActivitySchema = flatToNestedSchema(
   z.object({
   name: z.string(),
-  image: z.string(),
+  image: z.string().optional(),
   }),
   data => ({
     name: data.name,
-    image: data.image,
+    ...(data.image !== undefined ? { image: data.image } : {}),
   })
 );
 

@@ -83,16 +83,27 @@ model Hotel {
   stateId   String
   cityId    String
   sightseeingId String?
+  hotelTypeId String?
   name      String
   rating    Int?
   country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
   state   State   @relation(fields: [stateId], references: [id], onDelete: Cascade)
   city    City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
   sightseeing Sightseeing? @relation(fields: [sightseeingId], references: [id], onDelete: SetNull)
+  hotelType HotelType? @relation(fields: [hotelTypeId], references: [id], onDelete: SetNull)
   hotelRooms HotelRoom[]
   travelTypes TravelType[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model HotelType {
+  id          String @id @default(uuid())
+  name        String
+  description String?
+  hotels      Hotel[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model RoomType {
@@ -108,7 +119,9 @@ model HotelRoom {
   id         String @id @default(uuid())
   hotelId    String
   roomTypeId String
-  roomNumber String
+  roomNumber String?
+  price      Decimal?
+  amenities  String?
   description String?
   hotel    Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)

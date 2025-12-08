@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { HotelController } from '../controllers/hotel.controller';
+import { HotelController } from '../../hotels/controllers/hotel.controller';
 import { container } from 'tsyringe';
 
 const router = Router();

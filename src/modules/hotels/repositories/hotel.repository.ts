@@ -1,7 +1,7 @@
 import { BaseRepository } from '@/core/base/base.repository';
 import { prisma } from '@/loaders/prisma';
-import { Hotel, HotelCreateDto, HotelUpdateDto } from '@/modules/travels/entities/hotel.entity';
-import { IHotelRepository } from '@/modules/travels/repositories/interfaces/hotel.repository.interface';
+import { Hotel, HotelCreateDto, HotelUpdateDto } from '@/modules/hotels/entities/hotel.entity';
+import { IHotelRepository } from '@/modules/hotels/repositories/interfaces/hotel.repository.interface';
 import { Repository } from '@/core/decorators/repository.decorator';
 
 @Repository()

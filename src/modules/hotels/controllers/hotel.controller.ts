@@ -1,9 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 import { BaseController } from '@/core/base/base.controller';
-import { IHotelService } from '@/modules/travels/services/interfaces/hotel.service.interface';
-import { Hotel, HotelCreateDto, HotelUpdateDto } from '@/modules/travels/entities/hotel.entity';
+import { IHotelService } from '@/modules/hotels/services/interfaces/hotel.service.interface';
+import { Hotel, HotelCreateDto, HotelUpdateDto } from '@/modules/hotels/entities/hotel.entity';
 import { HotelResponse } from '../dtos/hotel-response.dto';
-import { hotelValidation } from '@/modules/travels/validations/hotel.validation';
+import { hotelValidation } from '@/modules/hotels/validations/hotel.validation';
 
 @injectable()
 export class HotelController extends BaseController<Hotel, HotelCreateDto, HotelUpdateDto> {

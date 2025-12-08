@@ -6,7 +6,8 @@ export const createHotelSchema = flatToNestedSchema(
   countryId: z.string(),
   stateId: z.string(),
   cityId: z.string(),
-  sightseeingId: z.string(),
+  sightseeingId: z.string().optional(),
+  hotelTypeId: z.string().optional(),
   name: z.string(),
   rating: z.number().min(1).max(5).optional(),
   }),
@@ -15,7 +16,8 @@ export const createHotelSchema = flatToNestedSchema(
     country: { connect: { id: data.countryId } },
     state: { connect: { id: data.stateId } },
     city: { connect: { id: data.cityId } },
-    sightseeing: { connect: { id: data.sightseeingId } },
+    ...(data.sightseeingId ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
+    ...(data.hotelTypeId ? { hotelType: { connect: { id: data.hotelTypeId } } } : {}),
     ...(data.rating !== undefined ? { rating: data.rating } : {}),
   })
 );
@@ -26,6 +28,7 @@ export const updateHotelSchema = flatToNestedSchema(
     stateId: z.string().optional(),
     cityId: z.string().optional(),
     sightseeingId: z.string().optional(),
+    hotelTypeId: z.string().optional(),
     name: z.string().optional(),
     rating: z.number().min(1).max(5).optional(),
   }),
@@ -35,6 +38,7 @@ export const updateHotelSchema = flatToNestedSchema(
     ...(data.stateId !== undefined ? { state: { connect: { id: data.stateId } } } : {}),
     ...(data.cityId !== undefined ? { city: { connect: { id: data.cityId } } } : {}),
     ...(data.sightseeingId !== undefined ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
+    ...(data.hotelTypeId !== undefined ? { hotelType: { connect: { id: data.hotelTypeId } } } : {}),
     ...(data.rating !== undefined ? { rating: data.rating } : {}),
   })
 );

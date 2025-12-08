@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
-import { Hotel, HotelCreateDto, HotelUpdateDto } from '@/modules/travels/entities/hotel.entity';
+import { Hotel, HotelCreateDto, HotelUpdateDto } from '@/modules/hotels/entities/hotel.entity';
 import { BaseService } from '@/core/base/base.service';
-import { IHotelService } from '@/modules/travels/services/interfaces/hotel.service.interface';
+import { IHotelService } from '@/modules/hotels/services/interfaces/hotel.service.interface';
 import { NotFoundException, BadRequestException } from '@/core/exceptions/http.exception';
 
 @injectable()

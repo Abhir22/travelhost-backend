@@ -1,8 +1,8 @@
 import { container } from 'tsyringe';
-import { IHotelService } from './services/interfaces/hotel.service.interface';
-import { HotelService } from './services/hotel.service';
-import { IHotelRepository } from './repositories/interfaces/hotel.repository.interface';
-import { HotelRepository } from './repositories/hotel.repository';
+import { IHotelService } from '../hotels/services/interfaces/hotel.service.interface';
+import { HotelService } from '../hotels/services/hotel.service';
+import { IHotelRepository } from '../hotels/repositories/interfaces/hotel.repository.interface';
+import { HotelRepository } from '../hotels/repositories/hotel.repository';
 import { ITravelTypeService } from './services/interfaces/traveltype.service.interface';
 import { TravelTypeService } from './services/traveltype.service';
 import { ITravelTypeRepository } from './repositories/interfaces/traveltype.repository.interface';

@@ -4,11 +4,11 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 export const createPackageCategorySchema = flatToNestedSchema(
   z.object({
   name: z.string(),
-  icon: z.string(),
+  icon: z.string().optional(),
   }),
   data => ({
     name: data.name,
-    icon: data.icon,
+    ...(data.icon !== undefined ? { icon: data.icon } : {}),
   })
 );
 

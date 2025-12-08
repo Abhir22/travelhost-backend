@@ -4,13 +4,13 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 export const createPackageTypeSchema = flatToNestedSchema(
   z.object({
   name: z.string(),
-  image: z.string(),
+  image: z.string().optional(),
   isInternational: z.boolean(),
   }),
   data => ({
     name: data.name,
-    image: data.image,
     isInternational: data.isInternational,
+    ...(data.image !== undefined ? { image: data.image } : {}),
   })
 );
 
