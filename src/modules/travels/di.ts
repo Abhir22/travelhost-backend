@@ -1,4 +1,9 @@
 import { container } from 'tsyringe';
+import { MealTypeRepository } from './repositories/mealtype.repository';
+import { MealTypeService } from './services/mealtype.service';
+
+container.register('IMealTypeRepository', { useClass: MealTypeRepository });
+container.register('IMealTypeService', { useClass: MealTypeService });
 import { IHotelService } from '../hotels/services/interfaces/hotel.service.interface';
 import { HotelService } from '../hotels/services/hotel.service';
 import { IHotelRepository } from '../hotels/repositories/interfaces/hotel.repository.interface';
@@ -13,8 +18,7 @@ import { ITravelModeRepository } from './repositories/interfaces/travelmode.repo
 import { TravelModeRepository } from './repositories/travelmode.repository';
 
 export const registerDependencies = () => {
-  container.register<IHotelService>('IHotelService', { useClass: HotelService });
-  container.register<IHotelRepository>('IHotelRepository', { useClass: HotelRepository });
+
   container.register<ITravelTypeService>('ITravelTypeService', { useClass: TravelTypeService });
   container.register<ITravelTypeRepository>('ITravelTypeRepository', { useClass: TravelTypeRepository });
   container.register<ITravelModeService>('ITravelModeService', { useClass: TravelModeService });

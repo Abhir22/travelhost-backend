@@ -11,8 +11,14 @@ import { IRoomImageService } from './services/interfaces/roomimage.service.inter
 import { RoomImageService } from './services/roomimage.service';
 import { IRoomImageRepository } from './repositories/interfaces/roomimage.repository.interface';
 import { RoomImageRepository } from './repositories/roomimage.repository';
+import { HotelRepository } from './repositories/hotel.repository';
+import { IHotelRepository } from './repositories/interfaces/hotel.repository.interface';
+import { HotelService } from './services/hotel.service';
+import { IHotelService } from './services/interfaces/hotel.service.interface';
 
 export const registerDependencies = () => {
+    container.register<IHotelService>('IHotelService', { useClass: HotelService });
+    container.register<IHotelRepository>('IHotelRepository', { useClass: HotelRepository });
   container.register<IRoomTypeService>('IRoomTypeService', { useClass: RoomTypeService });
   container.register<IRoomTypeRepository>('IRoomTypeRepository', { useClass: RoomTypeRepository });
   container.register<IHotelRoomService>('IHotelRoomService', { useClass: HotelRoomService });

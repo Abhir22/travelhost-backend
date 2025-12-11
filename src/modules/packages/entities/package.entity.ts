@@ -5,6 +5,7 @@ export type Package = Prisma.PackageGetPayload<{
     packagecategorymappings: true,
     packageactivitymappings: true,
     packagesnapshotmappings: true,
+    packagemealtypes: true,
     packageType: true,
     packagecities: true
   }

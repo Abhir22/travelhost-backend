@@ -3,6 +3,7 @@ import { PackageActivityMappingResponse } from '@/modules/packages/dtos/packagea
 import { PackageSnapshotMappingResponse } from '@/modules/packages/dtos/packagesnapshotmapping-response.dto';
 import { PackageTypeResponse } from '@/modules/packages/dtos/packagetype-response.dto';
 import { PackageCityResponse } from '@/modules/packages/dtos/packagecity-response.dto';
+import { PackageMealTypeResponseDto } from '@/modules/packages/dtos/packagemealtype-response.dto';
 import { Package } from '@/modules/packages/entities/package.entity';
 
 export class PackageResponse {
@@ -11,7 +12,11 @@ export class PackageResponse {
   updatedAt?: Date;
   packageTypeId: string;
   packageName: string;
+  shortDescription?: string;
+  longDescription?: string;
   description?: any;
+  mainImage?: string;
+  thumbnail?: string;
   video?: string;
   basePrice?: string;
   days: number;
@@ -19,6 +24,7 @@ export class PackageResponse {
   packagecategorymappings?: PackageCategoryMappingResponse[];
   packageactivitymappings?: PackageActivityMappingResponse[];
   packagesnapshotmappings?: PackageSnapshotMappingResponse[];
+  packagemealtypes?: PackageMealTypeResponseDto[];
   packageType?: PackageTypeResponse;
   packagecities?: PackageCityResponse[];
 
@@ -28,7 +34,11 @@ export class PackageResponse {
     if ('updatedAt' in pkg) this.updatedAt = pkg.updatedAt;
     this.packageTypeId = pkg.packageTypeId;
     this.packageName = pkg.packageName;
+    this.shortDescription = pkg.shortDescription || undefined;
+    this.longDescription = pkg.longDescription || undefined;
     this.description = pkg.description || undefined;
+    this.mainImage = pkg.mainImage || undefined;
+    this.thumbnail = pkg.thumbnail || undefined;
     this.video = pkg.video || undefined;
     this.basePrice = pkg.basePrice != null ? pkg.basePrice.toString() : undefined;
     this.days = pkg.days;
@@ -36,6 +46,7 @@ export class PackageResponse {
     this.packagecategorymappings = Array.isArray(pkg.packagecategorymappings) ? pkg.packagecategorymappings.map((r: any) => new PackageCategoryMappingResponse({ ...(r as any) })) : [];
     this.packageactivitymappings = Array.isArray(pkg.packageactivitymappings) ? pkg.packageactivitymappings.map((r: any) => new PackageActivityMappingResponse({ ...(r as any) })) : [];
     this.packagesnapshotmappings = Array.isArray(pkg.packagesnapshotmappings) ? pkg.packagesnapshotmappings.map((r: any) => new PackageSnapshotMappingResponse({ ...(r as any) })) : [];
+    this.packagemealtypes = Array.isArray(pkg.packagemealtypes) ? pkg.packagemealtypes.map((r: any) => new PackageMealTypeResponseDto({ ...(r as any) })) : [];
     this.packageType = pkg.packageType && typeof pkg.packageType === 'object' ? new PackageTypeResponse({ ...(pkg.packageType as any) }) : undefined;
     this.packagecities = Array.isArray(pkg.packagecities) ? pkg.packagecities.map((r: any) => new PackageCityResponse({ ...(r as any) })) : [];
   }

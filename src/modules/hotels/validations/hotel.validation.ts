@@ -3,13 +3,13 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createHotelSchema = flatToNestedSchema(
   z.object({
-  countryId: z.string(),
-  stateId: z.string(),
-  cityId: z.string(),
-  sightseeingId: z.string().optional(),
-  hotelTypeId: z.string().optional(),
-  name: z.string(),
-  rating: z.number().min(1).max(5).optional(),
+    countryId: z.string(),
+    stateId: z.string(),
+    cityId: z.string(),
+    sightseeingId: z.string().optional(),
+    hotelTypeId: z.string().optional(),
+    name: z.string(),
+    rating: z.number().min(1).max(5).optional(),
   }),
   data => ({
     name: data.name,

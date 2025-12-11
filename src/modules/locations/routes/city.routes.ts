@@ -6,6 +6,7 @@ const router = Router();
 const cityController = container.resolve(CityController);
 
 router.get('/city/', cityController.findWithPagination);
+router.get('/city/all', cityController.getAll);
 router.get('/city/search', cityController.search);
 router.get('/city/:id', cityController.getById);
 router.post('/city/', cityController.create);

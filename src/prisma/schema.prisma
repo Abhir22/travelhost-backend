@@ -23,6 +23,7 @@ model Country {
   travelModes TravelMode[]
   destinations Destination[]
   packageCities PackageCity[]
+  packagecountries PackageCountry[]
   sightings Sightseeing[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,6 +40,7 @@ model State {
   travelModes TravelMode[]
   destinations Destination[]
   packageCities PackageCity[]
+  packagestates PackageState[]
   sightings Sightseeing[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -86,6 +88,8 @@ model Hotel {
   hotelTypeId String?
   name      String
   rating    Int?
+
+  thumbnail String?
   country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
   state   State   @relation(fields: [stateId], references: [id], onDelete: Cascade)
   city    City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
@@ -198,15 +202,45 @@ model PackageType {
   image     String?
   isInternational Boolean @default(false)
   packages Package[]
+  packagecountries PackageCountry[]
+  packagestates PackageState[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PackageCountry {
+  id        String @id @default(uuid())
+  packageTypeId String
+  countryId String
+  packageType PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
+  country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([packageTypeId, countryId])
+}
+
+model PackageState {
+  id        String @id @default(uuid())
+  packageTypeId String
+  stateId String
+  packageType PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
+  state State @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([packageTypeId, stateId])
 }
 
 model Package {
   id        String @id @default(uuid())
   packageTypeId String
   packageName String
+  shortDescription String? @db.Text
+  longDescription String? @db.Text
   description String?
+  mainImage String?
+  thumbnail String?
   video     String?
   basePrice Decimal?
   days      Int
@@ -216,6 +250,7 @@ model Package {
   packageactivitymappings PackageActivityMapping[]
   packagesnapshotmappings PackageSnapshotMapping[]
   packagecities PackageCity[]
+  packagemealtypes PackageMealType[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -302,6 +337,7 @@ model PackageCityDay {
   packagecitydaysightseeings PackageCityDaySightseeing[]
   packagecitydayhotels PackageCityDayHotel[]
   packagecitydaymeals PackageCityDayMeal[]
+  packagecitydaymealtypes PackageCityDayMealType[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -357,4 +393,39 @@ model PackageCityDayMeal {
   packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PackageCityDayMealType {
+  id        String @id @default(uuid())
+  packageCityDayId String
+  mealTypeId String
+  provider  String?
+  time      String?
+  description String?
+  packageCityDay PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
+  mealType MealType @relation(fields: [mealTypeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MealType {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String?
+  packagemealtypes PackageMealType[]
+  packagecitydaymealtypes PackageCityDayMealType[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PackageMealType {
+  id        String @id @default(uuid())
+  packageId String
+  mealTypeId String
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  mealType MealType @relation(fields: [mealTypeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([packageId, mealTypeId])
 }

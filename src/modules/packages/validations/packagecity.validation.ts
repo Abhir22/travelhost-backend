@@ -3,12 +3,12 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageCitySchema = flatToNestedSchema(
   z.object({
-  packageId: z.string(),
-  countryId: z.string(),
-  stateId: z.string().optional(),
-  cityId: z.string(),
-  totalDays: z.number(),
-  totalNights: z.number(),
+    packageId: z.string(),
+    countryId: z.string(),
+    stateId: z.string().optional(),
+    cityId: z.string(),
+    totalDays: z.number(),
+    totalNights: z.number(),
   }),
   data => ({
     totalDays: data.totalDays,
