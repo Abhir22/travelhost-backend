@@ -13,8 +13,8 @@ export class RequestOptionBuilder {
       whereSchema: z.record(z.any()).optional(),
       paginationSchema: z
         .object({
-          page: z.number().int().positive(),
-          pageSize: z.number().int().positive().max(100),
+          page: z.number().int().positive().default(1),
+          pageSize: z.number().int().positive().max(100).default(10),
         })
         .strict(),
     };
@@ -67,13 +67,15 @@ export class RequestOptionBuilder {
   static buildSearchOptions(req: Request, querySchemas: any): SearchOptions {
     const options: SearchOptions = {};
 
-    // Handle pagination
+    // Handle pagination with defaults
     if (querySchemas.paginationSchema) {
+      const paginationData = {
+        page: req.query.page ? parseInt(req.query.page as string) : 1,
+        pageSize: req.query.pageSize ? parseInt(req.query.pageSize as string) : 10,
+      };
+      
       const pagination = RequestOptionBuilder.validateQueryParam(
-        JSON.stringify({
-          page: req.query.page ? parseInt(req.query.page as string) : undefined,
-          pageSize: req.query.pageSize ? parseInt(req.query.pageSize as string) : undefined,
-        }),
+        JSON.stringify(paginationData),
         querySchemas.paginationSchema,
       );
       Object.assign(options, pagination);

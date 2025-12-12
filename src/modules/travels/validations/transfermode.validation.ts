@@ -1,37 +1,37 @@
 import { z } from 'zod';
 import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
-export const createTravelTypeSchema = flatToNestedSchema(
+export const createTransferModeSchema = flatToNestedSchema(
   z.object({
     cityId: z.string(),
     sightseeingId: z.string().optional(),
+    travelTypeId: z.string().optional(),
     name: z.string(),
-    hotelId: z.string().optional(),
   }),
   data => ({
     name: data.name,
     city: { connect: { id: data.cityId } },
     ...(data.sightseeingId ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.hotelId ? { hotel: { connect: { id: data.hotelId } } } : {}),
+    ...(data.travelTypeId ? { travelType: { connect: { id: data.travelTypeId } } } : {}),
   })
 );
 
-export const updateTravelTypeSchema = flatToNestedSchema(
+export const updateTransferModeSchema = flatToNestedSchema(
   z.object({
     cityId: z.string().optional(),
     sightseeingId: z.string().optional(),
+    travelTypeId: z.string().optional(),
     name: z.string().optional(),
-    hotelId: z.string().optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),
     ...(data.cityId !== undefined ? { city: { connect: { id: data.cityId } } } : {}),
     ...(data.sightseeingId !== undefined ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.hotelId !== undefined ? { hotel: { connect: { id: data.hotelId } } } : {}),
+    ...(data.travelTypeId !== undefined ? { travelType: { connect: { id: data.travelTypeId } } } : {}),
   })
 );
 
-export const traveltypeIdParamSchema = z.object({
+export const transfermodeIdParamSchema = z.object({
   id: z.string().uuid(),
 });
 
@@ -39,9 +39,9 @@ export const searchQuerySchema = z.object({
   q: z.string().min(3),
 });
 
-export const traveltypeValidation = {
-  create: createTravelTypeSchema,
-  update: updateTravelTypeSchema,
-  idParam: traveltypeIdParamSchema,
+export const transfermodeValidation = {
+  create: createTransferModeSchema,
+  update: updateTransferModeSchema,
+  idParam: transfermodeIdParamSchema,
   search: searchQuerySchema
 };

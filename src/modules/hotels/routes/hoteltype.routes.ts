@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 const router = Router();
 const hoteltypeController = container.resolve(HotelTypeController);
 
-router.get('/hoteltype/', hoteltypeController.findWithPagination);
+router.get('/hoteltype/', hoteltypeController.getAll);
 router.get('/hoteltype/search', hoteltypeController.search);
 router.get('/hoteltype/:id', hoteltypeController.getById);
 router.post('/hoteltype/', hoteltypeController.create);

@@ -3,7 +3,7 @@ import { PackageActivityMappingResponse } from '@/modules/packages/dtos/packagea
 import { PackageSnapshotMappingResponse } from '@/modules/packages/dtos/packagesnapshotmapping-response.dto';
 import { PackageTypeResponse } from '@/modules/packages/dtos/packagetype-response.dto';
 import { PackageCityResponse } from '@/modules/packages/dtos/packagecity-response.dto';
-import { PackageMealTypeResponseDto } from '@/modules/packages/dtos/packagemealtype-response.dto';
+
 import { Package } from '@/modules/packages/entities/package.entity';
 
 export class PackageResponse {
@@ -24,7 +24,7 @@ export class PackageResponse {
   packagecategorymappings?: PackageCategoryMappingResponse[];
   packageactivitymappings?: PackageActivityMappingResponse[];
   packagesnapshotmappings?: PackageSnapshotMappingResponse[];
-  packagemealtypes?: PackageMealTypeResponseDto[];
+
   packageType?: PackageTypeResponse;
   packagecities?: PackageCityResponse[];
 
@@ -46,7 +46,7 @@ export class PackageResponse {
     this.packagecategorymappings = Array.isArray(pkg.packagecategorymappings) ? pkg.packagecategorymappings.map((r: any) => new PackageCategoryMappingResponse({ ...(r as any) })) : [];
     this.packageactivitymappings = Array.isArray(pkg.packageactivitymappings) ? pkg.packageactivitymappings.map((r: any) => new PackageActivityMappingResponse({ ...(r as any) })) : [];
     this.packagesnapshotmappings = Array.isArray(pkg.packagesnapshotmappings) ? pkg.packagesnapshotmappings.map((r: any) => new PackageSnapshotMappingResponse({ ...(r as any) })) : [];
-    this.packagemealtypes = Array.isArray(pkg.packagemealtypes) ? pkg.packagemealtypes.map((r: any) => new PackageMealTypeResponseDto({ ...(r as any) })) : [];
+
     this.packageType = pkg.packageType && typeof pkg.packageType === 'object' ? new PackageTypeResponse({ ...(pkg.packageType as any) }) : undefined;
     this.packagecities = Array.isArray(pkg.packagecities) ? pkg.packagecities.map((r: any) => new PackageCityResponse({ ...(r as any) })) : [];
   }

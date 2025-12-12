@@ -7,7 +7,7 @@ import { Repository } from '@/core/decorators/repository.decorator';
 @Repository()
 export class TravelModeRepository extends BaseRepository<TravelMode, TravelModeCreateDto, TravelModeUpdateDto> implements ITravelModeRepository {
   constructor() {
-    super(prisma, 'TravelMode');
+    super(prisma, 'TransferMode');
   }
 
   // Add custom repository methods here

@@ -1,9 +1,10 @@
 import { Prisma } from '@prisma/client';
 
 export type Hotel = Prisma.HotelGetPayload<{
-  // include: {
-  //   // Add related models here if needed
-  // }
+  include: {
+    city: true;
+    hotelType: true;
+  }
 }>;
 
 export type HotelCreateDto = Prisma.HotelCreateInput;

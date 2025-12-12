@@ -64,8 +64,8 @@ export abstract class BaseController<T, TCreateInput = any, TUpdateInput = any> 
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const options = RequestOptionBuilder.buildFindOptions(req, this.querySchemas);
-    if (!options.include) {
-      options.include = { Profile: true };
+    if (!options.include && this.defaultInclude) {
+      options.include = this.defaultInclude;
     }
     const records = await this.service.findAll(options);
     const responseData = BaseResponse.mapMany(records, this.responseClass);

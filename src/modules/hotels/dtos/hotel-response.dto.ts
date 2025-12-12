@@ -1,28 +1,29 @@
-
-import { Hotel } from '@/modules/hotels/entities/hotel.entity';
+import { Hotel } from '../entities/hotel.entity';
+import { CityResponse } from '@/modules/locations/dtos/city-response.dto';
+import { HotelTypeResponse } from './hoteltype-response.dto';
 
 export class HotelResponse {
   id?: string;
+  cityId?: string;
+  hotelTypeId?: string;
+  name?: string;
+  rating?: number;
+  thumbnail?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  countryId: string;
-  stateId: string;
-  cityId: string;
-  sightseeingId?: string;
-  hotelTypeId?: string;
-  rating?: number;
-  name: string;
+  city?: CityResponse;
+  hotelType?: HotelTypeResponse;
 
-  constructor(hotel: Hotel) {
-    if ('id' in hotel) this.id = hotel.id;
-    if ('createdAt' in hotel) this.createdAt = hotel.createdAt;
-    if ('updatedAt' in hotel) this.updatedAt = hotel.updatedAt;
-    this.countryId = hotel.countryId;
-    this.stateId = hotel.stateId;
+  constructor(hotel: Partial<Hotel>) {
+    this.id = hotel.id;
     this.cityId = hotel.cityId;
-    this.sightseeingId = hotel.sightseeingId || undefined;
     this.hotelTypeId = hotel.hotelTypeId || undefined;
-    this.rating = hotel.rating || undefined;
     this.name = hotel.name;
+    this.rating = hotel.rating || undefined;
+    this.thumbnail = hotel.thumbnail || undefined;
+    this.createdAt = hotel.createdAt;
+    this.updatedAt = hotel.updatedAt;
+    this.city = hotel.city && typeof hotel.city === 'object' ? new CityResponse({ ...(hotel.city as any) }) : undefined;
+    this.hotelType = hotel.hotelType && typeof hotel.hotelType === 'object' ? new HotelTypeResponse({ ...(hotel.hotelType as any) }) : undefined;
   }
 }

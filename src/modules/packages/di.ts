@@ -55,6 +55,8 @@ import { IPackageCityDayMealService } from './services/interfaces/packagecityday
 import { PackageCityDayMealService } from './services/packagecitydaymeal.service';
 import { IPackageCityDayMealRepository } from './repositories/interfaces/packagecitydaymeal.repository.interface';
 import { PackageCityDayMealRepository } from './repositories/packagecitydaymeal.repository';
+import { IPackageCompleteService } from './services/interfaces/package-complete.service.interface';
+import { PackageCompleteService } from './services/package-complete.service';
 
 export const registerDependencies = () => {
   container.register<IPackageTypeService>('IPackageTypeService', { useClass: PackageTypeService });
@@ -85,6 +87,7 @@ export const registerDependencies = () => {
   container.register<IPackageCityDayHotelRepository>('IPackageCityDayHotelRepository', { useClass: PackageCityDayHotelRepository });
   container.register<IPackageCityDayMealService>('IPackageCityDayMealService', { useClass: PackageCityDayMealService });
   container.register<IPackageCityDayMealRepository>('IPackageCityDayMealRepository', { useClass: PackageCityDayMealRepository });
+  container.register<IPackageCompleteService>('IPackageCompleteService', { useClass: PackageCompleteService });
   console.log('All module dependencies registered');
 };
 

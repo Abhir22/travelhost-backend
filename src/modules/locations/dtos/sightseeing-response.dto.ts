@@ -5,18 +5,56 @@ export class SightseeingResponse {
   id?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  countryId?: string;
-  stateId?: string;
   cityId?: string;
   name: string;
+  city?: {
+    id: string;
+    name: string;
+    countryId: string;
+    stateId?: string;
+    country?: {
+      id: string;
+      name: string;
+      isoCode?: string;
+    };
+    state?: {
+      id: string;
+      name: string;
+    };
+  };
 
   constructor(sightseeing: Sightseeing) {
     if ('id' in sightseeing) this.id = sightseeing.id;
     if ('createdAt' in sightseeing) this.createdAt = sightseeing.createdAt;
     if ('updatedAt' in sightseeing) this.updatedAt = sightseeing.updatedAt;
-    this.countryId = sightseeing.countryId || undefined;
-    this.stateId = sightseeing.stateId || undefined;
     this.cityId = sightseeing.cityId || undefined;
     this.name = sightseeing.name;
+    
+    // Include city information if available
+    if (sightseeing.city) {
+      this.city = {
+        id: sightseeing.city.id,
+        name: sightseeing.city.name,
+        countryId: sightseeing.city.countryId,
+        stateId: sightseeing.city.stateId || undefined,
+      };
+      
+      // Include country information if available
+      if (sightseeing.city.country) {
+        this.city.country = {
+          id: sightseeing.city.country.id,
+          name: sightseeing.city.country.name,
+          isoCode: sightseeing.city.country.isoCode || undefined,
+        };
+      }
+      
+      // Include state information if available
+      if (sightseeing.city.state) {
+        this.city.state = {
+          id: sightseeing.city.state.id,
+          name: sightseeing.city.state.name,
+        };
+      }
+    }
   }
 }

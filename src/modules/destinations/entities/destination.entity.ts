@@ -1,9 +1,33 @@
 import { Prisma } from '@prisma/client';
 
 export type Destination = Prisma.DestinationGetPayload<{
-  // include: {
-  //   // Add related models here if needed
-  // }
+  include: {
+    destinationCountries: {
+      include: {
+        country: true;
+      }
+    };
+    destinationStates: {
+      include: {
+        state: true;
+      }
+    };
+    destinationCities: {
+      include: {
+        city: true;
+      }
+    };
+    destinationPackages: {
+      include: {
+        package: true;
+      }
+    };
+    destinationPackageTypes: {
+      include: {
+        packageType: true;
+      }
+    };
+  }
 }>;
 
 export type DestinationCreateDto = Prisma.DestinationCreateInput;

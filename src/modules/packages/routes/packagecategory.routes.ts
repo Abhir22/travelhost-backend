@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 const router = Router();
 const packagecategoryController = container.resolve(PackageCategoryController);
 
-router.get('/packagecategory/', packagecategoryController.findWithPagination);
+router.get('/packagecategory/', packagecategoryController.getAll);
 router.get('/packagecategory/search', packagecategoryController.search);
 router.get('/packagecategory/:id', packagecategoryController.getById);
 router.post('/packagecategory/', packagecategoryController.create);

@@ -18,6 +18,16 @@ export class HotelRoomResponse {
   roomType?: RoomTypeResponse;
   roomimages?: RoomImageResponse[];
 
+  private parseAmenities(amenities: string): string[] {
+    try {
+      // Try to parse as JSON first
+      return JSON.parse(amenities);
+    } catch (error) {
+      // If JSON parsing fails, treat as comma-separated string
+      return amenities.split(',').map(item => item.trim()).filter(item => item.length > 0);
+    }
+  }
+
   constructor(hotelroom: Partial<HotelRoom>) {
     if ('id' in hotelroom) this.id = hotelroom.id;
     if ('createdAt' in hotelroom) this.createdAt = hotelroom.createdAt;
@@ -26,7 +36,7 @@ export class HotelRoomResponse {
     this.roomTypeId = hotelroom.roomTypeId!;
     this.roomNumber = hotelroom.roomNumber || undefined;
     this.price = hotelroom.price ? Number(hotelroom.price) : undefined;
-    this.amenities = hotelroom.amenities ? JSON.parse(hotelroom.amenities) : undefined;
+    this.amenities = hotelroom.amenities ? this.parseAmenities(hotelroom.amenities) : undefined;
     this.description = hotelroom.description || undefined;
     this.hotel = hotelroom.hotel && typeof hotelroom.hotel === 'object' ? new HotelResponse({ ...(hotelroom.hotel as any) }) : undefined;
     this.roomType = hotelroom.roomType && typeof hotelroom.roomType === 'object' ? new RoomTypeResponse({ ...(hotelroom.roomType as any) }) : undefined;

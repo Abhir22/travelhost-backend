@@ -15,8 +15,15 @@ export class SightseeingController extends BaseController<Sightseeing, Sightseei
       responseClass: SightseeingResponse,
       createSchema: sightseeingValidation.create,
       updateSchema: sightseeingValidation.update,
-      searchFields: ['name'], // Search by sightseeing name
-      defaultInclude: {}, // Add default include, can be customized
+      searchFields: ['name', 'city.name'], // Search by sightseeing name and city name
+      defaultInclude: {
+        city: {
+          include: {
+            country: true,
+            state: true
+          }
+        }
+      }, // Include city with country and state for proper filtering and response
     });
   }
 }

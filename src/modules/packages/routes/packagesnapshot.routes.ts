@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 const router = Router();
 const packagesnapshotController = container.resolve(PackageSnapshotController);
 
-router.get('/packagesnapshot/', packagesnapshotController.findWithPagination);
+router.get('/packagesnapshot/', packagesnapshotController.getAll);
 router.get('/packagesnapshot/search', packagesnapshotController.search);
 router.get('/packagesnapshot/:id', packagesnapshotController.getById);
 router.post('/packagesnapshot/', packagesnapshotController.create);

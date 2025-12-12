@@ -16,6 +16,7 @@ import { IHotelRepository } from './repositories/interfaces/hotel.repository.int
 import { HotelService } from './services/hotel.service';
 import { IHotelService } from './services/interfaces/hotel.service.interface';
 
+
 export const registerDependencies = () => {
     container.register<IHotelService>('IHotelService', { useClass: HotelService });
     container.register<IHotelRepository>('IHotelRepository', { useClass: HotelRepository });
