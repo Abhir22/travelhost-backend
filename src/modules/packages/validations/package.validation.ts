@@ -3,14 +3,14 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageSchema = flatToNestedSchema(
   z.object({
-    packageTypeId: z.string(),
-    packageName: z.string(),
-    shortDescription: z.string().optional(),
-    longDescription: z.string().optional(),
+    packageTypeId: z.string().uuid(),
+    packageName: z.string().min(1),
+    shortDescription: z.string().min(1).optional(),
+    longDescription: z.string().min(1).optional(),
     description: z.any().optional(),
-    mainImage: z.string().optional(),
-    thumbnail: z.string().optional(),
-    video: z.string().optional(),
+    mainImage: z.string().min(1).optional(),
+    thumbnail: z.string().min(1).optional(),
+    video: z.string().min(1).optional(),
     basePrice: z.number().optional(),
     days: z.number(),
     nights: z.number(),
@@ -32,14 +32,14 @@ export const createPackageSchema = flatToNestedSchema(
 
 export const updatePackageSchema = flatToNestedSchema(
   z.object({
-    packageTypeId: z.string().optional(),
-    packageName: z.string().optional(),
-    shortDescription: z.string().optional(),
-    longDescription: z.string().optional(),
+    packageTypeId: z.string().uuid().optional(),
+    packageName: z.string().min(1).optional(),
+    shortDescription: z.string().min(1).optional(),
+    longDescription: z.string().min(1).optional(),
     description: z.any().optional(),
-    mainImage: z.string().optional(),
-    thumbnail: z.string().optional(),
-    video: z.string().optional(),
+    mainImage: z.string().min(1).optional(),
+    thumbnail: z.string().min(1).optional(),
+    video: z.string().min(1).optional(),
     basePrice: z.number().optional(),
     days: z.number().optional(),
     nights: z.number().optional(),

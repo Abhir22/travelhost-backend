@@ -3,10 +3,10 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createTransferModeSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string(),
-    sightseeingId: z.string().optional(),
-    travelTypeId: z.string().optional(),
-    name: z.string(),
+    cityId: z.string().uuid(),
+    sightseeingId: z.string().uuid().optional(),
+    travelTypeId: z.string().uuid().optional(),
+    name: z.string().min(1),
   }),
   data => ({
     name: data.name,
@@ -18,10 +18,10 @@ export const createTransferModeSchema = flatToNestedSchema(
 
 export const updateTransferModeSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string().optional(),
-    sightseeingId: z.string().optional(),
-    travelTypeId: z.string().optional(),
-    name: z.string().optional(),
+    cityId: z.string().uuid().optional(),
+    sightseeingId: z.string().uuid().optional(),
+    travelTypeId: z.string().uuid().optional(),
+    name: z.string().min(1).optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),

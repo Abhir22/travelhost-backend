@@ -3,29 +3,39 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createCitySchema = flatToNestedSchema(
   z.object({
-  countryId: z.string(),
-  stateId: z.string().nullable().optional(),
-  name: z.string(),
+    countryId: z.string().uuid(),
+    stateId: z.string().uuid().nullable().optional(),
+    name: z.string().trim().min(1, 'City name is required'),
   }),
   data => ({
     name: data.name,
     country: { connect: { id: data.countryId } },
-    ...(data.stateId ? { state: { connect: { id: data.stateId } } } : {}),
+    ...(data.stateId
+      ? { state: { connect: { id: data.stateId } } }
+      : {}),
   })
 );
 
+
 export const updateCitySchema = flatToNestedSchema(
   z.object({
-    countryId: z.string().optional(),
-    stateId: z.string().optional(),
-    name: z.string().optional(),
+    countryId: z.string().uuid().optional(),
+    stateId: z.string().uuid().nullable().optional(),
+    name: z.string().trim().min(1).optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),
-    ...(data.countryId !== undefined ? { country: { connect: { id: data.countryId } } } : {}),
-    ...(data.stateId !== undefined ? { state: { connect: { id: data.stateId } } } : {}),
+    ...(data.countryId !== undefined
+      ? { country: { connect: { id: data.countryId } } }
+      : {}),
+    ...(data.stateId !== undefined
+      ? data.stateId === null
+        ? { state: { disconnect: true } }
+        : { state: { connect: { id: data.stateId } } }
+      : {}),
   })
 );
+
 
 export const cityIdParamSchema = z.object({
   id: z.string().uuid(),

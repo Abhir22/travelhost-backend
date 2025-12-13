@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createRoomImageSchema = flatToNestedSchema(
   z.object({
-  hotelRoomId: z.string(),
-  imageUrl: z.string(),
+  hotelRoomId: z.string().uuid(),
+  imageUrl: z.string().min(1),
   }),
   data => ({
     imageUrl: data.imageUrl,
@@ -14,8 +14,8 @@ export const createRoomImageSchema = flatToNestedSchema(
 
 export const updateRoomImageSchema = flatToNestedSchema(
   z.object({
-    hotelRoomId: z.string().optional(),
-    imageUrl: z.string().optional(),
+    hotelRoomId: z.string().uuid().optional(),
+    imageUrl: z.string().min(1).optional(),
   }),
   data => ({
     ...(data.imageUrl !== undefined ? { imageUrl: data.imageUrl } : {}),

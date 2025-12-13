@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createSightseeingSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string(),
-    name: z.string(),
+    cityId: z.string().uuid(),
+    name: z.string().trim().min(1, "Sightseeing name is required"),
   }),
   data => ({
     name: data.name,
@@ -14,8 +14,8 @@ export const createSightseeingSchema = flatToNestedSchema(
 
 export const updateSightseeingSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string().optional(),
-    name: z.string().optional(),
+    cityId: z.string().uuid().optional(),
+    name: z.string().trim().min(1, "Sightseeing name cannot be empty").optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),

@@ -3,7 +3,7 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createTravelTypeSchema = flatToNestedSchema(
   z.object({
-    name: z.string(),
+    name: z.string().trim().min(1, "Travel type name is required"),
   }),
   data => ({
     name: data.name,
@@ -12,7 +12,7 @@ export const createTravelTypeSchema = flatToNestedSchema(
 
 export const updateTravelTypeSchema = flatToNestedSchema(
   z.object({
-    name: z.string().optional(),
+    name: z.string().trim().min(1, "Travel type name cannot be empty").optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),

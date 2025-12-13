@@ -3,11 +3,11 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createHotelRoomSchema = flatToNestedSchema(
   z.object({
-  hotelId: z.string(),
-  roomTypeId: z.string(),
-  roomNumber: z.string().optional(),
+  hotelId: z.string().uuid(),
+  roomTypeId: z.string().uuid(),
+  roomNumber: z.string().min(1).optional(),
   price: z.number().optional(),
-  amenities: z.array(z.string()).optional(),
+  amenities: z.array(z.string().min(1)).optional(),
   description: z.any().optional(),
   }),
   data => ({
@@ -22,11 +22,11 @@ export const createHotelRoomSchema = flatToNestedSchema(
 
 export const updateHotelRoomSchema = flatToNestedSchema(
   z.object({
-    hotelId: z.string().optional(),
-    roomTypeId: z.string().optional(),
-    roomNumber: z.string().optional(),
+    hotelId: z.string().uuid().optional(),
+    roomTypeId: z.string().uuid().optional(),
+    roomNumber: z.string().min(1).optional(),
     price: z.number().optional(),
-    amenities: z.array(z.string()).optional(),
+    amenities: z.array(z.string().min(1)).optional(),
     description: z.any().optional(),
   }),
   data => ({

@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageTypeSchema = flatToNestedSchema(
   z.object({
-  name: z.string(),
-  image: z.string().optional(),
+  name: z.string().trim().min(1, "Package type name is required"),
+  image: z.string().trim().min(1, "Image URL cannot be empty").nullable().optional(),
   isInternational: z.boolean(),
   }),
   data => ({
@@ -16,8 +16,8 @@ export const createPackageTypeSchema = flatToNestedSchema(
 
 export const updatePackageTypeSchema = flatToNestedSchema(
   z.object({
-    name: z.string().optional(),
-    image: z.string().optional(),
+    name: z.string().trim().min(1, "Package type name cannot be empty").optional(),
+    image: z.string().trim().min(1, "Image URL cannot be empty").nullable().optional(),
     isInternational: z.boolean().optional(),
   }),
   data => ({

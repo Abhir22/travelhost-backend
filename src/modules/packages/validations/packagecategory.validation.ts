@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageCategorySchema = flatToNestedSchema(
   z.object({
-  name: z.string(),
-  icon: z.string().optional(),
+  name: z.string().trim().min(1, "Package category name is required"),
+  icon: z.string().trim().min(1, "Icon cannot be empty").nullable().optional(),
   }),
   data => ({
     name: data.name,
@@ -14,8 +14,8 @@ export const createPackageCategorySchema = flatToNestedSchema(
 
 export const updatePackageCategorySchema = flatToNestedSchema(
   z.object({
-    name: z.string().optional(),
-    icon: z.string().optional(),
+    name: z.string().trim().min(1, "Package category name cannot be empty").optional(),
+    icon: z.string().trim().min(1, "Icon cannot be empty").nullable().optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),

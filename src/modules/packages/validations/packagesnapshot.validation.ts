@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageSnapshotSchema = flatToNestedSchema(
   z.object({
-  name: z.string(),
-  icon: z.string().optional(),
+  name: z.string().min(1),
+  icon: z.string().min(1).optional(),
   }),
   data => ({
     name: data.name,
@@ -14,8 +14,8 @@ export const createPackageSnapshotSchema = flatToNestedSchema(
 
 export const updatePackageSnapshotSchema = flatToNestedSchema(
   z.object({
-    name: z.string().optional(),
-    icon: z.string().optional(),
+    name: z.string().min(1).optional(),
+    icon: z.string().min(1).optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),

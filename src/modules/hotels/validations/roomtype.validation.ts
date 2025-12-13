@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createRoomTypeSchema = flatToNestedSchema(
   z.object({
-  name: z.string(),
-  description: z.any(),
+  name: z.string().trim().min(1, "Room type name is required"),
+  description: z.string().trim().min(1, "Description cannot be empty").nullable().optional(),
   }),
   data => ({
     name: data.name,
@@ -14,8 +14,8 @@ export const createRoomTypeSchema = flatToNestedSchema(
 
 export const updateRoomTypeSchema = flatToNestedSchema(
   z.object({
-    name: z.string().optional(),
-    description: z.any().optional(),
+    name: z.string().trim().min(1, "Room type name cannot be empty").optional(),
+    description: z.string().trim().min(1, "Description cannot be empty").nullable().optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),

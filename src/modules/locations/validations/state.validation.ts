@@ -4,7 +4,7 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 export const createStateSchema = flatToNestedSchema(
   z.object({
   countryId: z.string().uuid(),
-  name: z.string().trim().min(1, "State name is required"),,
+  name: z.string().trim().min(1, "State name is required"),
   }),
   data => ({
     name: data.name,

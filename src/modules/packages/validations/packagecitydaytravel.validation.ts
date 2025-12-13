@@ -3,12 +3,12 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageCityDayTravelSchema = flatToNestedSchema(
   z.object({
-  packageCityDayId: z.string(),
-  type: z.string(),
-  carpooling: z.string(),
-  vehicleType: z.string(),
-  timeFrom: z.string(),
-  timeTo: z.string(),
+  packageCityDayId: z.string().uuid(),
+  type: z.string().min(1),
+  carpooling: z.string().min(1),
+  vehicleType: z.string().min(1),
+  timeFrom: z.string().min(1),
+  timeTo: z.string().min(1),
   description: z.any(),
   }),
   data => ({
@@ -24,12 +24,12 @@ export const createPackageCityDayTravelSchema = flatToNestedSchema(
 
 export const updatePackageCityDayTravelSchema = flatToNestedSchema(
   z.object({
-    packageCityDayId: z.string().optional(),
-    type: z.string().optional(),
-    carpooling: z.string().optional(),
-    vehicleType: z.string().optional(),
-    timeFrom: z.string().optional(),
-    timeTo: z.string().optional(),
+    packageCityDayId: z.string().uuid().optional(),
+    type: z.string().min(1).optional(),
+    carpooling: z.string().min(1).optional(),
+    vehicleType: z.string().min(1).optional(),
+    timeFrom: z.string().min(1).optional(),
+    timeTo: z.string().min(1).optional(),
     description: z.any().optional(),
   }),
   data => ({

@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createVehicleTypeSchema = flatToNestedSchema(
     z.object({
-        name: z.string(),
-        vehicleCategory: z.string(),
+        name: z.string().trim().min(1, "Vehicle type name is required"),
+        vehicleCategory: z.string().trim().min(1, "Vehicle category is required"),
     }),
     data => ({
         name: data.name,
@@ -14,8 +14,8 @@ export const createVehicleTypeSchema = flatToNestedSchema(
 
 export const updateVehicleTypeSchema = flatToNestedSchema(
     z.object({
-        name: z.string().optional(),
-        vehicleCategory: z.string().optional(),
+        name: z.string().trim().min(1, "Vehicle type name cannot be empty").optional(),
+        vehicleCategory: z.string().trim().min(1, "Vehicle category cannot be empty").optional(),
     }),
     data => ({
         ...(data.name !== undefined ? { name: data.name } : {}),
