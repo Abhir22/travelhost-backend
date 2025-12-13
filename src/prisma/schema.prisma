@@ -51,7 +51,6 @@ model City {
   country           Country           @relation(fields: [countryId], references: [id], onDelete: Cascade)
   state             State?            @relation(fields: [stateId], references: [id], onDelete: SetNull)
   hotels            Hotel[]
-  travelTypes       TravelType[]
   transferModes     TransferMode[]
   packageCities     PackageCity[]
   sightings         Sightseeing[]
@@ -69,7 +68,6 @@ model Sightseeing {
   cityId            String
   name              String
   city              City               @relation(fields: [cityId], references: [id], onDelete: Cascade)
-  travelTypes       TravelType[]
   transferModes     TransferMode[]
   hotelSightseeings HotelSightseeing[]
   createdAt         DateTime           @default(now())
@@ -89,7 +87,6 @@ model Hotel {
   city              City               @relation(fields: [cityId], references: [id], onDelete: Cascade)
   hotelType         HotelType?         @relation(fields: [hotelTypeId], references: [id], onDelete: SetNull)
   hotelRooms        HotelRoom[]
-  travelTypes       TravelType[]
   hotelSightseeings HotelSightseeing[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
@@ -157,20 +154,10 @@ model RoomImage {
 
 model TravelType {
   id            String         @id @default(uuid())
-  cityId        String
-  sightseeingId String?
-  hotelId       String?
   name          String
-  city          City           @relation(fields: [cityId], references: [id], onDelete: Cascade)
-  sightseeing   Sightseeing?   @relation(fields: [sightseeingId], references: [id], onDelete: SetNull)
-  hotel         Hotel?         @relation(fields: [hotelId], references: [id], onDelete: SetNull)
   transferModes TransferMode[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-
-  @@index([cityId])
-  @@index([sightseeingId])
-  @@index([hotelId])
 }
 
 model TransferMode {
@@ -501,6 +488,14 @@ model MealType {
   packagecitydaymealtypes PackageCityDayMealType[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
+}
+
+model VehicleType {
+  id              String   @id @default(uuid())
+  name            String
+  vehicleCategory String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 

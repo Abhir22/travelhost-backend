@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createStateSchema = flatToNestedSchema(
   z.object({
-  countryId: z.string(),
-  name: z.string(),
+  countryId: z.string().uuid(),
+  name: z.string().trim().min(1, "State name is required"),,
   }),
   data => ({
     name: data.name,
@@ -14,12 +14,14 @@ export const createStateSchema = flatToNestedSchema(
 
 export const updateStateSchema = flatToNestedSchema(
   z.object({
-    countryId: z.string().optional(),
-    name: z.string().optional(),
+    countryId: z.string().uuid().optional(),
+    name: z.string().trim().min(1, "State name cannot be empty").optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),
-    ...(data.countryId !== undefined ? { country: { connect: { id: data.countryId } } } : {}),
+    ...(data.countryId !== undefined
+      ? { country: { connect: { id: data.countryId } } }
+      : {}),
   })
 );
 

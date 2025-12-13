@@ -3,31 +3,19 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createTravelTypeSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string(),
-    sightseeingId: z.string().optional(),
     name: z.string(),
-    hotelId: z.string().optional(),
   }),
   data => ({
     name: data.name,
-    city: { connect: { id: data.cityId } },
-    ...(data.sightseeingId ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.hotelId ? { hotel: { connect: { id: data.hotelId } } } : {}),
   })
 );
 
 export const updateTravelTypeSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string().optional(),
-    sightseeingId: z.string().optional(),
     name: z.string().optional(),
-    hotelId: z.string().optional(),
   }),
   data => ({
     ...(data.name !== undefined ? { name: data.name } : {}),
-    ...(data.cityId !== undefined ? { city: { connect: { id: data.cityId } } } : {}),
-    ...(data.sightseeingId !== undefined ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.hotelId !== undefined ? { hotel: { connect: { id: data.hotelId } } } : {}),
   })
 );
 
