@@ -16,7 +16,15 @@ export class HotelController extends BaseController<Hotel, HotelCreateDto, Hotel
       createSchema: hotelValidation.create,
       updateSchema: hotelValidation.update,
       searchFields: ['name'], // Search by hotel name
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        city: {
+          include: {
+            country: true,
+            state: true
+          }
+        },
+        hotelType: true
+      },
     });
   }
 }

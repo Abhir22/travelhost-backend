@@ -16,7 +16,19 @@ export class RoomImageController extends BaseController<RoomImage, RoomImageCrea
       createSchema: roomimageValidation.create,
       updateSchema: roomimageValidation.update,
       searchFields: ['id'], // Add default search fields, can be customized
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        hotelRoom: {
+          include: {
+            hotel: {
+              include: {
+                city: true,
+                hotelType: true
+              }
+            },
+            roomType: true
+          }
+        }
+      },
     });
   }
 }

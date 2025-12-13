@@ -21,7 +21,9 @@ export class StateController extends BaseController<State, StateCreateDto, State
       createSchema: stateValidation.create,
       updateSchema: stateValidation.update,
       searchFields: ['name'], // Search by state name
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        country: true
+      },
     });
   }
 

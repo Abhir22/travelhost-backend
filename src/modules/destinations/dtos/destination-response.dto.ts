@@ -1,4 +1,5 @@
 
+import moment from 'moment';
 import { Destination } from '@/modules/destinations/entities/destination.entity';
 import { CountryResponse } from '@/modules/locations/dtos/country-response.dto';
 import { StateResponse } from '@/modules/locations/dtos/state-response.dto';
@@ -6,8 +7,6 @@ import { CityResponse } from '@/modules/locations/dtos/city-response.dto';
 
 export class DestinationResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   destinationType: string;
   name: string;
   description?: string;
@@ -20,11 +19,11 @@ export class DestinationResponse {
   cities?: CityResponse[];
   packageCount?: number;
   packageTypeCount?: number;
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(destination: Destination) {
-    if ('id' in destination) this.id = destination.id;
-    if ('createdAt' in destination) this.createdAt = destination.createdAt;
-    if ('updatedAt' in destination) this.updatedAt = destination.updatedAt;
+    if ('id' in destination && destination.id) this.id = destination.id;
     this.destinationType = destination.destinationType;
     this.name = destination.name;
     this.description = destination.description || undefined;
@@ -53,5 +52,8 @@ export class DestinationResponse {
     this.packageTypeCount = Array.isArray(destination.destinationPackageTypes)
       ? destination.destinationPackageTypes.length
       : 0;
+    
+    if ('createdAt' in destination && destination.createdAt) this.createdAt = moment(destination.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in destination && destination.updatedAt) this.updatedAt = moment(destination.updatedAt).format('YYYY-MM-DD');
   }
 }

@@ -21,7 +21,10 @@ export class CityController extends BaseController<City, CityCreateDto, CityUpda
       createSchema: cityValidation.create,
       updateSchema: cityValidation.update,
       searchFields: ['name'], // Search by city name
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        country: true,
+        state: true
+      },
     });
   }
 

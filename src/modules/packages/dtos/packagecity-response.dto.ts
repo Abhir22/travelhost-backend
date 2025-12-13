@@ -1,11 +1,10 @@
+import moment from 'moment';
 import { PackageResponse } from '@/modules/packages/dtos/package-response.dto';
 import { PackageCityDayResponse } from '@/modules/packages/dtos/packagecityday-response.dto';
 import { PackageCity } from '@/modules/packages/entities/packagecity.entity';
 
 export class PackageCityResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   packageId: string;
   countryId: string;
   stateId?: string;
@@ -14,11 +13,11 @@ export class PackageCityResponse {
   totalNights: number;
   package?: PackageResponse;
   packagecitydaies?: PackageCityDayResponse[];
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(packagecity: PackageCity) {
-    if ('id' in packagecity) this.id = packagecity.id;
-    if ('createdAt' in packagecity) this.createdAt = packagecity.createdAt;
-    if ('updatedAt' in packagecity) this.updatedAt = packagecity.updatedAt;
+    if ('id' in packagecity && packagecity.id) this.id = packagecity.id;
     this.packageId = packagecity.packageId;
     this.countryId = packagecity.countryId;
     this.stateId = packagecity.stateId || undefined;
@@ -27,5 +26,7 @@ export class PackageCityResponse {
     this.totalNights = packagecity.totalNights;
     this.package = packagecity.package && typeof packagecity.package === 'object' ? new PackageResponse({ ...(packagecity.package as any) }) : undefined;
     this.packagecitydaies = Array.isArray(packagecity.packagecitydaies) ? packagecity.packagecitydaies.map((r: any) => new PackageCityDayResponse({ ...(r as any) })) : [];
+    if ('createdAt' in packagecity && packagecity.createdAt) this.createdAt = moment(packagecity.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in packagecity && packagecity.updatedAt) this.updatedAt = moment(packagecity.updatedAt).format('YYYY-MM-DD');
   }
 }

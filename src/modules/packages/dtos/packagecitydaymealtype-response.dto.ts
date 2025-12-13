@@ -1,7 +1,7 @@
+import moment from 'moment';
+
 export class PackageCityDayMealTypeResponseDto {
   id: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   packageCityDayId: string;
   mealTypeId: string;
   provider?: string;
@@ -12,11 +12,11 @@ export class PackageCityDayMealTypeResponseDto {
     name: string;
     description?: string;
   };
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(packagecitydaymealtype: any) {
     this.id = packagecitydaymealtype.id;
-    if ('createdAt' in packagecitydaymealtype) this.createdAt = packagecitydaymealtype.createdAt;
-    if ('updatedAt' in packagecitydaymealtype) this.updatedAt = packagecitydaymealtype.updatedAt;
     this.packageCityDayId = packagecitydaymealtype.packageCityDayId;
     this.mealTypeId = packagecitydaymealtype.mealTypeId;
     this.provider = packagecitydaymealtype.provider || undefined;
@@ -29,5 +29,7 @@ export class PackageCityDayMealTypeResponseDto {
         description: packagecitydaymealtype.mealType.description || undefined,
       };
     }
+    if ('createdAt' in packagecitydaymealtype && packagecitydaymealtype.createdAt) this.createdAt = moment(packagecitydaymealtype.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in packagecitydaymealtype && packagecitydaymealtype.updatedAt) this.updatedAt = moment(packagecitydaymealtype.updatedAt).format('YYYY-MM-DD');
   }
 }

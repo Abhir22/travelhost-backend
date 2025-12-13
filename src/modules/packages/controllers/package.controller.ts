@@ -16,7 +16,24 @@ export class PackageController extends BaseController<Package, PackageCreateDto,
       createSchema: packageValidation.create,
       updateSchema: packageValidation.update,
       searchFields: ['packageName', 'description'], // Search by package name and description
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        packageType: true,
+        packagecategorymappings: {
+          include: {
+            category: true
+          }
+        },
+        packageactivitymappings: {
+          include: {
+            activity: true
+          }
+        },
+        packagesnapshotmappings: {
+          include: {
+            snapshot: true
+          }
+        }
+      },
     });
   }
 }

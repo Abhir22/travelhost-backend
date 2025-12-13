@@ -16,7 +16,25 @@ export class PackageCityController extends BaseController<PackageCity, PackageCi
       createSchema: packagecityValidation.create,
       updateSchema: packagecityValidation.update,
       searchFields: [], // No searchable text fields - uses location relations
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        package: {
+          include: {
+            packageType: true
+          }
+        },
+        cityObj: {
+          include: {
+            country: true,
+            state: true
+          }
+        },
+        stateObj: {
+          include: {
+            country: true
+          }
+        },
+        countryObj: true
+      },
     });
   }
 }

@@ -74,7 +74,14 @@ export abstract class BaseController<T, TCreateInput = any, TUpdateInput = any> 
 
   getById = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const record = await this.service.findById(id);
+    
+    // For getById, we need to use findFirst with include since findById doesn't support include
+    let record;
+    if (this.defaultInclude) {
+      record = await this.service.findFirst({ id }, this.defaultInclude);
+    } else {
+      record = await this.service.findById(id);
+    }
 
     if (!record) {
       throw new NotFoundException(`Record with id ${id} not found`);
@@ -127,6 +134,9 @@ export abstract class BaseController<T, TCreateInput = any, TUpdateInput = any> 
 
   findWithPagination = asyncHandler(async (req: Request, res: Response) => {
     const options = RequestOptionBuilder.buildSearchOptions(req, this.querySchemas);
+    if (!options.include && this.defaultInclude) {
+      options.include = this.defaultInclude;
+    }
     const result = await this.service.findWithPagination(options);
     const responseData = BaseResponse.mapMany(result.data, this.responseClass);
     return PaginatedResponse.paginated(
@@ -145,7 +155,7 @@ export abstract class BaseController<T, TCreateInput = any, TUpdateInput = any> 
     }
 
     const searchFields = this.searchFields;
-    const include = this.searchInclude;
+    const include = this.searchInclude || this.defaultInclude;
 
     const records = await this.service.search(searchTerm, searchFields, include);
     const responseData = BaseResponse.mapMany(records, this.responseClass);

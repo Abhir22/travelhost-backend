@@ -17,7 +17,16 @@ export class TravelModeController extends BaseController<TravelMode, TravelModeC
       createSchema: transfermodeValidation.create,
       updateSchema: travelmodeValidation.update,
       searchFields: ['name'], // Search by travel mode name
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        city: {
+          include: {
+            country: true,
+            state: true
+          }
+        },
+        sightseeing: true,
+        travelType: true
+      },
     });
   }
 }

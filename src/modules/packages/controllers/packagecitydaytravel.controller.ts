@@ -16,7 +16,18 @@ export class PackageCityDayTravelController extends BaseController<PackageCityDa
       createSchema: packagecitydaytravelValidation.create,
       updateSchema: packagecitydaytravelValidation.update,
       searchFields: ['type', 'vehicleType', 'description'], // Search by travel type, vehicle type, and description
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        packageCityDay: {
+          include: {
+            packageCity: {
+              include: {
+                package: true,
+                cityObj: true
+              }
+            }
+          }
+        }
+      },
     });
   }
 }

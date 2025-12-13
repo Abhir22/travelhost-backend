@@ -16,7 +16,46 @@ export class DestinationController extends BaseController<Destination, Destinati
       createSchema: destinationValidation.create,
       updateSchema: destinationValidation.update,
       searchFields: ['name', 'destinationType', 'priceRange'], // Search by name, type, and price range
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        destinationCountries: {
+          include: {
+            country: true
+          }
+        },
+        destinationStates: {
+          include: {
+            state: {
+              include: {
+                country: true
+              }
+            }
+          }
+        },
+        destinationCities: {
+          include: {
+            city: {
+              include: {
+                country: true,
+                state: true
+              }
+            }
+          }
+        },
+        destinationPackages: {
+          include: {
+            package: {
+              include: {
+                packageType: true
+              }
+            }
+          }
+        },
+        destinationPackageTypes: {
+          include: {
+            packageType: true
+          }
+        }
+      },
     });
   }
 }

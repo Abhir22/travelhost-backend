@@ -1,10 +1,9 @@
+import moment from 'moment';
 import { PackageCityDayResponse } from '@/modules/packages/dtos/packagecityday-response.dto';
 import { PackageCityDayHotel } from '@/modules/packages/entities/packagecitydayhotel.entity';
 
 export class PackageCityDayHotelResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   packageCityDayId: string;
   hotelName: string;
   starRating: number;
@@ -14,11 +13,11 @@ export class PackageCityDayHotelResponse {
   roomType?: string;
   numberOfRooms?: number;
   packageCityDay?: PackageCityDayResponse;
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(packagecitydayhotel: PackageCityDayHotel) {
-    if ('id' in packagecitydayhotel) this.id = packagecitydayhotel.id;
-    if ('createdAt' in packagecitydayhotel) this.createdAt = packagecitydayhotel.createdAt;
-    if ('updatedAt' in packagecitydayhotel) this.updatedAt = packagecitydayhotel.updatedAt;
+    if ('id' in packagecitydayhotel && packagecitydayhotel.id) this.id = packagecitydayhotel.id;
     this.packageCityDayId = packagecitydayhotel.packageCityDayId;
     this.hotelName = packagecitydayhotel.hotelName;
     this.starRating = packagecitydayhotel.starRating;
@@ -28,5 +27,7 @@ export class PackageCityDayHotelResponse {
     this.roomType = packagecitydayhotel.roomType || undefined;
     this.numberOfRooms = packagecitydayhotel.numberOfRooms || undefined;
     this.packageCityDay = packagecitydayhotel.packageCityDay && typeof packagecitydayhotel.packageCityDay === 'object' ? new PackageCityDayResponse({ ...(packagecitydayhotel.packageCityDay as any) }) : undefined;
+    if ('createdAt' in packagecitydayhotel && packagecitydayhotel.createdAt) this.createdAt = moment(packagecitydayhotel.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in packagecitydayhotel && packagecitydayhotel.updatedAt) this.updatedAt = moment(packagecitydayhotel.updatedAt).format('YYYY-MM-DD');
   }
 }

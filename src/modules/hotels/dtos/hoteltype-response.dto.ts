@@ -1,20 +1,18 @@
+import moment from 'moment';
 import { HotelType } from "../entities/hoteltype.entity";
 
 export class HotelTypeResponse {
     id?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
     name: string;
     description?: string | null;
-
+    createdAt?: string;
+    updatedAt?: string;
 
     constructor(hoteltype: Partial<HotelType>) {
-        if ('id' in hoteltype) this.id = hoteltype.id;
-        if ('createdAt' in hoteltype) this.createdAt = hoteltype.createdAt;
-        if ('updatedAt' in hoteltype) this.updatedAt = hoteltype.updatedAt;
+        if ('id' in hoteltype && hoteltype.id) this.id = hoteltype.id;
         this.name = hoteltype.name!;
         this.description = hoteltype.description;
-
-
+        if ('createdAt' in hoteltype && hoteltype.createdAt) this.createdAt = moment(hoteltype.createdAt).format('YYYY-MM-DD');
+        if ('updatedAt' in hoteltype && hoteltype.updatedAt) this.updatedAt = moment(hoteltype.updatedAt).format('YYYY-MM-DD');
     }
 }

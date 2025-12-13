@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { PackageCityResponse } from '@/modules/packages/dtos/packagecity-response.dto';
 import { PackageCityDayTravelResponse } from '@/modules/packages/dtos/packagecitydaytravel-response.dto';
 import { PackageCityDaySightseeingResponse } from '@/modules/packages/dtos/packagecitydaysightseeing-response.dto';
@@ -7,8 +8,6 @@ import { PackageCityDay } from '@/modules/packages/entities/packagecityday.entit
 
 export class PackageCityDayResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   packageCityId: string;
   dayNumber: number;
   startTime?: string;
@@ -21,11 +20,11 @@ export class PackageCityDayResponse {
   packagecitydaysightseeings?: PackageCityDaySightseeingResponse[];
   packagecitydayhotels?: PackageCityDayHotelResponse[];
   packagecitydaymeals?: PackageCityDayMealResponse[];
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(packagecityday: PackageCityDay) {
-    if ('id' in packagecityday) this.id = packagecityday.id;
-    if ('createdAt' in packagecityday) this.createdAt = packagecityday.createdAt;
-    if ('updatedAt' in packagecityday) this.updatedAt = packagecityday.updatedAt;
+    if ('id' in packagecityday && packagecityday.id) this.id = packagecityday.id;
     this.packageCityId = packagecityday.packageCityId;
     this.dayNumber = packagecityday.dayNumber;
     this.startTime = packagecityday.startTime || undefined;
@@ -38,5 +37,7 @@ export class PackageCityDayResponse {
     this.packagecitydaysightseeings = Array.isArray(packagecityday.packagecitydaysightseeings) ? packagecityday.packagecitydaysightseeings.map((r: any) => new PackageCityDaySightseeingResponse({ ...(r as any) })) : [];
     this.packagecitydayhotels = Array.isArray(packagecityday.packagecitydayhotels) ? packagecityday.packagecitydayhotels.map((r: any) => new PackageCityDayHotelResponse({ ...(r as any) })) : [];
     this.packagecitydaymeals = Array.isArray(packagecityday.packagecitydaymeals) ? packagecityday.packagecitydaymeals.map((r: any) => new PackageCityDayMealResponse({ ...(r as any) })) : [];
+    if ('createdAt' in packagecityday && packagecityday.createdAt) this.createdAt = moment(packagecityday.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in packagecityday && packagecityday.updatedAt) this.updatedAt = moment(packagecityday.updatedAt).format('YYYY-MM-DD');
   }
 }

@@ -1,12 +1,11 @@
 
+import moment from 'moment';
 import { Sightseeing } from '@/modules/locations/entities/sightseeing.entity';
 
 export class SightseeingResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  cityId?: string;
   name: string;
+  cityId?: string;
   city?: {
     id: string;
     name: string;
@@ -22,13 +21,13 @@ export class SightseeingResponse {
       name: string;
     };
   };
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(sightseeing: Sightseeing) {
-    if ('id' in sightseeing) this.id = sightseeing.id;
-    if ('createdAt' in sightseeing) this.createdAt = sightseeing.createdAt;
-    if ('updatedAt' in sightseeing) this.updatedAt = sightseeing.updatedAt;
-    this.cityId = sightseeing.cityId || undefined;
+    if ('id' in sightseeing && sightseeing.id) this.id = sightseeing.id;
     this.name = sightseeing.name;
+    this.cityId = sightseeing.cityId || undefined;
     
     // Include city information if available
     if (sightseeing.city) {
@@ -56,5 +55,7 @@ export class SightseeingResponse {
         };
       }
     }
+    if ('createdAt' in sightseeing && sightseeing.createdAt) this.createdAt = moment(sightseeing.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in sightseeing && sightseeing.updatedAt) this.updatedAt = moment(sightseeing.updatedAt).format('YYYY-MM-DD');
   }
 }

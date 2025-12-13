@@ -1,7 +1,7 @@
+import moment from 'moment';
+
 export class PackageCountryResponseDto {
   id: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   packageTypeId: string;
   countryId: string;
   country?: {
@@ -9,11 +9,11 @@ export class PackageCountryResponseDto {
     name: string;
     isoCode?: string;
   };
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(packagecountry: any) {
     this.id = packagecountry.id;
-    if ('createdAt' in packagecountry) this.createdAt = packagecountry.createdAt;
-    if ('updatedAt' in packagecountry) this.updatedAt = packagecountry.updatedAt;
     this.packageTypeId = packagecountry.packageTypeId;
     this.countryId = packagecountry.countryId;
     if (packagecountry.country) {
@@ -23,5 +23,7 @@ export class PackageCountryResponseDto {
         isoCode: packagecountry.country.isoCode || undefined,
       };
     }
+    if ('createdAt' in packagecountry && packagecountry.createdAt) this.createdAt = moment(packagecountry.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in packagecountry && packagecountry.updatedAt) this.updatedAt = moment(packagecountry.updatedAt).format('YYYY-MM-DD');
   }
 }

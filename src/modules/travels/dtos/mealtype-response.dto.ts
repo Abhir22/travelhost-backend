@@ -1,17 +1,18 @@
+import moment from 'moment';
 import { MealType } from '@/modules/travels/entities/mealtype.entity';
 
 export class MealTypeResponse {
     id?: string;
     name: string;
     description: string | null;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt?: string;
+    updatedAt?: string;
 
     constructor(mealType: MealType) {
-        if ('id' in mealType) this.id = mealType.id;
-        if ('createdAt' in mealType) this.createdAt = mealType.createdAt;
-        if ('updatedAt' in mealType) this.updatedAt = mealType.updatedAt;
+        if ('id' in mealType && mealType.id) this.id = mealType.id;
         this.name = mealType.name;
         this.description = mealType.description;
+        if ('createdAt' in mealType && mealType.createdAt) this.createdAt = moment(mealType.createdAt).format('YYYY-MM-DD');
+        if ('updatedAt' in mealType && mealType.updatedAt) this.updatedAt = moment(mealType.updatedAt).format('YYYY-MM-DD');
     }
 }

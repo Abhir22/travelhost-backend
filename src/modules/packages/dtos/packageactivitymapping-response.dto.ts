@@ -10,7 +10,7 @@ export class PackageActivityMappingResponse {
   activity?: PackageActivityResponse;
 
   constructor(packageactivitymapping: PackageActivityMapping) {
-    if ('id' in packageactivitymapping) this.id = packageactivitymapping.id;
+    if ('id' in packageactivitymapping && packageactivitymapping.id) this.id = packageactivitymapping.id;
     this.packageId = packageactivitymapping.packageId;
     this.activityId = packageactivitymapping.activityId;
     this.package = packageactivitymapping.package && typeof packageactivitymapping.package === 'object' ? new PackageResponse({ ...(packageactivitymapping.package as any) }) : undefined;

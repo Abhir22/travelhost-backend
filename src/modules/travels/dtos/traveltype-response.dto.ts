@@ -1,16 +1,17 @@
 
+import moment from 'moment';
 import { TravelType } from '@/modules/travels/entities/traveltype.entity';
 
 export class TravelTypeResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   name: string;
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(traveltype: TravelType) {
-    if ('id' in traveltype) this.id = traveltype.id;
-    if ('createdAt' in traveltype) this.createdAt = traveltype.createdAt;
-    if ('updatedAt' in traveltype) this.updatedAt = traveltype.updatedAt;
+    if ('id' in traveltype && traveltype.id) this.id = traveltype.id;
     this.name = traveltype.name;
+    if ('createdAt' in traveltype && traveltype.createdAt) this.createdAt = moment(traveltype.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in traveltype && traveltype.updatedAt) this.updatedAt = moment(traveltype.updatedAt).format('YYYY-MM-DD');
   }
 }

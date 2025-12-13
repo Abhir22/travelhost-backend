@@ -16,7 +16,14 @@ export class PackageCategoryMappingController extends BaseController<PackageCate
       createSchema: packagecategorymappingValidation.create,
       updateSchema: packagecategorymappingValidation.update,
       searchFields: [], // Mapping table - no searchable text fields
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        package: {
+          include: {
+            packageType: true
+          }
+        },
+        category: true
+      },
     });
   }
 }

@@ -16,7 +16,32 @@ export class PackageCityDayController extends BaseController<PackageCityDay, Pac
       createSchema: packagecitydayValidation.create,
       updateSchema: packagecitydayValidation.update,
       searchFields: ['description', 'startFrom', 'endAt'], // Search by description and locations
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        packageCity: {
+          include: {
+            package: {
+              include: {
+                packageType: true
+              }
+            },
+            cityObj: {
+              include: {
+                country: true,
+                state: true
+              }
+            }
+          }
+        },
+        packagecitydaytravels: true,
+        packagecitydaysightseeings: true,
+        packagecitydayhotels: true,
+        packagecitydaymeals: true,
+        packagecitydaymealtypes: {
+          include: {
+            mealType: true
+          }
+        }
+      },
     });
   }
 }

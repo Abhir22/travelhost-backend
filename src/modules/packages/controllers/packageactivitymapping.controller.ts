@@ -16,7 +16,14 @@ export class PackageActivityMappingController extends BaseController<PackageActi
       createSchema: packageactivitymappingValidation.create,
       updateSchema: packageactivitymappingValidation.update,
       searchFields: [], // Mapping table - no searchable text fields
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        package: {
+          include: {
+            packageType: true
+          }
+        },
+        activity: true
+      },
     });
   }
 }

@@ -1,20 +1,21 @@
 
+import moment from 'moment';
 import { City } from '@/modules/locations/entities/city.entity';
 
 export class CityResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  name: string;
   countryId: string;
   stateId?: string | null;
-  name: string;
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(city: City) {
-    if ('id' in city) this.id = city.id;
-    if ('createdAt' in city) this.createdAt = city.createdAt;
-    if ('updatedAt' in city) this.updatedAt = city.updatedAt;
+    if ('id' in city && city.id) this.id = city.id;
+    this.name = city.name;
     this.countryId = city.countryId;
     this.stateId = city.stateId;
-    this.name = city.name;
+    if ('createdAt' in city && city.createdAt) this.createdAt = moment(city.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in city && city.updatedAt) this.updatedAt = moment(city.updatedAt).format('YYYY-MM-DD');
   }
 }

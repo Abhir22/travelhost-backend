@@ -1,21 +1,22 @@
+import moment from 'moment';
 import { RoomType } from "../entities/roomtype.entity";
 import { HotelRoomResponse } from "./hotelroom-response.dto";
 
 
 export class RoomTypeResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   name: string;
   description?: any;
   hotelrooms?: HotelRoomResponse[];
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(roomtype: Partial<RoomType>) {
-    if ('id' in roomtype) this.id = roomtype.id;
-    if ('createdAt' in roomtype) this.createdAt = roomtype.createdAt;
-    if ('updatedAt' in roomtype) this.updatedAt = roomtype.updatedAt;
+    if ('id' in roomtype && roomtype.id) this.id = roomtype.id;
     this.name = roomtype.name!;
     this.description = roomtype.description || undefined;
     this.hotelrooms = 'hotelRooms' in roomtype && Array.isArray(roomtype.hotelRooms) ? roomtype.hotelRooms.map((r: any) => new HotelRoomResponse({ ...(r as any) })) : [];
+    if ('createdAt' in roomtype && roomtype.createdAt) this.createdAt = moment(roomtype.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in roomtype && roomtype.updatedAt) this.updatedAt = moment(roomtype.updatedAt).format('YYYY-MM-DD');
   }
 }

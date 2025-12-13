@@ -10,7 +10,7 @@ export class PackageCategoryMappingResponse {
   category?: PackageCategoryResponse;
 
   constructor(packagecategorymapping: PackageCategoryMapping) {
-    if ('id' in packagecategorymapping) this.id = packagecategorymapping.id;
+    if ('id' in packagecategorymapping && packagecategorymapping.id) this.id = packagecategorymapping.id;
     this.packageId = packagecategorymapping.packageId;
     this.categoryId = packagecategorymapping.categoryId;
     this.package = packagecategorymapping.package && typeof packagecategorymapping.package === 'object' ? new PackageResponse({ ...(packagecategorymapping.package as any) }) : undefined;

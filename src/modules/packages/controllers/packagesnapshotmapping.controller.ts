@@ -16,7 +16,14 @@ export class PackageSnapshotMappingController extends BaseController<PackageSnap
       createSchema: packagesnapshotmappingValidation.create,
       updateSchema: packagesnapshotmappingValidation.update,
       searchFields: [], // Mapping table - no searchable text fields
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        package: {
+          include: {
+            packageType: true
+          }
+        },
+        snapshot: true
+      },
     });
   }
 }

@@ -1,20 +1,21 @@
+import moment from 'moment';
 import { PackageSnapshotMappingResponse } from '@/modules/packages/dtos/packagesnapshotmapping-response.dto';
 import { PackageSnapshot } from '@/modules/packages/entities/packagesnapshot.entity';
 
 export class PackageSnapshotResponse {
   id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   name: string;
   icon?: string;
   packagesnapshotmappings?: PackageSnapshotMappingResponse[];
+  createdAt?: string;
+  updatedAt?: string;
 
   constructor(packagesnapshot: PackageSnapshot) {
-    if ('id' in packagesnapshot) this.id = packagesnapshot.id;
-    if ('createdAt' in packagesnapshot) this.createdAt = packagesnapshot.createdAt;
-    if ('updatedAt' in packagesnapshot) this.updatedAt = packagesnapshot.updatedAt;
+    if ('id' in packagesnapshot && packagesnapshot.id) this.id = packagesnapshot.id;
     this.name = packagesnapshot.name;
     this.icon = packagesnapshot.icon || undefined;
     this.packagesnapshotmappings = Array.isArray(packagesnapshot.packagesnapshotmappings) ? packagesnapshot.packagesnapshotmappings.map((r: any) => new PackageSnapshotMappingResponse({ ...(r as any) })) : [];
+    if ('createdAt' in packagesnapshot && packagesnapshot.createdAt) this.createdAt = moment(packagesnapshot.createdAt).format('YYYY-MM-DD');
+    if ('updatedAt' in packagesnapshot && packagesnapshot.updatedAt) this.updatedAt = moment(packagesnapshot.updatedAt).format('YYYY-MM-DD');
   }
 }

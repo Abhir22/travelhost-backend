@@ -10,7 +10,7 @@ export class PackageSnapshotMappingResponse {
   snapshot?: PackageSnapshotResponse;
 
   constructor(packagesnapshotmapping: PackageSnapshotMapping) {
-    if ('id' in packagesnapshotmapping) this.id = packagesnapshotmapping.id;
+    if ('id' in packagesnapshotmapping && packagesnapshotmapping.id) this.id = packagesnapshotmapping.id;
     this.packageId = packagesnapshotmapping.packageId;
     this.snapshotId = packagesnapshotmapping.snapshotId;
     this.package = packagesnapshotmapping.package && typeof packagesnapshotmapping.package === 'object' ? new PackageResponse({ ...(packagesnapshotmapping.package as any) }) : undefined;

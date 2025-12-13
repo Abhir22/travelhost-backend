@@ -16,7 +16,21 @@ export class HotelRoomController extends BaseController<HotelRoom, HotelRoomCrea
       createSchema: hotelroomValidation.create,
       updateSchema: hotelroomValidation.update,
       searchFields: ['id'], // Add default search fields, can be customized
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        hotel: {
+          include: {
+            city: {
+              include: {
+                country: true,
+                state: true
+              }
+            },
+            hotelType: true
+          }
+        },
+        roomType: true,
+        roomImages: true
+      },
     });
   }
 }

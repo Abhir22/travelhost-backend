@@ -16,7 +16,22 @@ export class PackageTypeController extends BaseController<PackageType, PackageTy
       createSchema: packagetypeValidation.create,
       updateSchema: packagetypeValidation.update,
       searchFields: ['name'], // Search by package type name
-      defaultInclude: {}, // Add default include, can be customized
+      defaultInclude: {
+        packages: {
+          include: {
+            packagecategorymappings: {
+              include: {
+                category: true
+              }
+            },
+            packageactivitymappings: {
+              include: {
+                activity: true
+              }
+            }
+          }
+        }
+      },
     });
   }
 }
