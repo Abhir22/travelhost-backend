@@ -321,6 +321,11 @@ model Package {
   packagesnapshotmappings PackageSnapshotMapping[]
   packagecities           PackageCity[]
   destinationPackages     DestinationPackage[]
+  packageTermsConditions  PackageTermsCondition[]
+  packageInclusions       PackageInclusion[]
+  packageExclusions       PackageExclusion[]
+  packagePaymentPolicies  PackagePaymentPolicy[]
+  packageCancellationPolicies PackageCancellationPolicy[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
 }
@@ -496,3 +501,61 @@ model VehicleType {
 }
 
 
+
+model PackageTermsCondition {
+  id        String   @id @default(uuid())
+  packageId String
+  content   String   @db.LongText
+  linkText  String?  @db.VarChar(255)
+  linkUrl   String?  @db.VarChar(500)
+  videoUrl  String?  @db.VarChar(500)
+  imageUrl  String?  @db.VarChar(500)
+  fileName  String?  @db.VarChar(255)
+  filePath  String?  @db.VarChar(500)
+  fileType  String?  @db.VarChar(50)
+  fileSize  BigInt?
+  createdBy String?  @db.VarChar(36)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackageInclusion {
+  id        String   @id @default(uuid())
+  packageId String
+  content   String   @db.LongText
+  createdBy String?  @db.VarChar(36)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackageExclusion {
+  id        String   @id @default(uuid())
+  packageId String
+  content   String   @db.LongText
+  createdBy String?  @db.VarChar(36)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackagePaymentPolicy {
+  id        String   @id @default(uuid())
+  packageId String
+  content   String   @db.LongText
+  createdBy String?  @db.VarChar(36)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PackageCancellationPolicy {
+  id        String   @id @default(uuid())
+  packageId String
+  content   String   @db.LongText
+  createdBy String?  @db.VarChar(36)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

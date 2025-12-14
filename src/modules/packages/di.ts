@@ -58,9 +58,32 @@ import { PackageCityDayMealRepository } from './repositories/packagecitydaymeal.
 import { IPackageCompleteService } from './services/interfaces/package-complete.service.interface';
 import { PackageCompleteService } from './services/package-complete.service';
 
+import { IPackageTermsConditionService } from './services/interfaces/package-terms-condition.service.interface';
+import { PackageTermsConditionService } from './services/package-terms-condition.service';
+import { IPackageTermsConditionRepository } from './repositories/interfaces/package-terms-condition.repository.interface';
+import { PackageTermsConditionRepository } from './repositories/package-terms-condition.repository';
+import { IPackageInclusionService } from './services/interfaces/package-inclusion.service.interface';
+import { PackageInclusionService } from './services/package-inclusion.service';
+import { IPackageInclusionRepository } from './repositories/interfaces/package-inclusion.repository.interface';
+import { PackageInclusionRepository } from './repositories/package-inclusion.repository';
+import { IPackageExclusionService } from './services/interfaces/package-exclusion.service.interface';
+import { PackageExclusionService } from './services/package-exclusion.service';
+import { IPackageExclusionRepository } from './repositories/interfaces/package-exclusion.repository.interface';
+import { PackageExclusionRepository } from './repositories/package-exclusion.repository';
+import { IPackagePaymentPolicyService } from './services/interfaces/package-payment-policy.service.interface';
+import { PackagePaymentPolicyService } from './services/package-payment-policy.service';
+import { IPackagePaymentPolicyRepository } from './repositories/interfaces/package-payment-policy.repository.interface';
+import { PackagePaymentPolicyRepository } from './repositories/package-payment-policy.repository';
+import { IPackageCancellationPolicyService } from './services/interfaces/package-cancellation-policy.service.interface';
+import { PackageCancellationPolicyService } from './services/package-cancellation-policy.service';
+import { IPackageCancellationPolicyRepository } from './repositories/interfaces/package-cancellation-policy.repository.interface';
+import { PackageCancellationPolicyRepository } from './repositories/package-cancellation-policy.repository';
+
 export const registerDependencies = () => {
+  // ... existing registrations ...
   container.register<IPackageTypeService>('IPackageTypeService', { useClass: PackageTypeService });
   container.register<IPackageTypeRepository>('IPackageTypeRepository', { useClass: PackageTypeRepository });
+  // ... (keep all existing)
   container.register<IPackageCategoryService>('IPackageCategoryService', { useClass: PackageCategoryService });
   container.register<IPackageCategoryRepository>('IPackageCategoryRepository', { useClass: PackageCategoryRepository });
   container.register<IPackageCategoryMappingService>('IPackageCategoryMappingService', { useClass: PackageCategoryMappingService });
@@ -88,6 +111,18 @@ export const registerDependencies = () => {
   container.register<IPackageCityDayMealService>('IPackageCityDayMealService', { useClass: PackageCityDayMealService });
   container.register<IPackageCityDayMealRepository>('IPackageCityDayMealRepository', { useClass: PackageCityDayMealRepository });
   container.register<IPackageCompleteService>('IPackageCompleteService', { useClass: PackageCompleteService });
+
+  container.register<IPackageTermsConditionService>('IPackageTermsConditionService', { useClass: PackageTermsConditionService });
+  container.register<IPackageTermsConditionRepository>('IPackageTermsConditionRepository', { useClass: PackageTermsConditionRepository });
+  container.register<IPackageInclusionService>('IPackageInclusionService', { useClass: PackageInclusionService });
+  container.register<IPackageInclusionRepository>('IPackageInclusionRepository', { useClass: PackageInclusionRepository });
+  container.register<IPackageExclusionService>('IPackageExclusionService', { useClass: PackageExclusionService });
+  container.register<IPackageExclusionRepository>('IPackageExclusionRepository', { useClass: PackageExclusionRepository });
+  container.register<IPackagePaymentPolicyService>('IPackagePaymentPolicyService', { useClass: PackagePaymentPolicyService });
+  container.register<IPackagePaymentPolicyRepository>('IPackagePaymentPolicyRepository', { useClass: PackagePaymentPolicyRepository });
+  container.register<IPackageCancellationPolicyService>('IPackageCancellationPolicyService', { useClass: PackageCancellationPolicyService });
+  container.register<IPackageCancellationPolicyRepository>('IPackageCancellationPolicyRepository', { useClass: PackageCancellationPolicyRepository });
+
   console.log('All module dependencies registered');
 };
 
