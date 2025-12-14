@@ -8,10 +8,7 @@
   "video": "https://example.com/packages/west-bengal-mumbai-explorer-video.mp4",
   "packageTypeId": "family-id",
   "duration": 7,
-  "price": 1299.99,
-  "maxPeople": 20,
-  "minPeople": 2,
-  "isActive": true,
+  "price": 89999.99,
   "categories": [
     {
       "packageCategoryId": "cultural-id"
@@ -45,6 +42,11 @@
       "packageSnapshotId": "guide-id"
     }
   ],
+  "options": {
+    "includeGroupDeparture": true,
+    "includeFixedDeparture": false,
+    "includePackageAvailability": true
+  },
   "cities": [
     {
       "cityId": "kolkata-id",
@@ -53,31 +55,34 @@
           "dayNumber": 1,
           "startTime": "10:00",
           "endTime": "20:00",
-          "startFrom": "Kolkata Airport",
-          "endAt": "Hotel",
-          "description": "Welcome to Kolkata - Check-in and city orientation",
+          "startFrom": "Netaji Subhash Chandra Bose International Airport",
+          "endAt": "The Oberoi Grand Kolkata",
+          "description": "Welcome to Kolkata - Check-in and city orientation with evening leisure time",
           "travels": [
             {
               "type": "Airport Transfer",
               "vehicleType": "AC Sedan",
               "timeFrom": "10:00",
               "timeTo": "11:30",
-              "description": "Airport pickup and hotel transfer"
+              "description": "Airport pickup and hotel transfer with welcome assistance"
             }
           ],
           "hotels": [
             {
               "hotelId": "oberoi-grand-id",
+              "hotelType": "Luxury",
               "roomType": "Deluxe Room",
               "checkIn": "14:00",
               "checkOut": "12:00",
-              "description": "3-night stay in Kolkata"
+              "numberOfRooms": 2
             }
           ],
           "meals": [
             {
               "mealTypeId": "dinner-id",
-              "description": "Welcome dinner at hotel restaurant"
+              "provider": "The Oberoi Grand Restaurant",
+              "time": "19:30",
+              "description": "Welcome dinner featuring authentic Bengali cuisine"
             }
           ]
         },
@@ -85,36 +90,85 @@
           "dayNumber": 2,
           "startTime": "09:00",
           "endTime": "18:00",
-          "startFrom": "Hotel",
-          "endAt": "Hotel",
-          "description": "Full day Kolkata city tour covering heritage sites",
+          "startFrom": "The Oberoi Grand Kolkata",
+          "endAt": "The Oberoi Grand Kolkata",
+          "description": "Full day Kolkata heritage tour covering iconic landmarks and cultural sites",
           "travels": [
             {
               "type": "City Tour",
               "vehicleType": "AC Coach",
               "timeFrom": "09:00",
               "timeTo": "18:00",
-              "description": "Full day sightseeing with guide"
+              "description": "Full day sightseeing with professional guide and comfortable transportation"
             }
           ],
           "sightseeings": [
             {
               "sightseeingId": "victoria-memorial-id",
-              "description": "Victoria Memorial - Iconic marble monument"
+              "timeFrom": "10:00",
+              "timeTo": "12:00",
+              "description": "Victoria Memorial - Iconic marble monument and museum showcasing British colonial history"
             },
             {
               "sightseeingId": "howrah-bridge-id",
-              "description": "Howrah Bridge - Famous cantilever bridge"
+              "timeFrom": "14:30",
+              "timeTo": "16:00",
+              "description": "Howrah Bridge - Famous cantilever bridge and engineering marvel over Hooghly River"
             }
           ],
           "meals": [
             {
               "mealTypeId": "breakfast-id",
-              "description": "Breakfast at hotel"
+              "provider": "Hotel Restaurant",
+              "time": "08:00",
+              "description": "Continental breakfast at hotel"
             },
             {
               "mealTypeId": "lunch-id",
-              "description": "Traditional Bengali lunch"
+              "provider": "Local Bengali Restaurant",
+              "time": "13:00",
+              "description": "Traditional Bengali thali lunch with local specialties"
+            }
+          ]
+        },
+        {
+          "dayNumber": 3,
+          "startTime": "08:00",
+          "endTime": "17:00",
+          "startFrom": "The Oberoi Grand Kolkata",
+          "endAt": "Mayfair Darjeeling",
+          "description": "Journey to the scenic hill station of Darjeeling with mountain views",
+          "travels": [
+            {
+              "type": "Intercity Transfer",
+              "vehicleType": "AC Coach",
+              "timeFrom": "08:00",
+              "timeTo": "15:00",
+              "description": "Scenic drive from Kolkata to Darjeeling through tea gardens and hills"
+            }
+          ],
+          "hotels": [
+            {
+              "hotelId": "mayfair-darjeeling-id",
+              "hotelType": "Resort",
+              "roomType": "Superior Room",
+              "checkIn": "16:00",
+              "checkOut": "12:00",
+              "numberOfRooms": 2
+            }
+          ],
+          "meals": [
+            {
+              "mealTypeId": "breakfast-id",
+              "provider": "Hotel Restaurant",
+              "time": "07:00",
+              "description": "Early breakfast before departure"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "provider": "Mayfair Resort Restaurant",
+              "time": "19:00",
+              "description": "Mountain cuisine dinner with local Darjeeling specialties"
             }
           ]
         }
@@ -124,77 +178,96 @@
       "cityId": "darjeeling-id",
       "days": [
         {
-          "dayNumber": 3,
-          "startTime": "08:00",
-          "endTime": "17:00",
-          "startFrom": "Kolkata Hotel",
-          "endAt": "Darjeeling Hotel",
-          "description": "Travel to Darjeeling hill station",
-          "travels": [
-            {
-              "type": "Intercity Transfer",
-              "vehicleType": "AC Coach",
-              "timeFrom": "08:00",
-              "timeTo": "15:00",
-              "description": "Kolkata to Darjeeling by road"
-            }
-          ],
-          "hotels": [
-            {
-              "hotelId": "mayfair-darjeeling-id",
-              "roomType": "Superior Room",
-              "checkIn": "16:00",
-              "checkOut": "12:00",
-              "description": "2-night stay in Darjeeling"
-            }
-          ],
-          "sightseeings": [
-            {
-              "sightseeingId": "tiger-hill-id",
-              "description": "Tiger Hill - Famous sunrise viewpoint"
-            }
-          ],
-          "meals": [
-            {
-              "mealTypeId": "breakfast-id",
-              "description": "Breakfast at Kolkata hotel"
-            },
-            {
-              "mealTypeId": "dinner-id",
-              "description": "Dinner at Darjeeling hotel"
-            }
-          ]
-        },
-        {
           "dayNumber": 4,
-          "startTime": "05:00",
+          "startTime": "04:30",
           "endTime": "18:00",
-          "startFrom": "Hotel",
-          "endAt": "Hotel",
-          "description": "Full day Darjeeling exploration with sunrise at Tiger Hill",
+          "startFrom": "Mayfair Darjeeling",
+          "endAt": "Mayfair Darjeeling",
+          "description": "Early morning Tiger Hill sunrise followed by full day Darjeeling exploration",
           "travels": [
             {
               "type": "Local Sightseeing",
               "vehicleType": "AC Car",
-              "timeFrom": "05:00",
+              "timeFrom": "04:30",
               "timeTo": "18:00",
-              "description": "Full day local sightseeing"
+              "description": "Full day local sightseeing including sunrise tour and tea garden visits"
             }
           ],
           "sightseeings": [
             {
               "sightseeingId": "tiger-hill-id",
-              "description": "Tiger Hill sunrise - Spectacular mountain views"
+              "timeFrom": "05:00",
+              "timeTo": "07:00",
+              "description": "Tiger Hill sunrise viewpoint - Spectacular views of Kanchenjunga and Mount Everest on clear days"
             }
           ],
           "meals": [
             {
               "mealTypeId": "breakfast-id",
-              "description": "Breakfast at hotel"
+              "provider": "Tiger Hill Cafe",
+              "time": "07:30",
+              "description": "Hot breakfast after sunrise viewing with Darjeeling tea"
             },
             {
               "mealTypeId": "lunch-id",
-              "description": "Local cuisine lunch"
+              "provider": "Tea Garden Restaurant",
+              "time": "13:00",
+              "description": "Lunch at tea garden with fresh local ingredients"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "provider": "Hotel Restaurant",
+              "time": "19:00",
+              "description": "Dinner at hotel with mountain view"
+            }
+          ]
+        },
+        {
+          "dayNumber": 5,
+          "startTime": "09:00",
+          "endTime": "18:00",
+          "startFrom": "Mayfair Darjeeling",
+          "endAt": "Taj Mahal Palace Mumbai",
+          "description": "Travel to Mumbai - India's commercial capital and financial hub",
+          "travels": [
+            {
+              "type": "Flight",
+              "vehicleType": "Commercial Flight",
+              "timeFrom": "11:00",
+              "timeTo": "15:30",
+              "description": "Flight from Bagdogra Airport (near Darjeeling) to Mumbai with airport transfers"
+            }
+          ],
+          "hotels": [
+            {
+              "hotelId": "taj-mahal-palace-id",
+              "hotelType": "Luxury",
+              "roomType": "Heritage Room",
+              "checkIn": "15:00",
+              "checkOut": "12:00",
+              "numberOfRooms": 2
+            }
+          ],
+          "sightseeings": [
+            {
+              "sightseeingId": "gateway-of-india-id",
+              "timeFrom": "17:00",
+              "timeTo": "18:30",
+              "description": "Gateway of India - Iconic monument and symbol of Mumbai, perfect for evening photography"
+            }
+          ],
+          "meals": [
+            {
+              "mealTypeId": "breakfast-id",
+              "provider": "Hotel Restaurant",
+              "time": "08:00",
+              "description": "Breakfast at Darjeeling hotel before departure"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "provider": "Taj Mahal Palace Restaurant",
+              "time": "20:00",
+              "description": "Welcome dinner in Mumbai with harbor view"
             }
           ]
         }
@@ -204,77 +277,47 @@
       "cityId": "mumbai-id",
       "days": [
         {
-          "dayNumber": 5,
-          "startTime": "09:00",
-          "endTime": "18:00",
-          "startFrom": "Darjeeling Hotel",
-          "endAt": "Mumbai Hotel",
-          "description": "Travel to Mumbai - Commercial capital of India",
-          "travels": [
-            {
-              "type": "Flight",
-              "vehicleType": "Commercial Flight",
-              "timeFrom": "10:00",
-              "timeTo": "14:00",
-              "description": "Flight from Bagdogra to Mumbai"
-            }
-          ],
-          "hotels": [
-            {
-              "hotelId": "taj-mahal-palace-id",
-              "roomType": "Heritage Room",
-              "checkIn": "15:00",
-              "checkOut": "12:00",
-              "description": "2-night stay in Mumbai"
-            }
-          ],
-          "sightseeings": [
-            {
-              "sightseeingId": "gateway-of-india-id",
-              "description": "Gateway of India - Iconic monument"
-            }
-          ],
-          "meals": [
-            {
-              "mealTypeId": "breakfast-id",
-              "description": "Breakfast at Darjeeling hotel"
-            },
-            {
-              "mealTypeId": "dinner-id",
-              "description": "Welcome dinner in Mumbai"
-            }
-          ]
-        },
-        {
           "dayNumber": 6,
           "startTime": "09:00",
           "endTime": "18:00",
-          "startFrom": "Hotel",
-          "endAt": "Hotel",
-          "description": "Mumbai city exploration and shopping",
+          "startFrom": "Taj Mahal Palace Mumbai",
+          "endAt": "Taj Mahal Palace Mumbai",
+          "description": "Full day Mumbai city exploration including business districts and cultural sites",
           "travels": [
             {
               "type": "City Tour",
               "vehicleType": "AC Coach",
               "timeFrom": "09:00",
               "timeTo": "18:00",
-              "description": "Mumbai city tour with shopping"
+              "description": "Comprehensive Mumbai city tour with shopping and cultural experiences"
             }
           ],
           "sightseeings": [
             {
               "sightseeingId": "gateway-of-india-id",
-              "description": "Gateway of India - Historic archway"
+              "timeFrom": "10:00",
+              "timeTo": "11:30",
+              "description": "Gateway of India - Historic archway built during British colonial period"
             }
           ],
           "meals": [
             {
               "mealTypeId": "breakfast-id",
-              "description": "Breakfast at hotel"
+              "provider": "Hotel Restaurant",
+              "time": "08:00",
+              "description": "Breakfast at hotel with harbor view"
             },
             {
               "mealTypeId": "lunch-id",
-              "description": "Mumbai street food experience"
+              "provider": "Mumbai Street Food Tour",
+              "time": "13:00",
+              "description": "Authentic Mumbai street food experience including vada pav and bhel puri"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "provider": "Rooftop Restaurant",
+              "time": "19:30",
+              "description": "Farewell dinner with panoramic Mumbai skyline views"
             }
           ]
         },
@@ -282,22 +325,24 @@
           "dayNumber": 7,
           "startTime": "10:00",
           "endTime": "17:30",
-          "startFrom": "Mumbai Hotel",
-          "endAt": "Mumbai Airport",
-          "description": "Departure from Mumbai",
+          "startFrom": "Taj Mahal Palace Mumbai",
+          "endAt": "Chhatrapati Shivaji Maharaj International Airport",
+          "description": "Departure day with last-minute shopping and airport transfer",
           "travels": [
             {
               "type": "Airport Transfer",
               "vehicleType": "AC Sedan",
               "timeFrom": "15:00",
               "timeTo": "16:30",
-              "description": "Hotel to airport drop-off"
+              "description": "Hotel to airport transfer with assistance for departure formalities"
             }
           ],
           "meals": [
             {
               "mealTypeId": "breakfast-id",
-              "description": "Breakfast at Mumbai hotel"
+              "provider": "Hotel Restaurant",
+              "time": "09:00",
+              "description": "Final breakfast in Mumbai before departure"
             }
           ]
         }

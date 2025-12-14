@@ -129,7 +129,7 @@ model MealCategory {
 model HotelRoom {
   id          String      @id @default(uuid())
   hotelId     String
-  roomType    String
+  roomType    String      @default("Standard Room")
   roomNumber  String?
   price       Decimal?
   amenities   String?

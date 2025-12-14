@@ -27,7 +27,6 @@ export class PackageCompleteController extends BaseController<Package, PackageCr
     });
   }
 
- 
   createCompletePackage = asyncHandler(async (req: Request, res: Response) => {
     // Validate request body
     const validatedData = ValidationUtil.validate(req.body, packageCompleteValidation.createComplete);
@@ -35,10 +34,20 @@ export class PackageCompleteController extends BaseController<Package, PackageCr
     // Create complete package
     const createdPackage = await this.packageCompleteService.createCompletePackage(validatedData);
     
+    // Send success response with minimal data
+    return SuccessResponse.create(createdPackage, 'Package created successfully with all related data').send(res);
+  });
+
+  getCompletePackage = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    
+    // Get complete package with all relations
+    const packageData = await this.packageCompleteService.getCompletePackage(id);
+    
     // Transform response
-    const response = new PackageResponse(createdPackage);
+    const response = new PackageResponse(packageData);
     
     // Send success response
-    return SuccessResponse.create(response, 'Package created successfully with all related data').send(res);
+    return SuccessResponse.get(response, 'Package retrieved successfully').send(res);
   });
 }

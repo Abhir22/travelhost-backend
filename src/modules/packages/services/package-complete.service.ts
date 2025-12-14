@@ -1,39 +1,146 @@
 import { inject, injectable } from 'tsyringe';
 import { Package } from '@/modules/packages/entities/package.entity';
 import { IPackageCompleteService } from './interfaces/package-complete.service.interface';
-import { BadRequestException, NotFoundException } from '@/core/exceptions/http.exception';
+import { BadRequestException, NotFoundException, ConflictException } from '@/core/exceptions/http.exception';
 import { prisma } from '@/loaders/prisma';
+import logger from '@/core/utils/logger';
+
+// Constants and Enums
+const DEFAULT_MEAL_PROVIDER = 'Hotel Restaurant';
+const DEFAULT_HOTEL_RATING = 3;
+const MIN_PACKAGE_DURATION = 1;
+
+enum PrismaErrorCode {
+  UNIQUE_CONSTRAINT_VIOLATION = 'P2002',
+  FOREIGN_KEY_CONSTRAINT_VIOLATION = 'P2003',
+  RECORD_NOT_FOUND = 'P2025'
+}
+
+interface LookupData {
+  cities: Map<string, any>;
+  sightseeings: Map<string, any>;
+  hotels: Map<string, any>;
+  mealTypes: Map<string, any>;
+}
+
+interface PackageCreationResult {
+  id: string;
+  packageName: string;
+}
 
 @injectable()
 export class PackageCompleteService implements IPackageCompleteService {
   constructor() {}
 
-  private async prepareLookupData(data: any) {
-    // Collect all IDs that need to be looked up
-    const cityIds = data.cities.map((city: any) => city.cityId);
-    const sightseeingIds: string[] = [];
-    const hotelIds: string[] = [];
-    const mealTypeIds: string[] = [];
+  /**
+   * Validates the payload structure before processing
+   */
+  private validatePayload(data: any): void {
+    if (!data) {
+      throw new BadRequestException('Package data is required');
+    }
 
-    // Collect IDs from nested data
+    if (!data.packageName?.trim()) {
+      throw new BadRequestException('Package name is required');
+    }
+
+    if (!data.packageTypeId) {
+      throw new BadRequestException('Package type ID is required');
+    }
+
+    if (!data.cities || !Array.isArray(data.cities) || data.cities.length === 0) {
+      throw new BadRequestException('At least one city is required');
+    }
+
+    // Validate each city has days
+    data.cities.forEach((city: any, index: number) => {
+      if (!city.cityId) {
+        throw new BadRequestException(`City at index ${index} must have a cityId`);
+      }
+      
+      if (!city.days || !Array.isArray(city.days) || city.days.length === 0) {
+        throw new BadRequestException(`City at index ${index} must have at least one day`);
+      }
+    });
+  }
+
+  /**
+   * Collects and deduplicates all IDs needed for lookup
+   */
+  private collectUniqueIds(data: any): {
+    cityIds: string[];
+    sightseeingIds: string[];
+    hotelIds: string[];
+    mealTypeIds: string[];
+  } {
+    const cityIds = new Set<string>();
+    const sightseeingIds = new Set<string>();
+    const hotelIds = new Set<string>();
+    const mealTypeIds = new Set<string>();
+
+    // Collect city IDs
     data.cities.forEach((city: any) => {
+      if (city.cityId) {
+        cityIds.add(city.cityId);
+      }
+
+      // Collect IDs from nested data
       city.days.forEach((day: any) => {
         if (day.sightseeings) {
-          sightseeingIds.push(...day.sightseeings.map((s: any) => s.sightseeingId));
+          day.sightseeings.forEach((s: any) => {
+            if (s.sightseeingId) {
+              sightseeingIds.add(s.sightseeingId);
+            }
+          });
         }
+
         if (day.hotels) {
-          hotelIds.push(...day.hotels.map((h: any) => h.hotelId));
+          day.hotels.forEach((h: any) => {
+            if (h.hotelId) {
+              hotelIds.add(h.hotelId);
+            }
+          });
         }
+
         if (day.meals) {
-          mealTypeIds.push(...day.meals.map((m: any) => m.mealTypeId));
+          day.meals.forEach((m: any) => {
+            if (m.mealTypeId) {
+              mealTypeIds.add(m.mealTypeId);
+            }
+          });
         }
       });
     });
 
     // Also collect meal type IDs from package level
     if (data.mealTypes) {
-      mealTypeIds.push(...data.mealTypes.map((m: any) => m.mealTypeId));
+      data.mealTypes.forEach((m: any) => {
+        if (m.mealTypeId) {
+          mealTypeIds.add(m.mealTypeId);
+        }
+      });
     }
+
+    return {
+      cityIds: Array.from(cityIds),
+      sightseeingIds: Array.from(sightseeingIds),
+      hotelIds: Array.from(hotelIds),
+      mealTypeIds: Array.from(mealTypeIds)
+    };
+  }
+
+  /**
+   * Fetches and validates all required lookup data
+   */
+  private async prepareLookupData(data: any): Promise<LookupData> {
+    const { cityIds, sightseeingIds, hotelIds, mealTypeIds } = this.collectUniqueIds(data);
+
+    logger.info('Fetching lookup data', {
+      cityCount: cityIds.length,
+      sightseeingCount: sightseeingIds.length,
+      hotelCount: hotelIds.length,
+      mealTypeCount: mealTypeIds.length
+    });
 
     // Fetch all data in parallel
     const [cities, sightseeings, hotels, mealTypes] = await Promise.all([
@@ -49,32 +156,21 @@ export class PackageCompleteService implements IPackageCompleteService {
         }
       }),
       sightseeingIds.length > 0 ? prisma.sightseeing.findMany({
-        where: { id: { in: sightseeingIds } },
-        include: {
-          city: {
-            include: {
-              state: true,
-              country: true
-            }
-          }
-        }
+        where: { id: { in: sightseeingIds } }
       }) : [],
       hotelIds.length > 0 ? prisma.hotel.findMany({
-        where: { id: { in: hotelIds } },
-        include: {
-          city: {
-            include: {
-              state: true,
-              country: true
-            }
-          },
-          hotelType: true
-        }
+        where: { id: { in: hotelIds } }
       }) : [],
       mealTypeIds.length > 0 ? prisma.mealType.findMany({
         where: { id: { in: mealTypeIds } }
       }) : []
     ]);
+
+    // Validate all required entities exist
+    this.validateRequiredEntities(cityIds, cities, 'cities');
+    this.validateRequiredEntities(sightseeingIds, sightseeings, 'sightseeings');
+    this.validateRequiredEntities(hotelIds, hotels, 'hotels');
+    this.validateRequiredEntities(mealTypeIds, mealTypes, 'meal types');
 
     // Create lookup maps for fast access
     return {
@@ -85,242 +181,390 @@ export class PackageCompleteService implements IPackageCompleteService {
     };
   }
 
-  async createCompletePackage(data: any): Promise<Package> {
-    try {
-      // Pre-fetch all required data to avoid long-running transactions
-      const lookupData = await this.prepareLookupData(data);
-      
-      // Start a transaction to ensure data consistency
-      const result = await prisma.$transaction(async (tx) => {
-        // 1. Create the main package
-        const packageData = {
-          packageName: data.packageName,
-          description: data.description,
-          shortDescription: data.shortDescription,
-          longDescription: data.longDescription,
-          mainImage: data.mainImage,
-          thumbnail: data.thumbnail,
-          video: data.video,
-          packageTypeId: data.packageTypeId,
-          days: data.duration || 1,
-          nights: data.duration ? data.duration - 1 : 0,
-          basePrice: data.price,
-        };
+  /**
+   * Validates that all required entities were found
+   */
+  private validateRequiredEntities(requestedIds: string[], foundEntities: any[], entityType: string): void {
+    const foundIds = new Set(foundEntities.map(e => e.id));
+    const missingIds = requestedIds.filter(id => !foundIds.has(id));
+    
+    if (missingIds.length > 0) {
+      throw new NotFoundException(`Missing ${entityType}: ${missingIds.join(', ')}`);
+    }
+  }
 
-        const createdPackage = await tx.package.create({
-          data: packageData,
+  /**
+   * Creates the core package entity
+   */
+  private async createPackageCore(data: any, tx: any): Promise<any> {
+    const packageData = {
+      packageName: data.packageName.trim(),
+      description: data.description?.trim(),
+      shortDescription: data.shortDescription?.trim(),
+      longDescription: data.longDescription?.trim(),
+      mainImage: data.mainImage?.trim(),
+      thumbnail: data.thumbnail?.trim(),
+      video: data.video?.trim(),
+      packageTypeId: data.packageTypeId,
+      days: Math.max(data.duration || MIN_PACKAGE_DURATION, MIN_PACKAGE_DURATION),
+      nights: Math.max((data.duration || MIN_PACKAGE_DURATION) - 1, 0),
+      basePrice: data.price ? parseFloat(data.price) : null,
+    };
+
+    return await tx.package.create({
+      data: packageData,
+    });
+  }
+
+  /**
+   * Creates package relations (categories, activities, snapshots)
+   */
+  private async createPackageRelations(packageId: string, data: any, tx: any): Promise<void> {
+    const promises: Promise<any>[] = [];
+
+    // Create package category mappings
+    if (data.categories?.length > 0) {
+      promises.push(
+        tx.packageCategoryMapping.createMany({
+          data: data.categories.map((category: any) => ({
+            packageId,
+            categoryId: category.packageCategoryId,
+          })),
+        })
+      );
+    }
+
+    // Create package activity mappings
+    if (data.activities?.length > 0) {
+      promises.push(
+        tx.packageActivityMapping.createMany({
+          data: data.activities.map((activity: any) => ({
+            packageId,
+            activityId: activity.packageActivityId,
+          })),
+        })
+      );
+    }
+
+    // Create package snapshot mappings
+    if (data.snapshots?.length > 0) {
+      promises.push(
+        tx.packageSnapshotMapping.createMany({
+          data: data.snapshots.map((snapshot: any) => ({
+            packageId,
+            snapshotId: snapshot.packageSnapshotId,
+          })),
+        })
+      );
+    }
+
+    // Create package options (one-to-one relationship)
+    if (data.options) {
+      promises.push(
+        tx.packageOption.create({
+          data: {
+            packageId,
+            includeGroupDeparture: data.options.includeGroupDeparture || false,
+            includeFixedDeparture: data.options.includeFixedDeparture || false,
+            includePackageAvailability: data.options.includePackageAvailability || false,
+          },
+        })
+      );
+    }
+
+    await Promise.all(promises);
+  }
+
+  /**
+   * Creates package cities and their associated days
+   */
+  private async createPackageCitiesAndDays(packageId: string, data: any, lookupData: LookupData, tx: any): Promise<void> {
+    for (const cityData of data.cities) {
+      const city = lookupData.cities.get(cityData.cityId);
+      
+      if (!city) {
+        throw new BadRequestException(`City with ID ${cityData.cityId} not found`);
+      }
+
+      const packageCity = await tx.packageCity.create({
+        data: {
+          packageId,
+          cityId: cityData.cityId,
+          countryId: city.countryId,
+          stateId: city.stateId,
+          totalDays: cityData.days.length,
+          totalNights: Math.max(0, cityData.days.length - 1),
+        },
+      });
+
+      // Create package city days and their details
+      for (const dayData of cityData.days) {
+        const packageCityDay = await tx.packageCityDay.create({
+          data: {
+            packageCityId: packageCity.id,
+            dayNumber: dayData.dayNumber,
+            startTime: dayData.startTime,
+            endTime: dayData.endTime,
+            startFrom: dayData.startFrom,
+            endAt: dayData.endAt,
+            description: dayData.description,
+          },
         });
 
-        // 2. Package meal types removed - meals are handled at day level
+        await this.createDayDetails(packageCityDay.id, dayData, lookupData, tx);
+      }
+    }
+  }
 
-        // 3. Create package category mappings if provided
-        if (data.categories && data.categories.length > 0) {
-          await tx.packageCategoryMapping.createMany({
-            data: data.categories.map((category: any) => ({
-              packageId: createdPackage.id,
-              categoryId: category.packageCategoryId,
-            })),
-          });
+  /**
+   * Creates day-specific details (travels, sightseeings, hotels, meals)
+   */
+  private async createDayDetails(packageCityDayId: string, dayData: any, lookupData: LookupData, tx: any): Promise<void> {
+    const promises: Promise<any>[] = [];
+
+    // Create travels
+    if (dayData.travels?.length > 0) {
+      promises.push(
+        tx.packageCityDayTravel.createMany({
+          data: dayData.travels.map((travel: any) => ({
+            packageCityDayId,
+            type: travel.type,
+            carpooling: travel.carpooling,
+            vehicleType: travel.vehicleType,
+            timeFrom: travel.timeFrom,
+            timeTo: travel.timeTo,
+            description: travel.description,
+          })),
+        })
+      );
+    }
+
+    // Create sightseeings
+    if (dayData.sightseeings?.length > 0) {
+      const sightseeingData = dayData.sightseeings.map((sightseeing: any) => {
+        const sightseeingRecord = lookupData.sightseeings.get(sightseeing.sightseeingId);
+        if (!sightseeingRecord) {
+          throw new NotFoundException(`Sightseeing with ID ${sightseeing.sightseeingId} not found`);
         }
+        return {
+          packageCityDayId,
+          sightseeingName: sightseeingRecord.name,
+          ticket: sightseeing.description || '',
+          timeFrom: sightseeing.timeFrom,
+          timeTo: sightseeing.timeTo,
+        };
+      });
 
-        // 4. Create package activity mappings if provided
-        if (data.activities && data.activities.length > 0) {
-          await tx.packageActivityMapping.createMany({
-            data: data.activities.map((activity: any) => ({
-              packageId: createdPackage.id,
-              activityId: activity.packageActivityId,
-            })),
-          });
+      promises.push(
+        tx.packageCityDaySightseeing.createMany({
+          data: sightseeingData,
+        })
+      );
+    }
+
+    // Create hotels
+    if (dayData.hotels?.length > 0) {
+      const hotelData = dayData.hotels.map((hotel: any) => {
+        const hotelRecord = lookupData.hotels.get(hotel.hotelId);
+        if (!hotelRecord) {
+          throw new NotFoundException(`Hotel with ID ${hotel.hotelId} not found`);
         }
+        return {
+          packageCityDayId,
+          hotelName: hotelRecord.name,
+          starRating: hotelRecord.rating || DEFAULT_HOTEL_RATING,
+          hotelType: hotel.hotelType,
+          checkInTime: hotel.checkIn,
+          checkOutTime: hotel.checkOut,
+          roomType: hotel.roomType,
+          numberOfRooms: hotel.numberOfRooms,
+        };
+      });
 
-        // 5. Create package snapshot mappings if provided
-        if (data.snapshots && data.snapshots.length > 0) {
-          await tx.packageSnapshotMapping.createMany({
-            data: data.snapshots.map((snapshot: any) => ({
-              packageId: createdPackage.id,
-              snapshotId: snapshot.packageSnapshotId,
-            })),
-          });
+      promises.push(
+        tx.packageCityDayHotel.createMany({
+          data: hotelData,
+        })
+      );
+    }
+
+    // Create meals
+    if (dayData.meals?.length > 0) {
+      const mealData = dayData.meals.map((meal: any) => {
+        const mealTypeRecord = lookupData.mealTypes.get(meal.mealTypeId);
+        if (!mealTypeRecord) {
+          throw new NotFoundException(`Meal type with ID ${meal.mealTypeId} not found`);
         }
+        return {
+          packageCityDayId,
+          mealType: mealTypeRecord.name,
+          provider: meal.provider || DEFAULT_MEAL_PROVIDER,
+          time: meal.time,
+          description: meal.description,
+        };
+      });
 
-        // 6. Create package cities and their days
-        for (const cityData of data.cities) {
-          // Get city details from pre-fetched data
-          const city = lookupData.cities.get(cityData.cityId);
-          
-          if (!city) {
-            throw new BadRequestException(`City with ID ${cityData.cityId} not found`);
-          }
+      promises.push(
+        tx.packageCityDayMeal.createMany({
+          data: mealData,
+        })
+      );
+    }
 
-          const packageCity = await tx.packageCity.create({
-            data: {
-              packageId: createdPackage.id,
-              cityId: cityData.cityId,
-              countryId: city.countryId,
-              stateId: city.stateId,
-              totalDays: cityData.days.length,
-              totalNights: Math.max(0, cityData.days.length - 1),
-            },
-          });
+    await Promise.all(promises);
+  }
 
-          // 7. Create package city days and their details
-          for (const dayData of cityData.days) {
-            const packageCityDay = await tx.packageCityDay.create({
-              data: {
-                packageCityId: packageCity.id,
-                dayNumber: dayData.dayNumber,
-                description: dayData.description,
-              },
-            });
+  /**
+   * Maps Prisma errors to domain-specific exceptions
+   */
+  private handlePrismaError(error: any): never {
+    if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_VIOLATION) {
+      throw new ConflictException(`Duplicate entry: ${error.meta?.target || 'unknown field'}`);
+    }
+    
+    if (error.code === PrismaErrorCode.FOREIGN_KEY_CONSTRAINT_VIOLATION) {
+      throw new BadRequestException(`Invalid reference: ${error.meta?.field_name || 'unknown field'}`);
+    }
+    
+    if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
+      throw new NotFoundException(`Required record not found: ${error.meta?.cause || 'unknown'}`);
+    }
 
-            // 8. Create travels for this day
-            if (dayData.travels && dayData.travels.length > 0) {
-              await tx.packageCityDayTravel.createMany({
-                data: dayData.travels.map((travel: any) => ({
-                  packageCityDayId: packageCityDay.id,
-                  type: travel.type,
-                  carpooling: travel.carpooling,
-                  vehicleType: travel.vehicleType,
-                  timeFrom: travel.timeFrom,
-                  timeTo: travel.timeTo,
-                  description: travel.description,
-                })),
-              });
-            }
+    throw new BadRequestException(`Database error: ${error.message || 'Unknown error'}`);
+  }
 
-            // 9. Create sightseeings for this day
-            if (dayData.sightseeings && dayData.sightseeings.length > 0) {
-              const sightseeingData = dayData.sightseeings
-                .map((sightseeing: any) => {
-                  const sightseeingRecord = lookupData.sightseeings.get(sightseeing.sightseeingId);
-                  return sightseeingRecord ? {
-                    packageCityDayId: packageCityDay.id,
-                    sightseeingName: sightseeingRecord.name,
-                    ticket: sightseeing.description || '',
-                  } : null;
-                })
-                .filter(Boolean);
-
-              if (sightseeingData.length > 0) {
-                await tx.packageCityDaySightseeing.createMany({
-                  data: sightseeingData,
-                });
-              }
-            }
-
-            // 10. Create hotels for this day
-            if (dayData.hotels && dayData.hotels.length > 0) {
-              const hotelData = dayData.hotels
-                .map((hotel: any) => {
-                  const hotelRecord = lookupData.hotels.get(hotel.hotelId);
-                  return hotelRecord ? {
-                    packageCityDayId: packageCityDay.id,
-                    hotelName: hotelRecord.name,
-                    starRating: hotelRecord.rating || 3,
-                    roomType: hotel.roomType,
-                    checkInTime: hotel.checkIn,
-                    checkOutTime: hotel.checkOut,
-                  } : null;
-                })
-                .filter(Boolean);
-
-              if (hotelData.length > 0) {
-                await tx.packageCityDayHotel.createMany({
-                  data: hotelData,
-                });
-              }
-            }
-
-            // 11. Create meals for this day
-            if (dayData.meals && dayData.meals.length > 0) {
-              const mealData = dayData.meals
-                .map((meal: any) => {
-                  const mealTypeRecord = lookupData.mealTypes.get(meal.mealTypeId);
-                  return mealTypeRecord ? {
-                    packageCityDayId: packageCityDay.id,
-                    mealType: mealTypeRecord.name,
-                    provider: 'Hotel Restaurant', // Default provider
-                    description: meal.description,
-                  } : null;
-                })
-                .filter(Boolean);
-
-              if (mealData.length > 0) {
-                await tx.packageCityDayMeal.createMany({
-                  data: mealData,
-                });
-              }
-            }
-          }
-        }
-
-        // 12. Return the complete package with all relations
-        return await tx.package.findUnique({
-          where: { id: createdPackage.id },
+  /**
+   * Fetches the complete package with all relations (separate from creation)
+   */
+  async getCompletePackage(packageId: string): Promise<Package> {
+    const packageData = await prisma.package.findUnique({
+      where: { id: packageId },
+      include: {
+        packageType: true,
+        packagecategorymappings: {
           include: {
-            packageType: true,
-            packagecategorymappings: {
+            category: true
+          }
+        },
+        packageactivitymappings: {
+          include: {
+            activity: true
+          }
+        },
+        packagesnapshotmappings: {
+          include: {
+            snapshot: true
+          }
+        },
+        packagecities: {
+          include: {
+            cityObj: true,
+            stateObj: true,
+            countryObj: true,
+            packagecitydaies: {
               include: {
-                category: true
-              }
-            },
-            packageactivitymappings: {
-              include: {
-                activity: true
-              }
-            },
-            packagesnapshotmappings: {
-              include: {
-                snapshot: true
-              }
-            },
-            packagecities: {
-              include: {
-                cityObj: true,
-                stateObj: true,
-                countryObj: true,
-                packagecitydaies: {
+                packagecitydaytravels: true,
+                packagecitydaysightseeings: true,
+                packagecitydayhotels: true,
+                packagecitydaymeals: true,
+                packagecitydaymealtypes: {
                   include: {
-                    packagecitydaytravels: true,
-                    packagecitydaysightseeings: true,
-                    packagecitydayhotels: true,
-                    packagecitydaymeals: true,
-                    packagecitydaymealtypes: {
-                      include: {
-                        mealType: true
-                      }
-                    }
+                    mealType: true
                   }
                 }
               }
-            },
-            destinationPackages: {
-              include: {
-                destination: true
-              }
-            },
-            packageTermsConditions: true,
-            packageInclusions: true,
-            packageExclusions: true,
-            packagePaymentPolicies: true,
-            packageCancellationPolicies: true,
-            packagePricings: true,
-            packageOptions: true,
-            packageGalleries: true
-          },
+            }
+          }
+        },
+        destinationPackages: {
+          include: {
+            destination: true
+          }
+        },
+        packageTermsConditions: true,
+        packageInclusions: true,
+        packageExclusions: true,
+        packagePaymentPolicies: true,
+        packageCancellationPolicies: true,
+        packagePricings: true,
+        packageOptions: true,
+        packageGalleries: true
+      },
+    });
+
+    if (!packageData) {
+      throw new NotFoundException(`Package with ID ${packageId} not found`);
+    }
+
+    return packageData as Package;
+  }
+
+  /**
+   * Creates a complete package with all relations
+   */
+  async createCompletePackage(data: any): Promise<PackageCreationResult> {
+    const transactionId = `pkg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    try {
+      // 1. Validate payload structure before starting transaction
+      this.validatePayload(data);
+      
+      // 2. Pre-fetch all required data to avoid long-running transactions
+      const lookupData = await this.prepareLookupData(data);
+      
+      logger.info('Starting package creation transaction', { transactionId, packageName: data.packageName });
+      
+      // 3. Start transaction with guardrails
+      const result = await prisma.$transaction(async (tx) => {
+        logger.info('Transaction started', { transactionId });
+
+        // Create the main package
+        const createdPackage = await this.createPackageCore(data, tx);
+        
+        // Create package relations
+        await this.createPackageRelations(createdPackage.id, data, tx);
+        
+        // Create package cities and days
+        await this.createPackageCitiesAndDays(createdPackage.id, data, lookupData, tx);
+
+        logger.info('Transaction completed successfully', { 
+          transactionId, 
+          packageId: createdPackage.id 
         });
+
+        // Return minimal response
+        return {
+          id: createdPackage.id,
+          packageName: createdPackage.packageName
+        };
       });
 
-      if (!result) {
-        throw new BadRequestException('Failed to create package');
-      }
+      logger.info('Package created successfully', { 
+        transactionId, 
+        packageId: result.id,
+        packageName: result.packageName 
+      });
 
       return result;
-    } catch (error) {
-      if (error instanceof BadRequestException) {
+    } catch (error: any) {
+      logger.error('Package creation failed', { 
+        transactionId, 
+        error: error.message,
+        stack: error.stack 
+      });
+
+      if (error instanceof BadRequestException || 
+          error instanceof NotFoundException || 
+          error instanceof ConflictException) {
         throw error;
       }
-      throw new BadRequestException(`Failed to create complete package: ${error instanceof Error ? error.message : 'Unknown error'}`);
+
+      // Handle Prisma-specific errors
+      if (error.code && error.code.startsWith('P')) {
+        this.handlePrismaError(error);
+      }
+
+      throw new BadRequestException(`Failed to create complete package: ${error.message || 'Unknown error'}`);
     }
   }
 }
