@@ -18,18 +18,8 @@ export class HotelRoomController extends BaseController<HotelRoom, HotelRoomCrea
       searchFields: ['id'], // Add default search fields, can be customized
       defaultInclude: {
         hotel: {
-          include: {
-            city: {
-              include: {
-                country: true,
-                state: true
-              }
-            },
-            hotelType: true
-          }
+       
         },
-        roomType: true,
-        roomImages: true
       },
     });
   }

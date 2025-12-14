@@ -13,7 +13,7 @@ export class HotelRoomResponse {
   amenities?: string[];
   description?: any;
   hotel?: HotelResponse;
-  roomimages?: RoomImageResponse[];
+  // roomimages?: RoomImageResponse[];
   createdAt?: string;
   updatedAt?: string;
 
@@ -36,7 +36,7 @@ export class HotelRoomResponse {
     this.amenities = hotelroom.amenities ? this.parseAmenities(hotelroom.amenities) : undefined;
     this.description = hotelroom.description || undefined;
     this.hotel = hotelroom.hotel && typeof hotelroom.hotel === 'object' ? new HotelResponse({ ...(hotelroom.hotel as any) }) : undefined;
-    this.roomimages = Array.isArray(hotelroom.roomImages) ? hotelroom.roomImages.map((r: any) => new RoomImageResponse({ ...(r as any) })) : [];
+    // this.roomimages = Array.isArray(hotelroom.roomImages) ? hotelroom.roomImages.map((r: any) => new RoomImageResponse({ ...(r as any) })) : [];
     if ('createdAt' in hotelroom && hotelroom.createdAt) this.createdAt = moment(hotelroom.createdAt).format('DD-MM-YYYY');
     if ('updatedAt' in hotelroom && hotelroom.updatedAt) this.updatedAt = moment(hotelroom.updatedAt).format('DD-MM-YYYY');
   }
