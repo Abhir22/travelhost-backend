@@ -119,25 +119,22 @@ model HotelType {
   updatedAt   DateTime @updatedAt
 }
 
-model RoomType {
-  id          String      @id @default(uuid())
-  name        String
-  description String?
-  hotelRooms  HotelRoom[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+model MealCategory {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model HotelRoom {
   id          String      @id @default(uuid())
   hotelId     String
-  roomTypeId  String
+  roomType    String
   roomNumber  String?
   price       Decimal?
   amenities   String?
   description String?
   hotel       Hotel       @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  roomType    RoomType    @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
   roomImages  RoomImage[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt

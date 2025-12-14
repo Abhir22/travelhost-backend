@@ -3,8 +3,8 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createMealTypeSchema = flatToNestedSchema(
     z.object({
-        name: z.string().min(1),
-        description: z.string().min(1).optional(),
+        name: z.string().trim().min(1, "Name is required"),
+        description: z.string().trim().min(1, "Description cannot be empty").optional(),
     }),
     data => ({
         name: data.name,
@@ -14,8 +14,8 @@ export const createMealTypeSchema = flatToNestedSchema(
 
 export const updateMealTypeSchema = flatToNestedSchema(
     z.object({
-        name: z.string().min(1).optional(),
-        description: z.string().min(1).optional(),
+        name: z.string().trim().min(1, "Name cannot be empty").optional(),
+        description: z.string().trim().min(1, "Description cannot be empty").optional(),
     }),
     data => ({
         ...(data.name !== undefined ? { name: data.name } : {}),

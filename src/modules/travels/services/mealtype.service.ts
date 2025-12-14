@@ -7,8 +7,8 @@ import { IMealTypeService } from '@/modules/travels/services/interfaces/mealtype
 @injectable()
 export class MealTypeService extends BaseService<MealType, MealTypeCreateDto, MealTypeUpdateDto> implements IMealTypeService {
     constructor(
-        @inject('IMealTypeRepository') private mealTypeRepository: IMealTypeRepository
+        @inject('IMealTypeRepository') repository: IMealTypeRepository
     ) {
-        super(mealTypeRepository);
+        super(repository);
     }
 }

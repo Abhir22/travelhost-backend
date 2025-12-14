@@ -1,8 +1,4 @@
 import { container } from 'tsyringe';
-import { IRoomTypeService } from './services/interfaces/roomtype.service.interface';
-import { RoomTypeService } from './services/roomtype.service';
-import { IRoomTypeRepository } from './repositories/interfaces/roomtype.repository.interface';
-import { RoomTypeRepository } from './repositories/roomtype.repository';
 import { IHotelRoomService } from './services/interfaces/hotelroom.service.interface';
 import { HotelRoomService } from './services/hotelroom.service';
 import { IHotelRoomRepository } from './repositories/interfaces/hotelroom.repository.interface';
@@ -26,8 +22,6 @@ export const registerDependencies = () => {
     container.register<IHotelRepository>('IHotelRepository', { useClass: HotelRepository });
   container.register<IHotelTypeService>('IHotelTypeService', { useClass: HotelTypeService });
   container.register<IHotelTypeRepository>('IHotelTypeRepository', { useClass: HotelTypeRepository });
-  container.register<IRoomTypeService>('IRoomTypeService', { useClass: RoomTypeService });
-  container.register<IRoomTypeRepository>('IRoomTypeRepository', { useClass: RoomTypeRepository });
   container.register<IHotelRoomService>('IHotelRoomService', { useClass: HotelRoomService });
   container.register<IHotelRoomRepository>('IHotelRoomRepository', { useClass: HotelRoomRepository });
   container.register<IRoomImageService>('IRoomImageService', { useClass: RoomImageService });

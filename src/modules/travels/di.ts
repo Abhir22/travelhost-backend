@@ -1,6 +1,12 @@
 import { container } from 'tsyringe';
 import { MealTypeRepository } from './repositories/mealtype.repository';
 import { MealTypeService } from './services/mealtype.service';
+import { IMealTypeService } from './services/interfaces/mealtype.service.interface';
+import { IMealTypeRepository } from './repositories/interfaces/mealtype.repository.interface';
+import { MealCategoryRepository } from './repositories/mealcategory.repository';
+import { MealCategoryService } from './services/mealcategory.service';
+import { IMealCategoryService } from './services/interfaces/mealcategory.service.interface';
+import { IMealCategoryRepository } from './repositories/interfaces/mealcategory.repository.interface';
 import { ITravelTypeService } from './services/interfaces/traveltype.service.interface';
 import { TravelTypeService } from './services/traveltype.service';
 import { ITravelTypeRepository } from './repositories/interfaces/traveltype.repository.interface';
@@ -15,16 +21,27 @@ import { IVehicleTypeRepository } from './repositories/interfaces/vehicletype.re
 import { VehicleTypeRepository } from './repositories/vehicletype.repository';
 
 export const registerDependencies = () => {
-  container.register('IMealTypeRepository', { useClass: MealTypeRepository });
-  container.register('IMealTypeService', { useClass: MealTypeService });
-  container.register<ITravelTypeService>('ITravelTypeService', { useClass: TravelTypeService });
+  // Meal Type
+  container.register<IMealTypeRepository>('IMealTypeRepository', { useClass: MealTypeRepository });
+  container.register<IMealTypeService>('IMealTypeService', { useClass: MealTypeService });
+  
+  // Meal Category
+  container.register<IMealCategoryRepository>('IMealCategoryRepository', { useClass: MealCategoryRepository });
+  container.register<IMealCategoryService>('IMealCategoryService', { useClass: MealCategoryService });
+  
+  // Travel Type
   container.register<ITravelTypeRepository>('ITravelTypeRepository', { useClass: TravelTypeRepository });
-  container.register<ITravelModeService>('ITravelModeService', { useClass: TravelModeService });
+  container.register<ITravelTypeService>('ITravelTypeService', { useClass: TravelTypeService });
+  
+  // Travel Mode
   container.register<ITravelModeRepository>('ITravelModeRepository', { useClass: TravelModeRepository });
-  container.register<IVehicleTypeService>('IVehicleTypeService', { useClass: VehicleTypeService });
+  container.register<ITravelModeService>('ITravelModeService', { useClass: TravelModeService });
+  
+  // Vehicle Type
   container.register<IVehicleTypeRepository>('IVehicleTypeRepository', { useClass: VehicleTypeRepository });
+  container.register<IVehicleTypeService>('IVehicleTypeService', { useClass: VehicleTypeService });
 
-  console.log('✅ All module dependencies registered');
+  console.log('✅ All travels module dependencies registered');
 };
 
 export const clearDependencies = () => {

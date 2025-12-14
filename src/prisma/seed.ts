@@ -265,24 +265,24 @@ async function main() {
 
   console.log('✅ Hotel types created');
 
-  // Create Room Types
-  const roomTypes = [
-    { id: 'standard-id', name: 'Standard Room', description: 'Standard accommodation' },
-    { id: 'deluxe-id', name: 'Deluxe Room', description: 'Deluxe accommodation with extra amenities' },
-    { id: 'suite-id', name: 'Suite', description: 'Spacious suite with living area' },
-    { id: 'executive-id', name: 'Executive Room', description: 'Executive level accommodation' },
-    { id: 'presidential-id', name: 'Presidential Suite', description: 'Top-tier luxury accommodation' },
+  // Create Meal Categories
+  const mealCategories = [
+    { id: 'vegetarian-id', name: 'Vegetarian' },
+    { id: 'non-vegetarian-id', name: 'Non-Vegetarian' },
+    { id: 'vegan-id', name: 'Vegan' },
+    { id: 'gluten-free-id', name: 'Gluten Free' },
+    { id: 'continental-id', name: 'Continental' },
   ];
 
-  for (const type of roomTypes) {
-    await prisma.roomType.upsert({
-      where: { id: type.id },
+  for (const category of mealCategories) {
+    await prisma.mealCategory.upsert({
+      where: { id: category.id },
       update: {},
-      create: type,
+      create: category,
     });
   }
 
-  console.log('✅ Room types created');
+  console.log('✅ Meal categories created');
 
   // Create Hotels
   const hotels = [
@@ -383,7 +383,7 @@ async function main() {
     {
       id: 'oberoi-standard-1',
       hotelId: 'oberoi-grand-id',
-      roomTypeId: 'standard-id',
+      roomType: 'Standard Room',
       roomNumber: '101',
       price: 15000,
       amenities: 'AC, WiFi, TV, Mini Bar',
@@ -392,7 +392,7 @@ async function main() {
     {
       id: 'oberoi-deluxe-1',
       hotelId: 'oberoi-grand-id',
-      roomTypeId: 'deluxe-id',
+      roomType: 'Deluxe Room',
       roomNumber: '201',
       price: 25000,
       amenities: 'AC, WiFi, TV, Mini Bar, Balcony',
@@ -401,7 +401,7 @@ async function main() {
     {
       id: 'taj-bengal-suite-1',
       hotelId: 'taj-bengal-id',
-      roomTypeId: 'suite-id',
+      roomType: 'Suite',
       roomNumber: '301',
       price: 35000,
       amenities: 'AC, WiFi, TV, Mini Bar, Living Area, Butler Service',
@@ -410,7 +410,7 @@ async function main() {
     {
       id: 'hyatt-business-1',
       hotelId: 'hyatt-regency-kolkata-id',
-      roomTypeId: 'executive-id',
+      roomType: 'Executive Room',
       roomNumber: '401',
       price: 18000,
       amenities: 'AC, WiFi, TV, Work Desk, Business Center Access',
@@ -419,7 +419,7 @@ async function main() {
     {
       id: 'mayfair-resort-1',
       hotelId: 'mayfair-darjeeling-id',
-      roomTypeId: 'deluxe-id',
+      roomType: 'Deluxe Room',
       roomNumber: '501',
       price: 12000,
       amenities: 'AC, WiFi, TV, Mountain View, Spa Access',

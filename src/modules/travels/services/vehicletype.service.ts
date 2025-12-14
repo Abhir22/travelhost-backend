@@ -7,8 +7,8 @@ import { IVehicleTypeService } from './interfaces/vehicletype.service.interface'
 @injectable()
 export class VehicleTypeService extends BaseService<VehicleType, VehicleTypeCreateDto, VehicleTypeUpdateDto> implements IVehicleTypeService {
     constructor(
-        @inject('IVehicleTypeRepository') vehicletypeRepository: IVehicleTypeRepository
+        @inject('IVehicleTypeRepository') repository: IVehicleTypeRepository
     ) {
-        super(vehicletypeRepository);
+        super(repository);
     }
 }
