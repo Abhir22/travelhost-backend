@@ -6,14 +6,7 @@ export const createPackagePaymentPolicySchema = flatToNestedSchema(
         packageId: z.string().uuid("Invalid Package ID"),
         content: z.string().min(1, "Content is required"),
     }),
-    data => ({
-        content: data.content,
-        package: {
-            connect: {
-                id: data.packageId
-            }
-        }
-    })
+    data => data
 );
 
 export const updatePackagePaymentPolicySchema = flatToNestedSchema(

@@ -15,6 +15,7 @@ export const createPackageTermsConditionSchema = flatToNestedSchema(
         fileSize: z.any().optional().nullable(), // BigInt handling might be tricky with zod, allowing any for now or number
     }),
     data => ({
+        packageId: data.packageId,
         content: data.content,
         linkText: data.linkText,
         linkUrl: data.linkUrl,
@@ -24,11 +25,6 @@ export const createPackageTermsConditionSchema = flatToNestedSchema(
         filePath: data.filePath,
         fileType: data.fileType,
         fileSize: data.fileSize,
-        package: {
-            connect: {
-                id: data.packageId
-            }
-        }
     })
 );
 

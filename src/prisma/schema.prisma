@@ -326,6 +326,9 @@ model Package {
   packageExclusions       PackageExclusion[]
   packagePaymentPolicies  PackagePaymentPolicy[]
   packageCancellationPolicies PackageCancellationPolicy[]
+  packagePricings         PackagePricing[]
+  packageOptions          PackageOption[]
+  packageGalleries        PackageGallery[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
 }
@@ -558,4 +561,54 @@ model PackageCancellationPolicy {
   package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum SEASON_ENUM {
+  ON_SEASON
+  OFF_SEASON
+  MID_SEASON
+  FESTIVE_SEASON
+}
+
+model PackagePricing {
+  id                         String      @id @default(uuid())
+  packageId                  String
+  season                     SEASON_ENUM
+  dateFrom                   DateTime    @db.Date
+  dateTo                     DateTime    @db.Date
+  rackRate                   Decimal     @db.Decimal(10, 2)
+  publishedRate              Decimal     @db.Decimal(10, 2)
+  customerDiscountPercentage Decimal?    @db.Decimal(5, 2)
+  customerDiscountAmount     Decimal?    @db.Decimal(10, 2)
+  adultRate                  Decimal?    @db.Decimal(10, 2)
+  agentDiscountPercentage    Decimal?    @db.Decimal(5, 2)
+  agentDiscountAmount        Decimal?    @db.Decimal(10, 2)
+  agentRate                  Decimal?    @db.Decimal(10, 2)
+  childRate                  Decimal?    @db.Decimal(10, 2)
+  infantRate                 Decimal?    @db.Decimal(10, 2)
+  createdBy                  String?     @db.VarChar(36)
+  package                    Package     @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt                  DateTime    @default(now())
+  updatedAt                  DateTime    @updatedAt
+}
+
+model PackageOption {
+  id                         String   @id @default(uuid())
+  packageId                  String
+  includeGroupDeparture      Boolean  @default(false)
+  includeFixedDeparture      Boolean  @default(false)
+  includePackageAvailability Boolean  @default(false)
+  package                    Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+model PackageGallery {
+  id         String   @id @default(uuid())
+  packageId  String
+  imageUrl   String   @db.VarChar(500)
+  imageOrder Int
+  isCover    Boolean  @default(false)
+  package    Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
 }

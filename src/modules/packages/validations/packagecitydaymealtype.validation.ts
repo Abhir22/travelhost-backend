@@ -1,35 +1,45 @@
 import { z } from 'zod';
+import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
-export const packagecitydaymealtypeValidation = {
-  create: z.object({
-    packageCityDayId: z.string(),
-    mealTypeId: z.string(),
+export const createPackageCityDayMealTypeSchema = flatToNestedSchema(
+  z.object({
+    packageCityDayId: z.string().uuid("Invalid Package City Day ID"),
+    mealTypeId: z.string().uuid("Invalid Meal Type ID"),
     provider: z.string().optional(),
     time: z.string().optional(),
     description: z.string().optional(),
-  }).transform(
-    data => ({
-      packageCityDayId: data.packageCityDayId,
-      mealTypeId: data.mealTypeId,
-      provider: data.provider,
-      time: data.time,
-      description: data.description,
-    })
-  ),
+  }),
+  data => ({
+    provider: data.provider,
+    time: data.time,
+    description: data.description,
+    packageCityDay: {
+      connect: {
+        id: data.packageCityDayId
+      }
+    },
+    mealType: {
+      connect: {
+        id: data.mealTypeId
+      }
+    }
+  })
+);
 
-  update: z.object({
-    packageCityDayId: z.string().optional(),
-    mealTypeId: z.string().optional(),
+export const updatePackageCityDayMealTypeSchema = flatToNestedSchema(
+  z.object({
     provider: z.string().optional(),
     time: z.string().optional(),
     description: z.string().optional(),
-  }).transform(
-    data => ({
-      ...(data.packageCityDayId !== undefined ? { packageCityDayId: data.packageCityDayId } : {}),
-      ...(data.mealTypeId !== undefined ? { mealTypeId: data.mealTypeId } : {}),
-      ...(data.provider !== undefined ? { provider: data.provider } : {}),
-      ...(data.time !== undefined ? { time: data.time } : {}),
-      ...(data.description !== undefined ? { description: data.description } : {}),
-    })
-  ),
+  }),
+  data => ({
+    ...(data.provider !== undefined ? { provider: data.provider } : {}),
+    ...(data.time !== undefined ? { time: data.time } : {}),
+    ...(data.description !== undefined ? { description: data.description } : {}),
+  })
+);
+
+export const packageCityDayMealTypeValidation = {
+  create: createPackageCityDayMealTypeSchema,
+  update: updatePackageCityDayMealTypeSchema,
 };

@@ -55,6 +55,10 @@ import { IPackageCityDayMealService } from './services/interfaces/packagecityday
 import { PackageCityDayMealService } from './services/packagecitydaymeal.service';
 import { IPackageCityDayMealRepository } from './repositories/interfaces/packagecitydaymeal.repository.interface';
 import { PackageCityDayMealRepository } from './repositories/packagecitydaymeal.repository';
+import { IPackageCityDayMealTypeService } from './services/interfaces/packagecitydaymealtype.service.interface';
+import { PackageCityDayMealTypeService } from './services/packagecitydaymealtype.service';
+import { IPackageCityDayMealTypeRepository } from './repositories/interfaces/packagecitydaymealtype.repository.interface';
+import { PackageCityDayMealTypeRepository } from './repositories/packagecitydaymealtype.repository';
 import { IPackageCompleteService } from './services/interfaces/package-complete.service.interface';
 import { PackageCompleteService } from './services/package-complete.service';
 
@@ -78,6 +82,19 @@ import { IPackageCancellationPolicyService } from './services/interfaces/package
 import { PackageCancellationPolicyService } from './services/package-cancellation-policy.service';
 import { IPackageCancellationPolicyRepository } from './repositories/interfaces/package-cancellation-policy.repository.interface';
 import { PackageCancellationPolicyRepository } from './repositories/package-cancellation-policy.repository';
+
+import { IPackagePricingService } from './services/interfaces/package-pricing.service.interface';
+import { PackagePricingService } from './services/package-pricing.service';
+import { IPackagePricingRepository } from './repositories/interfaces/package-pricing.repository.interface';
+import { PackagePricingRepository } from './repositories/package-pricing.repository';
+import { IPackageOptionService } from './services/interfaces/package-option.service.interface';
+import { PackageOptionService } from './services/package-option.service';
+import { IPackageOptionRepository } from './repositories/interfaces/package-option.repository.interface';
+import { PackageOptionRepository } from './repositories/package-option.repository';
+import { IPackageGalleryService } from './services/interfaces/package-gallery.service.interface';
+import { PackageGalleryService } from './services/package-gallery.service';
+import { IPackageGalleryRepository } from './repositories/interfaces/package-gallery.repository.interface';
+import { PackageGalleryRepository } from './repositories/package-gallery.repository';
 
 export const registerDependencies = () => {
   // ... existing registrations ...
@@ -110,6 +127,8 @@ export const registerDependencies = () => {
   container.register<IPackageCityDayHotelRepository>('IPackageCityDayHotelRepository', { useClass: PackageCityDayHotelRepository });
   container.register<IPackageCityDayMealService>('IPackageCityDayMealService', { useClass: PackageCityDayMealService });
   container.register<IPackageCityDayMealRepository>('IPackageCityDayMealRepository', { useClass: PackageCityDayMealRepository });
+  container.register<IPackageCityDayMealTypeService>('IPackageCityDayMealTypeService', { useClass: PackageCityDayMealTypeService });
+  container.register<IPackageCityDayMealTypeRepository>('IPackageCityDayMealTypeRepository', { useClass: PackageCityDayMealTypeRepository });
   container.register<IPackageCompleteService>('IPackageCompleteService', { useClass: PackageCompleteService });
 
   container.register<IPackageTermsConditionService>('IPackageTermsConditionService', { useClass: PackageTermsConditionService });
@@ -122,6 +141,13 @@ export const registerDependencies = () => {
   container.register<IPackagePaymentPolicyRepository>('IPackagePaymentPolicyRepository', { useClass: PackagePaymentPolicyRepository });
   container.register<IPackageCancellationPolicyService>('IPackageCancellationPolicyService', { useClass: PackageCancellationPolicyService });
   container.register<IPackageCancellationPolicyRepository>('IPackageCancellationPolicyRepository', { useClass: PackageCancellationPolicyRepository });
+
+  container.register<IPackagePricingService>('IPackagePricingService', { useClass: PackagePricingService });
+  container.register<IPackagePricingRepository>('IPackagePricingRepository', { useClass: PackagePricingRepository });
+  container.register<IPackageOptionService>('IPackageOptionService', { useClass: PackageOptionService });
+  container.register<IPackageOptionRepository>('IPackageOptionRepository', { useClass: PackageOptionRepository });
+  container.register<IPackageGalleryService>('IPackageGalleryService', { useClass: PackageGalleryService });
+  container.register<IPackageGalleryRepository>('IPackageGalleryRepository', { useClass: PackageGalleryRepository });
 
   console.log('All module dependencies registered');
 };
