@@ -15,7 +15,7 @@ export class PackageCategoryResponse {
     this.name = packagecategory.name;
     this.icon = packagecategory.icon || undefined;
     this.packagecategorymappings = Array.isArray(packagecategory.packagecategorymappings) ? packagecategory.packagecategorymappings.map((r: any) => new PackageCategoryMappingResponse({ ...(r as any) })) : [];
-    if ('createdAt' in packagecategory && packagecategory.createdAt) this.createdAt = moment(packagecategory.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecategory && packagecategory.updatedAt) this.updatedAt = moment(packagecategory.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecategory && packagecategory.createdAt) this.createdAt = moment(packagecategory.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecategory && packagecategory.updatedAt) this.updatedAt = moment(packagecategory.updatedAt).format('DD-MM-YYYY');
   }
 }

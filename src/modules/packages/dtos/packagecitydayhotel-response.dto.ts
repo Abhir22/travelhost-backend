@@ -27,7 +27,7 @@ export class PackageCityDayHotelResponse {
     this.roomType = packagecitydayhotel.roomType || undefined;
     this.numberOfRooms = packagecitydayhotel.numberOfRooms || undefined;
     this.packageCityDay = packagecitydayhotel.packageCityDay && typeof packagecitydayhotel.packageCityDay === 'object' ? new PackageCityDayResponse({ ...(packagecitydayhotel.packageCityDay as any) }) : undefined;
-    if ('createdAt' in packagecitydayhotel && packagecitydayhotel.createdAt) this.createdAt = moment(packagecitydayhotel.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecitydayhotel && packagecitydayhotel.updatedAt) this.updatedAt = moment(packagecitydayhotel.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecitydayhotel && packagecitydayhotel.createdAt) this.createdAt = moment(packagecitydayhotel.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecitydayhotel && packagecitydayhotel.updatedAt) this.updatedAt = moment(packagecitydayhotel.updatedAt).format('DD-MM-YYYY');
   }
 }

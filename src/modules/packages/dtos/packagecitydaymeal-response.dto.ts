@@ -21,7 +21,7 @@ export class PackageCityDayMealResponse {
     this.time = packagecitydaymeal.time || undefined;
     this.description = packagecitydaymeal.description || undefined;
     this.packageCityDay = packagecitydaymeal.packageCityDay && typeof packagecitydaymeal.packageCityDay === 'object' ? new PackageCityDayResponse({ ...(packagecitydaymeal.packageCityDay as any) }) : undefined;
-    if ('createdAt' in packagecitydaymeal && packagecitydaymeal.createdAt) this.createdAt = moment(packagecitydaymeal.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecitydaymeal && packagecitydaymeal.updatedAt) this.updatedAt = moment(packagecitydaymeal.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecitydaymeal && packagecitydaymeal.createdAt) this.createdAt = moment(packagecitydaymeal.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecitydaymeal && packagecitydaymeal.updatedAt) this.updatedAt = moment(packagecitydaymeal.updatedAt).format('DD-MM-YYYY');
   }
 }

@@ -13,7 +13,7 @@ export class StateResponse {
     if ('id' in state && state.id) this.id = state.id;
     this.name = state.name;
     this.countryId = state.countryId;
-    if ('createdAt' in state && state.createdAt) this.createdAt = moment(state.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in state && state.updatedAt) this.updatedAt = moment(state.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in state && state.createdAt) this.createdAt = moment(state.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in state && state.updatedAt) this.updatedAt = moment(state.updatedAt).format('DD-MM-YYYY');
   }
 }

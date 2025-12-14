@@ -17,7 +17,7 @@ export class TravelModeResponse {
     this.cityId = travelmode.cityId;
     this.sightseeingId = travelmode.sightseeingId || undefined;
     this.travelTypeId = travelmode.travelTypeId || undefined;
-    if ('createdAt' in travelmode && travelmode.createdAt) this.createdAt = moment(travelmode.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in travelmode && travelmode.updatedAt) this.updatedAt = moment(travelmode.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in travelmode && travelmode.createdAt) this.createdAt = moment(travelmode.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in travelmode && travelmode.updatedAt) this.updatedAt = moment(travelmode.updatedAt).format('DD-MM-YYYY');
   }
 }

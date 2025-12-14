@@ -15,7 +15,7 @@ export class CityResponse {
     this.name = city.name;
     this.countryId = city.countryId;
     this.stateId = city.stateId;
-    if ('createdAt' in city && city.createdAt) this.createdAt = moment(city.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in city && city.updatedAt) this.updatedAt = moment(city.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in city && city.createdAt) this.createdAt = moment(city.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in city && city.updatedAt) this.updatedAt = moment(city.updatedAt).format('DD-MM-YYYY');
   }
 }

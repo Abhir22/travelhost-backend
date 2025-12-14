@@ -55,7 +55,7 @@ export class SightseeingResponse {
         };
       }
     }
-    if ('createdAt' in sightseeing && sightseeing.createdAt) this.createdAt = moment(sightseeing.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in sightseeing && sightseeing.updatedAt) this.updatedAt = moment(sightseeing.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in sightseeing && sightseeing.createdAt) this.createdAt = moment(sightseeing.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in sightseeing && sightseeing.updatedAt) this.updatedAt = moment(sightseeing.updatedAt).format('DD-MM-YYYY');
   }
 }

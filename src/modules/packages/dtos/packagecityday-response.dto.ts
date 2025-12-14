@@ -37,7 +37,7 @@ export class PackageCityDayResponse {
     this.packagecitydaysightseeings = Array.isArray(packagecityday.packagecitydaysightseeings) ? packagecityday.packagecitydaysightseeings.map((r: any) => new PackageCityDaySightseeingResponse({ ...(r as any) })) : [];
     this.packagecitydayhotels = Array.isArray(packagecityday.packagecitydayhotels) ? packagecityday.packagecitydayhotels.map((r: any) => new PackageCityDayHotelResponse({ ...(r as any) })) : [];
     this.packagecitydaymeals = Array.isArray(packagecityday.packagecitydaymeals) ? packagecityday.packagecitydaymeals.map((r: any) => new PackageCityDayMealResponse({ ...(r as any) })) : [];
-    if ('createdAt' in packagecityday && packagecityday.createdAt) this.createdAt = moment(packagecityday.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecityday && packagecityday.updatedAt) this.updatedAt = moment(packagecityday.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecityday && packagecityday.createdAt) this.createdAt = moment(packagecityday.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecityday && packagecityday.updatedAt) this.updatedAt = moment(packagecityday.updatedAt).format('DD-MM-YYYY');
   }
 }

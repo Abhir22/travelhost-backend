@@ -46,7 +46,7 @@ export class PackageResponse {
     this.packagesnapshotmappings = Array.isArray(pkg.packagesnapshotmappings) ? pkg.packagesnapshotmappings.map((r: any) => new PackageSnapshotMappingResponse({ ...(r as any) })) : [];
     this.packageType = pkg.packageType && typeof pkg.packageType === 'object' ? new PackageTypeResponse({ ...(pkg.packageType as any) }) : undefined;
     this.packagecities = Array.isArray(pkg.packagecities) ? pkg.packagecities.map((r: any) => new PackageCityResponse({ ...(r as any) })) : [];
-    if ('createdAt' in pkg && pkg.createdAt) this.createdAt = moment(pkg.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in pkg && pkg.updatedAt) this.updatedAt = moment(pkg.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in pkg && pkg.createdAt) this.createdAt = moment(pkg.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in pkg && pkg.updatedAt) this.updatedAt = moment(pkg.updatedAt).format('DD-MM-YYYY');
   }
 }

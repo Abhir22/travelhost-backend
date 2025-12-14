@@ -53,7 +53,7 @@ export class DestinationResponse {
       ? destination.destinationPackageTypes.length
       : 0;
     
-    if ('createdAt' in destination && destination.createdAt) this.createdAt = moment(destination.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in destination && destination.updatedAt) this.updatedAt = moment(destination.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in destination && destination.createdAt) this.createdAt = moment(destination.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in destination && destination.updatedAt) this.updatedAt = moment(destination.updatedAt).format('DD-MM-YYYY');
   }
 }

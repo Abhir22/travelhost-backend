@@ -29,7 +29,7 @@ export class PackageCityDayMealTypeResponseDto {
         description: packagecitydaymealtype.mealType.description || undefined,
       };
     }
-    if ('createdAt' in packagecitydaymealtype && packagecitydaymealtype.createdAt) this.createdAt = moment(packagecitydaymealtype.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecitydaymealtype && packagecitydaymealtype.updatedAt) this.updatedAt = moment(packagecitydaymealtype.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecitydaymealtype && packagecitydaymealtype.createdAt) this.createdAt = moment(packagecitydaymealtype.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecitydaymealtype && packagecitydaymealtype.updatedAt) this.updatedAt = moment(packagecitydaymealtype.updatedAt).format('DD-MM-YYYY');
   }
 }

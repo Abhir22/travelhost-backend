@@ -15,7 +15,7 @@ export class PackageActivityResponse {
     this.name = packageactivity.name;
     this.image = packageactivity.image || undefined;
     this.packageactivitymappings = Array.isArray(packageactivity.packageactivitymappings) ? packageactivity.packageactivitymappings.map((r: any) => new PackageActivityMappingResponse({ ...(r as any) })) : [];
-    if ('createdAt' in packageactivity && packageactivity.createdAt) this.createdAt = moment(packageactivity.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packageactivity && packageactivity.updatedAt) this.updatedAt = moment(packageactivity.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packageactivity && packageactivity.createdAt) this.createdAt = moment(packageactivity.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packageactivity && packageactivity.updatedAt) this.updatedAt = moment(packageactivity.updatedAt).format('DD-MM-YYYY');
   }
 }

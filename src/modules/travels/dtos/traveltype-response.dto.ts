@@ -11,7 +11,7 @@ export class TravelTypeResponse {
   constructor(traveltype: TravelType) {
     if ('id' in traveltype && traveltype.id) this.id = traveltype.id;
     this.name = traveltype.name;
-    if ('createdAt' in traveltype && traveltype.createdAt) this.createdAt = moment(traveltype.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in traveltype && traveltype.updatedAt) this.updatedAt = moment(traveltype.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in traveltype && traveltype.createdAt) this.createdAt = moment(traveltype.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in traveltype && traveltype.updatedAt) this.updatedAt = moment(traveltype.updatedAt).format('DD-MM-YYYY');
   }
 }

@@ -24,7 +24,7 @@ export class HotelResponse {
     this.thumbnail = hotel.thumbnail || undefined;
     this.city = hotel.city && typeof hotel.city === 'object' ? new CityResponse({ ...(hotel.city as any) }) : undefined;
     this.hotelType = hotel.hotelType && typeof hotel.hotelType === 'object' ? new HotelTypeResponse({ ...(hotel.hotelType as any) }) : undefined;
-    if (hotel.createdAt) this.createdAt = moment(hotel.createdAt).format('YYYY-MM-DD');
-    if (hotel.updatedAt) this.updatedAt = moment(hotel.updatedAt).format('YYYY-MM-DD');
+    if (hotel.createdAt) this.createdAt = moment(hotel.createdAt).format('DD-MM-YYYY');
+    if (hotel.updatedAt) this.updatedAt = moment(hotel.updatedAt).format('DD-MM-YYYY');
   }
 }

@@ -11,7 +11,7 @@ export class MealTypeResponseDto {
     this.id = mealtype.id;
     this.name = mealtype.name;
     this.description = mealtype.description || undefined;
-    if ('createdAt' in mealtype && mealtype.createdAt) this.createdAt = moment(mealtype.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in mealtype && mealtype.updatedAt) this.updatedAt = moment(mealtype.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in mealtype && mealtype.createdAt) this.createdAt = moment(mealtype.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in mealtype && mealtype.updatedAt) this.updatedAt = moment(mealtype.updatedAt).format('DD-MM-YYYY');
   }
 }

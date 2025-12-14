@@ -23,7 +23,7 @@ export class PackageStateResponseDto {
         countryId: packagestate.state.countryId,
       };
     }
-    if ('createdAt' in packagestate && packagestate.createdAt) this.createdAt = moment(packagestate.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagestate && packagestate.updatedAt) this.updatedAt = moment(packagestate.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagestate && packagestate.createdAt) this.createdAt = moment(packagestate.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagestate && packagestate.updatedAt) this.updatedAt = moment(packagestate.updatedAt).format('DD-MM-YYYY');
   }
 }

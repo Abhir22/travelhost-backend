@@ -17,7 +17,7 @@ export class PackageTypeResponse {
     this.image = packagetype.image || undefined;
     this.isInternational = packagetype.isInternational;
     this.packages = Array.isArray(packagetype.packages) ? packagetype.packages.map((r: any) => new PackageResponse({ ...(r as any) })) : [];
-    if ('createdAt' in packagetype && packagetype.createdAt) this.createdAt = moment(packagetype.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagetype && packagetype.updatedAt) this.updatedAt = moment(packagetype.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagetype && packagetype.createdAt) this.createdAt = moment(packagetype.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagetype && packagetype.updatedAt) this.updatedAt = moment(packagetype.updatedAt).format('DD-MM-YYYY');
   }
 }

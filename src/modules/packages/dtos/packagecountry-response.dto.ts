@@ -23,7 +23,7 @@ export class PackageCountryResponseDto {
         isoCode: packagecountry.country.isoCode || undefined,
       };
     }
-    if ('createdAt' in packagecountry && packagecountry.createdAt) this.createdAt = moment(packagecountry.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecountry && packagecountry.updatedAt) this.updatedAt = moment(packagecountry.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecountry && packagecountry.createdAt) this.createdAt = moment(packagecountry.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecountry && packagecountry.updatedAt) this.updatedAt = moment(packagecountry.updatedAt).format('DD-MM-YYYY');
   }
 }

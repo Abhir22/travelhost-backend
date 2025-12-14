@@ -26,7 +26,7 @@ export class PackageCityResponse {
     this.totalNights = packagecity.totalNights;
     this.package = packagecity.package && typeof packagecity.package === 'object' ? new PackageResponse({ ...(packagecity.package as any) }) : undefined;
     this.packagecitydaies = Array.isArray(packagecity.packagecitydaies) ? packagecity.packagecitydaies.map((r: any) => new PackageCityDayResponse({ ...(r as any) })) : [];
-    if ('createdAt' in packagecity && packagecity.createdAt) this.createdAt = moment(packagecity.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagecity && packagecity.updatedAt) this.updatedAt = moment(packagecity.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagecity && packagecity.createdAt) this.createdAt = moment(packagecity.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagecity && packagecity.updatedAt) this.updatedAt = moment(packagecity.updatedAt).format('DD-MM-YYYY');
   }
 }

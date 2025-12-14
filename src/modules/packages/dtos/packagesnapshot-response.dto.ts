@@ -15,7 +15,7 @@ export class PackageSnapshotResponse {
     this.name = packagesnapshot.name;
     this.icon = packagesnapshot.icon || undefined;
     this.packagesnapshotmappings = Array.isArray(packagesnapshot.packagesnapshotmappings) ? packagesnapshot.packagesnapshotmappings.map((r: any) => new PackageSnapshotMappingResponse({ ...(r as any) })) : [];
-    if ('createdAt' in packagesnapshot && packagesnapshot.createdAt) this.createdAt = moment(packagesnapshot.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in packagesnapshot && packagesnapshot.updatedAt) this.updatedAt = moment(packagesnapshot.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in packagesnapshot && packagesnapshot.createdAt) this.createdAt = moment(packagesnapshot.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in packagesnapshot && packagesnapshot.updatedAt) this.updatedAt = moment(packagesnapshot.updatedAt).format('DD-MM-YYYY');
   }
 }

@@ -12,7 +12,7 @@ export class HotelTypeResponse {
         if ('id' in hoteltype && hoteltype.id) this.id = hoteltype.id;
         this.name = hoteltype.name!;
         this.description = hoteltype.description;
-        if ('createdAt' in hoteltype && hoteltype.createdAt) this.createdAt = moment(hoteltype.createdAt).format('YYYY-MM-DD');
-        if ('updatedAt' in hoteltype && hoteltype.updatedAt) this.updatedAt = moment(hoteltype.updatedAt).format('YYYY-MM-DD');
+        if ('createdAt' in hoteltype && hoteltype.createdAt) this.createdAt = moment(hoteltype.createdAt).format('DD-MM-YYYY');
+        if ('updatedAt' in hoteltype && hoteltype.updatedAt) this.updatedAt = moment(hoteltype.updatedAt).format('DD-MM-YYYY');
     }
 }

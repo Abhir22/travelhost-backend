@@ -12,7 +12,7 @@ export class MealTypeResponse {
         if ('id' in mealType && mealType.id) this.id = mealType.id;
         this.name = mealType.name;
         this.description = mealType.description;
-        if ('createdAt' in mealType && mealType.createdAt) this.createdAt = moment(mealType.createdAt).format('YYYY-MM-DD');
-        if ('updatedAt' in mealType && mealType.updatedAt) this.updatedAt = moment(mealType.updatedAt).format('YYYY-MM-DD');
+        if ('createdAt' in mealType && mealType.createdAt) this.createdAt = moment(mealType.createdAt).format('DD-MM-YYYY');
+        if ('updatedAt' in mealType && mealType.updatedAt) this.updatedAt = moment(mealType.updatedAt).format('DD-MM-YYYY');
     }
 }

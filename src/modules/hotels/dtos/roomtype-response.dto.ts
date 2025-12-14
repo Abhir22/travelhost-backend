@@ -16,7 +16,7 @@ export class RoomTypeResponse {
     this.name = roomtype.name!;
     this.description = roomtype.description || undefined;
     this.hotelrooms = 'hotelRooms' in roomtype && Array.isArray(roomtype.hotelRooms) ? roomtype.hotelRooms.map((r: any) => new HotelRoomResponse({ ...(r as any) })) : [];
-    if ('createdAt' in roomtype && roomtype.createdAt) this.createdAt = moment(roomtype.createdAt).format('YYYY-MM-DD');
-    if ('updatedAt' in roomtype && roomtype.updatedAt) this.updatedAt = moment(roomtype.updatedAt).format('YYYY-MM-DD');
+    if ('createdAt' in roomtype && roomtype.createdAt) this.createdAt = moment(roomtype.createdAt).format('DD-MM-YYYY');
+    if ('updatedAt' in roomtype && roomtype.updatedAt) this.updatedAt = moment(roomtype.updatedAt).format('DD-MM-YYYY');
   }
 }
