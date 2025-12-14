@@ -1,0 +1,31 @@
+{
+  "packageName": "Test Rajasthan Package",
+  "description": "Simple test package",
+  "packageTypeId": "honeymoon-id",
+  "duration": "3 days 2 nights",
+  "price": 25000,
+  "cities": [
+    {
+      "cityId": "jaipur-id",
+      "days": [
+        {
+          "dayNumber": 1,
+          "startTime": "10:00",
+          "endTime": "18:00",
+          "description": "Arrival in Jaipur"
+        }
+      ]
+    },
+    {
+      "cityId": "udaipur-id",
+      "days": [
+        {
+          "dayNumber": 2,
+          "startTime": "09:00",
+          "endTime": "19:00",
+          "description": "Udaipur sightseeing"
+        }
+      ]
+    }
+  ]
+}

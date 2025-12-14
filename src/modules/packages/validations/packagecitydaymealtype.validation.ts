@@ -5,6 +5,7 @@ export const createPackageCityDayMealTypeSchema = flatToNestedSchema(
   z.object({
     packageCityDayId: z.string().uuid("Invalid Package City Day ID"),
     mealTypeId: z.string().uuid("Invalid Meal Type ID"),
+    mealCategoryId: z.string().uuid("Invalid Meal Category ID").optional(),
     provider: z.string().optional(),
     time: z.string().optional(),
     description: z.string().optional(),
@@ -22,12 +23,20 @@ export const createPackageCityDayMealTypeSchema = flatToNestedSchema(
       connect: {
         id: data.mealTypeId
       }
-    }
+    },
+    ...(data.mealCategoryId ? {
+      mealCategory: {
+        connect: {
+          id: data.mealCategoryId
+        }
+      }
+    } : {})
   })
 );
 
 export const updatePackageCityDayMealTypeSchema = flatToNestedSchema(
   z.object({
+    mealCategoryId: z.string().uuid("Invalid Meal Category ID").optional(),
     provider: z.string().optional(),
     time: z.string().optional(),
     description: z.string().optional(),
@@ -36,6 +45,13 @@ export const updatePackageCityDayMealTypeSchema = flatToNestedSchema(
     ...(data.provider !== undefined ? { provider: data.provider } : {}),
     ...(data.time !== undefined ? { time: data.time } : {}),
     ...(data.description !== undefined ? { description: data.description } : {}),
+    ...(data.mealCategoryId !== undefined ? {
+      mealCategory: data.mealCategoryId ? {
+        connect: { id: data.mealCategoryId }
+      } : {
+        disconnect: true
+      }
+    } : {}),
   })
 );
 

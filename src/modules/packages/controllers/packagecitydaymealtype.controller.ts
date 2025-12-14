@@ -18,7 +18,8 @@ export class PackageCityDayMealTypeController extends BaseController<PackageCity
             searchFields: ['provider', 'description'],
             defaultInclude: {
                 packageCityDay: true,
-                mealType: true
+                mealType: true,
+                mealCategory: true
             }
         });
     }

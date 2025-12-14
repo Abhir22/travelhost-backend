@@ -4,6 +4,7 @@ import { IPackageCompleteService } from './interfaces/package-complete.service.i
 import { BadRequestException, NotFoundException, ConflictException } from '@/core/exceptions/http.exception';
 import { prisma } from '@/loaders/prisma';
 import logger from '@/core/utils/logger';
+import { PackageImageUploadService, PackageImageUpload } from './package-image-upload.service';
 
 // Constants and Enums
 const DEFAULT_MEAL_PROVIDER = 'Hotel Restaurant';
@@ -21,16 +22,25 @@ interface LookupData {
   sightseeings: Map<string, any>;
   hotels: Map<string, any>;
   mealTypes: Map<string, any>;
+  mealCategories: Map<string, any>;
 }
 
 interface PackageCreationResult {
   id: string;
   packageName: string;
+  uploadedImages?: number;
+}
+
+interface PackageCompleteData {
+  packageData: any;
+  images?: Express.Multer.File[];
 }
 
 @injectable()
 export class PackageCompleteService implements IPackageCompleteService {
-  constructor() {}
+  constructor(
+    @inject(PackageImageUploadService) private imageUploadService: PackageImageUploadService
+  ) { }
 
   /**
    * Validates the payload structure before processing
@@ -57,7 +67,7 @@ export class PackageCompleteService implements IPackageCompleteService {
       if (!city.cityId) {
         throw new BadRequestException(`City at index ${index} must have a cityId`);
       }
-      
+
       if (!city.days || !Array.isArray(city.days) || city.days.length === 0) {
         throw new BadRequestException(`City at index ${index} must have at least one day`);
       }
@@ -72,11 +82,13 @@ export class PackageCompleteService implements IPackageCompleteService {
     sightseeingIds: string[];
     hotelIds: string[];
     mealTypeIds: string[];
+    mealCategoryIds: string[];
   } {
     const cityIds = new Set<string>();
     const sightseeingIds = new Set<string>();
     const hotelIds = new Set<string>();
     const mealTypeIds = new Set<string>();
+    const mealCategoryIds = new Set<string>();
 
     // Collect city IDs
     data.cities.forEach((city: any) => {
@@ -107,6 +119,9 @@ export class PackageCompleteService implements IPackageCompleteService {
             if (m.mealTypeId) {
               mealTypeIds.add(m.mealTypeId);
             }
+            if (m.mealCategoryId) {
+              mealCategoryIds.add(m.mealCategoryId);
+            }
           });
         }
       });
@@ -125,7 +140,8 @@ export class PackageCompleteService implements IPackageCompleteService {
       cityIds: Array.from(cityIds),
       sightseeingIds: Array.from(sightseeingIds),
       hotelIds: Array.from(hotelIds),
-      mealTypeIds: Array.from(mealTypeIds)
+      mealTypeIds: Array.from(mealTypeIds),
+      mealCategoryIds: Array.from(mealCategoryIds)
     };
   }
 
@@ -133,20 +149,21 @@ export class PackageCompleteService implements IPackageCompleteService {
    * Fetches and validates all required lookup data
    */
   private async prepareLookupData(data: any): Promise<LookupData> {
-    const { cityIds, sightseeingIds, hotelIds, mealTypeIds } = this.collectUniqueIds(data);
+    const { cityIds, sightseeingIds, hotelIds, mealTypeIds, mealCategoryIds } = this.collectUniqueIds(data);
 
     logger.info('Fetching lookup data', {
       cityCount: cityIds.length,
       sightseeingCount: sightseeingIds.length,
       hotelCount: hotelIds.length,
-      mealTypeCount: mealTypeIds.length
+      mealTypeCount: mealTypeIds.length,
+      mealCategoryCount: mealCategoryIds.length
     });
 
     // Fetch all data in parallel
-    const [cities, sightseeings, hotels, mealTypes] = await Promise.all([
+    const [cities, sightseeings, hotels, mealTypes, mealCategories] = await Promise.all([
       prisma.city.findMany({
         where: { id: { in: cityIds } },
-        include: { 
+        include: {
           state: {
             include: {
               country: true
@@ -163,6 +180,9 @@ export class PackageCompleteService implements IPackageCompleteService {
       }) : [],
       mealTypeIds.length > 0 ? prisma.mealType.findMany({
         where: { id: { in: mealTypeIds } }
+      }) : [],
+      mealCategoryIds.length > 0 ? prisma.mealCategory.findMany({
+        where: { id: { in: mealCategoryIds } }
       }) : []
     ]);
 
@@ -171,13 +191,18 @@ export class PackageCompleteService implements IPackageCompleteService {
     this.validateRequiredEntities(sightseeingIds, sightseeings, 'sightseeings');
     this.validateRequiredEntities(hotelIds, hotels, 'hotels');
     this.validateRequiredEntities(mealTypeIds, mealTypes, 'meal types');
+    // Meal categories are optional, so we don't validate them strictly
+    if (mealCategoryIds.length > 0) {
+      this.validateRequiredEntities(mealCategoryIds, mealCategories, 'meal categories');
+    }
 
     // Create lookup maps for fast access
     return {
       cities: new Map(cities.map(c => [c.id, c])),
       sightseeings: new Map(sightseeings.map(s => [s.id, s])),
       hotels: new Map(hotels.map(h => [h.id, h])),
-      mealTypes: new Map(mealTypes.map(m => [m.id, m]))
+      mealTypes: new Map(mealTypes.map(m => [m.id, m])),
+      mealCategories: new Map(mealCategories.map(mc => [mc.id, mc]))
     };
   }
 
@@ -187,7 +212,7 @@ export class PackageCompleteService implements IPackageCompleteService {
   private validateRequiredEntities(requestedIds: string[], foundEntities: any[], entityType: string): void {
     const foundIds = new Set(foundEntities.map(e => e.id));
     const missingIds = requestedIds.filter(id => !foundIds.has(id));
-    
+
     if (missingIds.length > 0) {
       throw new NotFoundException(`Missing ${entityType}: ${missingIds.join(', ')}`);
     }
@@ -199,15 +224,13 @@ export class PackageCompleteService implements IPackageCompleteService {
   private async createPackageCore(data: any, tx: any): Promise<any> {
     const packageData = {
       packageName: data.packageName.trim(),
-      description: data.description?.trim(),
       shortDescription: data.shortDescription?.trim(),
       longDescription: data.longDescription?.trim(),
       mainImage: data.mainImage?.trim(),
       thumbnail: data.thumbnail?.trim(),
       video: data.video?.trim(),
       packageTypeId: data.packageTypeId,
-      days: Math.max(data.duration || MIN_PACKAGE_DURATION, MIN_PACKAGE_DURATION),
-      nights: Math.max((data.duration || MIN_PACKAGE_DURATION) - 1, 0),
+      duration: data.duration?.toString() || MIN_PACKAGE_DURATION.toString(),
       basePrice: data.price ? parseFloat(data.price) : null,
     };
 
@@ -276,12 +299,185 @@ export class PackageCompleteService implements IPackageCompleteService {
   }
 
   /**
+   * Creates package images in database after S3 upload
+   */
+  private async createPackageImages(
+    packageId: string,
+    images: Express.Multer.File[],
+    tx: any
+  ): Promise<number> {
+    if (!images || images.length === 0) {
+      return 0;
+    }
+
+    logger.info('Uploading package images', {
+      packageId,
+      imageCount: images.length
+    });
+
+    // Upload images to S3
+    const uploadResults = await Promise.all(
+      images.map(image => this.imageUploadService.uploadImage(packageId, image))
+    );
+
+    // Filter successful uploads
+    const successfulUploads = uploadResults.filter(result => result.success);
+
+    if (successfulUploads.length === 0) {
+      logger.warn('No images were uploaded successfully', { packageId });
+      return 0;
+    }
+
+    // Create database records for successful uploads
+    // Store only S3 path/key in DB - full URL can be constructed at runtime
+    const galleryData = successfulUploads.map((upload, index) => ({
+      packageId,
+      imageUrl: upload.imagePath!,  // S3 path/key (not full URL)
+      imageOrder: index + 1,
+      isCover: index === 0 // First image as cover
+    }));
+
+    await tx.packageGallery.createMany({
+      data: galleryData
+    });
+
+    logger.info('Package images created in database', {
+      packageId,
+      uploadedCount: successfulUploads.length,
+      totalAttempted: images.length
+    });
+
+    return successfulUploads.length;
+  }
+
+  /**
+   * Creates package pricing records
+   */
+  private async createPackagePricing(
+    packageId: string,
+    pricingData: any[],
+    tx: any
+  ): Promise<void> {
+    if (!pricingData || pricingData.length === 0) {
+      return;
+    }
+
+    const pricingRecords = pricingData.map(pricing => ({
+      packageId,
+      season: pricing.season || 'ON_SEASON',
+      dateFrom: new Date(pricing.dateFrom),
+      dateTo: new Date(pricing.dateTo),
+      rackRate: parseFloat(pricing.rackRate),
+      publishedRate: parseFloat(pricing.publishedRate),
+      customerDiscountPercentage: pricing.customerDiscountPercentage ? parseFloat(pricing.customerDiscountPercentage) : null,
+      customerDiscountAmount: pricing.customerDiscountAmount ? parseFloat(pricing.customerDiscountAmount) : null,
+      adultRate: pricing.adultRate ? parseFloat(pricing.adultRate) : null,
+      agentDiscountPercentage: pricing.agentDiscountPercentage ? parseFloat(pricing.agentDiscountPercentage) : null,
+      agentDiscountAmount: pricing.agentDiscountAmount ? parseFloat(pricing.agentDiscountAmount) : null,
+      agentRate: pricing.agentRate ? parseFloat(pricing.agentRate) : null,
+      childRate: pricing.childRate ? parseFloat(pricing.childRate) : null,
+      infantRate: pricing.infantRate ? parseFloat(pricing.infantRate) : null,
+      createdBy: pricing.createdBy
+    }));
+
+    await tx.packagePricing.createMany({
+      data: pricingRecords
+    });
+  }
+
+  /**
+   * Creates package policies (terms, inclusions, exclusions, payment, cancellation)
+   */
+  private async createPackagePolicies(
+    packageId: string,
+    policies: any,
+    tx: any
+  ): Promise<void> {
+    const promises: Promise<any>[] = [];
+
+    // Terms & Conditions
+    if (policies.termsConditions?.length > 0) {
+      promises.push(
+        tx.packageTermsCondition.createMany({
+          data: policies.termsConditions.map((term: any) => ({
+            packageId,
+            content: term.content,
+            linkText: term.linkText,
+            linkUrl: term.linkUrl,
+            videoUrl: term.videoUrl,
+            imageUrl: term.imageUrl,
+            fileName: term.fileName,
+            filePath: term.filePath,
+            fileType: term.fileType,
+            fileSize: term.fileSize ? BigInt(term.fileSize) : null,
+            createdBy: term.createdBy
+          }))
+        })
+      );
+    }
+
+    // Inclusions
+    if (policies.inclusions?.length > 0) {
+      promises.push(
+        tx.packageInclusion.createMany({
+          data: policies.inclusions.map((inclusion: any) => ({
+            packageId,
+            content: inclusion.content,
+            createdBy: inclusion.createdBy
+          }))
+        })
+      );
+    }
+
+    // Exclusions
+    if (policies.exclusions?.length > 0) {
+      promises.push(
+        tx.packageExclusion.createMany({
+          data: policies.exclusions.map((exclusion: any) => ({
+            packageId,
+            content: exclusion.content,
+            createdBy: exclusion.createdBy
+          }))
+        })
+      );
+    }
+
+    // Payment Policies
+    if (policies.paymentPolicies?.length > 0) {
+      promises.push(
+        tx.packagePaymentPolicy.createMany({
+          data: policies.paymentPolicies.map((policy: any) => ({
+            packageId,
+            content: policy.content,
+            createdBy: policy.createdBy
+          }))
+        })
+      );
+    }
+
+    // Cancellation Policies
+    if (policies.cancellationPolicies?.length > 0) {
+      promises.push(
+        tx.packageCancellationPolicy.createMany({
+          data: policies.cancellationPolicies.map((policy: any) => ({
+            packageId,
+            content: policy.content,
+            createdBy: policy.createdBy
+          }))
+        })
+      );
+    }
+
+    await Promise.all(promises);
+  }
+
+  /**
    * Creates package cities and their associated days
    */
   private async createPackageCitiesAndDays(packageId: string, data: any, lookupData: LookupData, tx: any): Promise<void> {
     for (const cityData of data.cities) {
       const city = lookupData.cities.get(cityData.cityId);
-      
+
       if (!city) {
         throw new BadRequestException(`City with ID ${cityData.cityId} not found`);
       }
@@ -307,7 +503,9 @@ export class PackageCompleteService implements IPackageCompleteService {
             endTime: dayData.endTime,
             startFrom: dayData.startFrom,
             endAt: dayData.endAt,
-            description: dayData.description,
+            // Use start_description/end_description from input, or fallback description to start_description
+            start_description: dayData.start_description || dayData.description,
+            end_description: dayData.end_description,
           },
         });
 
@@ -349,7 +547,7 @@ export class PackageCompleteService implements IPackageCompleteService {
         return {
           packageCityDayId,
           sightseeingName: sightseeingRecord.name,
-          ticket: sightseeing.description || '',
+          ticket: sightseeing.ticket || sightseeing.description || '',  // Use ticket field, fallback to description
           timeFrom: sightseeing.timeFrom,
           timeTo: sightseeing.timeTo,
         };
@@ -372,7 +570,8 @@ export class PackageCompleteService implements IPackageCompleteService {
         return {
           packageCityDayId,
           hotelName: hotelRecord.name,
-          starRating: hotelRecord.rating || DEFAULT_HOTEL_RATING,
+          // Use starRating from input if provided, otherwise fall back to hotel record or default
+          starRating: hotel.starRating || hotelRecord.rating || DEFAULT_HOTEL_RATING,
           hotelType: hotel.hotelType,
           checkInTime: hotel.checkIn,
           checkOutTime: hotel.checkOut,
@@ -388,7 +587,7 @@ export class PackageCompleteService implements IPackageCompleteService {
       );
     }
 
-    // Create meals
+    // Create meals using PackageCityDayMealType (supports meal category)
     if (dayData.meals?.length > 0) {
       const mealData = dayData.meals.map((meal: any) => {
         const mealTypeRecord = lookupData.mealTypes.get(meal.mealTypeId);
@@ -397,7 +596,8 @@ export class PackageCompleteService implements IPackageCompleteService {
         }
         return {
           packageCityDayId,
-          mealType: mealTypeRecord.name,
+          mealTypeId: meal.mealTypeId,           // Link to MealType table
+          mealCategoryId: meal.mealCategoryId || null,  // Link to MealCategory table (optional)
           provider: meal.provider || DEFAULT_MEAL_PROVIDER,
           time: meal.time,
           description: meal.description,
@@ -405,7 +605,7 @@ export class PackageCompleteService implements IPackageCompleteService {
       });
 
       promises.push(
-        tx.packageCityDayMeal.createMany({
+        tx.packageCityDayMealType.createMany({
           data: mealData,
         })
       );
@@ -421,11 +621,11 @@ export class PackageCompleteService implements IPackageCompleteService {
     if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_VIOLATION) {
       throw new ConflictException(`Duplicate entry: ${error.meta?.target || 'unknown field'}`);
     }
-    
+
     if (error.code === PrismaErrorCode.FOREIGN_KEY_CONSTRAINT_VIOLATION) {
       throw new BadRequestException(`Invalid reference: ${error.meta?.field_name || 'unknown field'}`);
     }
-    
+
     if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
       throw new NotFoundException(`Required record not found: ${error.meta?.cause || 'unknown'}`);
     }
@@ -500,62 +700,146 @@ export class PackageCompleteService implements IPackageCompleteService {
   }
 
   /**
-   * Creates a complete package with all relations
+   * Uploads images for an existing package
    */
-  async createCompletePackage(data: any): Promise<PackageCreationResult> {
+  async uploadPackageImages(packageId: string, images: Express.Multer.File[]): Promise<{
+    uploadedCount: number;
+    totalAttempted: number;
+    imagePaths: string[];   // S3 paths/keys (stored in DB)
+    imageUrls: string[];    // Full S3 URLs (for immediate use)
+  }> {
+    if (!images || images.length === 0) {
+      throw new BadRequestException('No images provided');
+    }
+
+    logger.info('Uploading images for existing package', {
+      packageId,
+      imageCount: images.length
+    });
+
+    // Upload images to S3
+    const uploadResults = await Promise.all(
+      images.map(image => this.imageUploadService.uploadImage(packageId, image))
+    );
+
+    // Filter successful uploads
+    const successfulUploads = uploadResults.filter(result => result.success);
+
+    if (successfulUploads.length === 0) {
+      throw new BadRequestException('Failed to upload any images');
+    }
+
+    // Get current max order for this package
+    const maxOrderResult = await prisma.packageGallery.aggregate({
+      where: { packageId },
+      _max: { imageOrder: true }
+    });
+
+    const startOrder = (maxOrderResult._max.imageOrder || 0) + 1;
+
+    // Create database records for successful uploads
+    // Store only S3 path/key in DB - full URL can be constructed at runtime
+    const galleryData = successfulUploads.map((upload, index) => ({
+      packageId,
+      imageUrl: upload.imagePath!,  // S3 path/key (not full URL)
+      imageOrder: startOrder + index,
+      isCover: false // Don't automatically set as cover for additional uploads
+    }));
+
+    await prisma.packageGallery.createMany({
+      data: galleryData
+    });
+
+    logger.info('Package images uploaded and saved', {
+      packageId,
+      uploadedCount: successfulUploads.length,
+      totalAttempted: images.length
+    });
+
+    return {
+      uploadedCount: successfulUploads.length,
+      totalAttempted: images.length,
+      imagePaths: successfulUploads.map(upload => upload.imagePath!),  // S3 paths
+      imageUrls: successfulUploads.map(upload => upload.fullUrl!)      // Full URLs for immediate use
+    };
+  }
+
+  /**
+   * Creates a complete package with all relations and images
+   */
+  async createCompletePackage(data: PackageCompleteData): Promise<PackageCreationResult> {
     const transactionId = `pkg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const { packageData, images } = data;
+
     try {
       // 1. Validate payload structure before starting transaction
-      this.validatePayload(data);
-      
+      this.validatePayload(packageData);
+
       // 2. Pre-fetch all required data to avoid long-running transactions
-      const lookupData = await this.prepareLookupData(data);
-      
-      logger.info('Starting package creation transaction', { transactionId, packageName: data.packageName });
-      
+      const lookupData = await this.prepareLookupData(packageData);
+
+      logger.info('Starting package creation transaction', { transactionId, packageName: packageData.packageName });
+
       // 3. Start transaction with guardrails
       const result = await prisma.$transaction(async (tx) => {
         logger.info('Transaction started', { transactionId });
 
         // Create the main package
-        const createdPackage = await this.createPackageCore(data, tx);
-        
-        // Create package relations
-        await this.createPackageRelations(createdPackage.id, data, tx);
-        
-        // Create package cities and days
-        await this.createPackageCitiesAndDays(createdPackage.id, data, lookupData, tx);
+        const createdPackage = await this.createPackageCore(packageData, tx);
 
-        logger.info('Transaction completed successfully', { 
-          transactionId, 
-          packageId: createdPackage.id 
+        // Create package relations
+        await this.createPackageRelations(createdPackage.id, packageData, tx);
+
+        // Create package cities and days
+        await this.createPackageCitiesAndDays(createdPackage.id, packageData, lookupData, tx);
+
+        // Create package pricing
+        if (packageData.pricing) {
+          await this.createPackagePricing(createdPackage.id, packageData.pricing, tx);
+        }
+
+        // Create package policies
+        if (packageData.policies) {
+          await this.createPackagePolicies(createdPackage.id, packageData.policies, tx);
+        }
+
+        // Upload and create package images
+        let uploadedImages = 0;
+        if (images && images.length > 0) {
+          uploadedImages = await this.createPackageImages(createdPackage.id, images, tx);
+        }
+
+        logger.info('Transaction completed successfully', {
+          transactionId,
+          packageId: createdPackage.id,
+          uploadedImages
         });
 
-        // Return minimal response
+        // Return response with image count
         return {
           id: createdPackage.id,
-          packageName: createdPackage.packageName
+          packageName: createdPackage.packageName,
+          uploadedImages
         };
       });
 
-      logger.info('Package created successfully', { 
-        transactionId, 
+      logger.info('Package created successfully', {
+        transactionId,
         packageId: result.id,
-        packageName: result.packageName 
+        packageName: result.packageName
       });
 
       return result;
     } catch (error: any) {
-      logger.error('Package creation failed', { 
-        transactionId, 
+      logger.error('Package creation failed', {
+        transactionId,
         error: error.message,
-        stack: error.stack 
+        stack: error.stack
       });
 
-      if (error instanceof BadRequestException || 
-          error instanceof NotFoundException || 
-          error instanceof ConflictException) {
+      if (error instanceof BadRequestException ||
+        error instanceof NotFoundException ||
+        error instanceof ConflictException) {
         throw error;
       }
 

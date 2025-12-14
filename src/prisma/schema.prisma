@@ -118,10 +118,11 @@ model HotelType {
 }
 
 model MealCategory {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                      String                   @id @default(uuid())
+  name                    String                   @unique
+  packagecitydaymealtypes PackageCityDayMealType[]
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
 }
 
 model HotelRoom {
@@ -295,13 +296,11 @@ model Package {
   packageName             String
   shortDescription        String?                  @db.Text
   longDescription         String?                  @db.Text
-  description             String?
   mainImage               String?
   thumbnail               String?
   video                   String?
   basePrice               Decimal?
-  days                    Int
-  nights                  Int
+  duration                String
   packageType             PackageType              @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
   packagecategorymappings PackageCategoryMapping[]
   packageactivitymappings PackageActivityMapping[]
@@ -396,7 +395,8 @@ model PackageCityDay {
   endTime                    String?
   startFrom                  String?
   endAt                      String?
-  description                String?
+  start_description          String?
+  end_description            String?
   packageCity                PackageCity                 @relation(fields: [packageCityId], references: [id], onDelete: Cascade)
   packagecitydaytravels      PackageCityDayTravel[]
   packagecitydaysightseeings PackageCityDaySightseeing[]
@@ -464,13 +464,17 @@ model PackageCityDayMealType {
   id               String         @id @default(uuid())
   packageCityDayId String
   mealTypeId       String
+  mealCategoryId   String?
   provider         String?
   time             String?
   description      String?
   packageCityDay   PackageCityDay @relation(fields: [packageCityDayId], references: [id], onDelete: Cascade)
   mealType         MealType       @relation(fields: [mealTypeId], references: [id], onDelete: Cascade)
+  mealCategory     MealCategory?  @relation(fields: [mealCategoryId], references: [id], onDelete: SetNull)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
+
+  @@index([mealCategoryId])
 }
 
 model MealType {

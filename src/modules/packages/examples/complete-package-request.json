@@ -7,7 +7,7 @@
   "thumbnail": "https://example.com/packages/west-bengal-mumbai-explorer-thumb.jpg",
   "video": "https://example.com/packages/west-bengal-mumbai-explorer-video.mp4",
   "packageTypeId": "family-id",
-  "duration": 7,
+  "duration": "7",
   "price": 89999.99,
   "categories": [
     {
@@ -105,12 +105,14 @@
           "sightseeings": [
             {
               "sightseeingId": "victoria-memorial-id",
+              "ticket": "Entry fee included (30 INR for Indians, 500 INR for foreigners)",
               "timeFrom": "10:00",
               "timeTo": "12:00",
               "description": "Victoria Memorial - Iconic marble monument and museum showcasing British colonial history"
             },
             {
               "sightseeingId": "howrah-bridge-id",
+              "ticket": "Free entry - No ticket required",
               "timeFrom": "14:30",
               "timeTo": "16:00",
               "description": "Howrah Bridge - Famous cantilever bridge and engineering marvel over Hooghly River"
@@ -196,6 +198,7 @@
           "sightseeings": [
             {
               "sightseeingId": "tiger-hill-id",
+              "ticket": "Entry fee included (100 INR per person + 50 INR vehicle)",
               "timeFrom": "05:00",
               "timeTo": "07:00",
               "description": "Tiger Hill sunrise viewpoint - Spectacular views of Kanchenjunga and Mount Everest on clear days"
@@ -251,6 +254,7 @@
           "sightseeings": [
             {
               "sightseeingId": "gateway-of-india-id",
+              "ticket": "Free entry - Open public monument",
               "timeFrom": "17:00",
               "timeTo": "18:30",
               "description": "Gateway of India - Iconic monument and symbol of Mumbai, perfect for evening photography"
@@ -295,6 +299,7 @@
           "sightseeings": [
             {
               "sightseeingId": "gateway-of-india-id",
+              "ticket": "Free entry - Open public monument",
               "timeFrom": "10:00",
               "timeTo": "11:30",
               "description": "Gateway of India - Historic archway built during British colonial period"

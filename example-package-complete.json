@@ -1,0 +1,458 @@
+{
+  "packageName": "Royal Rajasthan Heritage Tour",
+  "description": "Experience the royal heritage of Rajasthan with visits to magnificent palaces and forts",
+  "shortDescription": "5-day royal heritage tour covering Jaipur and Udaipur",
+  "longDescription": "Immerse yourself in the royal grandeur of Rajasthan with this carefully curated 5-day tour. Visit the Pink City of Jaipur with its magnificent Hawa Mahal and then travel to the City of Lakes, Udaipur, to experience the floating palace and serene lakes. This tour combines luxury accommodation, authentic Rajasthani cuisine, and guided sightseeing to give you the complete royal experience.",
+  "mainImage": "https://example.com/rajasthan-main.jpg",
+  "thumbnail": "https://example.com/rajasthan-thumb.jpg",
+  "video": "https://example.com/rajasthan-video.mp4",
+  "packageTypeId": "honeymoon-id",
+  "duration": "5 days 4 nights",
+  "price": 45000,
+  "maxPeople": 6,
+  "minPeople": 2,
+  "isActive": true,
+  "categories": [
+    {
+      "packageCategoryId": "romantic-id"
+    },
+    {
+      "packageCategoryId": "cultural-id"
+    }
+  ],
+  "activities": [
+    {
+      "packageActivityId": "sightseeing-id"
+    },
+    {
+      "packageActivityId": "photography-id"
+    }
+  ],
+  "snapshots": [
+    {
+      "packageSnapshotId": "accommodation-id"
+    },
+    {
+      "packageSnapshotId": "transport-id"
+    },
+    {
+      "packageSnapshotId": "meals-id"
+    }
+  ],
+  "cities": [
+    {
+      "cityId": "jaipur-id",
+      "days": [
+        {
+          "dayNumber": 1,
+          "startTime": "10:00",
+          "endTime": "18:00",
+          "startFrom": "Jaipur Airport",
+          "endAt": "Hotel",
+          "description": "Arrival in Jaipur and check-in to hotel",
+          "travels": [
+            {
+              "type": "Airport Transfer",
+              "carpooling": "Private",
+              "vehicleType": "Sedan",
+              "timeFrom": "10:00",
+              "timeTo": "11:00",
+              "description": "Private transfer from airport to hotel"
+            }
+          ],
+          "sightseeings": [
+            {
+              "sightseeingId": "hawa-mahal-id",
+              "ticket": "Entry fee: ₹200 per person",
+              "timeFrom": "15:00",
+              "timeTo": "17:00",
+              "description": "Visit the iconic Palace of Winds"
+            }
+          ],
+          "hotels": [
+            {
+              "hotelId": "rambagh-palace-id",
+              "hotelType": "Palace Hotel",
+              "roomType": "Deluxe Room",
+              "starRating": 5,
+              "checkIn": "14:00",
+              "checkOut": "12:00",
+              "numberOfRooms": 1,
+              "description": "Luxury palace hotel experience"
+            }
+          ],
+          "meals": [
+            {
+              "mealTypeId": "lunch-id",
+              "mealCategoryId": "vegetarian-id",
+              "provider": "Hotel Restaurant",
+              "time": "13:00",
+              "description": "Welcome lunch with traditional Rajasthani cuisine"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "mealCategoryId": "vegetarian-id",
+              "provider": "Hotel Restaurant",
+              "time": "20:00",
+              "description": "Royal dinner at palace restaurant"
+            }
+          ]
+        },
+        {
+          "dayNumber": 2,
+          "startTime": "09:00",
+          "endTime": "19:00",
+          "startFrom": "Hotel",
+          "endAt": "Hotel",
+          "description": "Full day Jaipur sightseeing",
+          "travels": [
+            {
+              "type": "Local Sightseeing",
+              "carpooling": "Private",
+              "vehicleType": "SUV",
+              "timeFrom": "09:00",
+              "timeTo": "19:00",
+              "description": "Full day sightseeing with private vehicle"
+            }
+          ],
+          "sightseeings": [
+            {
+              "sightseeingId": "hawa-mahal-id",
+              "ticket": "Entry fee: ₹200 per person",
+              "timeFrom": "10:00",
+              "timeTo": "12:00",
+              "description": "Detailed visit to Hawa Mahal and surrounding areas"
+            }
+          ],
+          "hotels": [
+            {
+              "hotelId": "rambagh-palace-id",
+              "hotelType": "Palace Hotel",
+              "roomType": "Deluxe Room",
+              "starRating": 5,
+              "checkIn": "14:00",
+              "checkOut": "12:00",
+              "numberOfRooms": 1,
+              "description": "Continue stay at palace hotel"
+            }
+          ],
+          "meals": [
+            {
+              "mealTypeId": "breakfast-id",
+              "mealCategoryId": "continental-id",
+              "provider": "Hotel Restaurant",
+              "time": "08:00",
+              "description": "Continental breakfast"
+            },
+            {
+              "mealTypeId": "lunch-id",
+              "mealCategoryId": "non-vegetarian-id",
+              "provider": "Local Restaurant",
+              "time": "13:30",
+              "description": "Authentic Rajasthani thali at local restaurant"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "mealCategoryId": "vegetarian-id",
+              "provider": "Hotel Restaurant",
+              "time": "20:30",
+              "description": "Traditional dinner with cultural show"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cityId": "udaipur-id",
+      "days": [
+        {
+          "dayNumber": 3,
+          "startTime": "08:00",
+          "endTime": "18:00",
+          "startFrom": "Jaipur Hotel",
+          "endAt": "Udaipur Hotel",
+          "description": "Travel from Jaipur to Udaipur and check-in",
+          "travels": [
+            {
+              "type": "Inter-city Transfer",
+              "carpooling": "Private",
+              "vehicleType": "SUV",
+              "timeFrom": "08:00",
+              "timeTo": "14:00",
+              "description": "Private transfer from Jaipur to Udaipur (6 hours)"
+            }
+          ],
+          "sightseeings": [
+            {
+              "sightseeingId": "lake-pichola-id",
+              "ticket": "Boat ride: ₹500 per person",
+              "timeFrom": "16:00",
+              "timeTo": "17:30",
+              "description": "Evening boat ride on Lake Pichola"
+            }
+          ],
+          "hotels": [
+            {
+              "hotelId": "taj-lake-palace-id",
+              "hotelType": "Heritage Hotel",
+              "roomType": "Lake View Room",
+              "starRating": 5,
+              "checkIn": "15:00",
+              "checkOut": "12:00",
+              "numberOfRooms": 1,
+              "description": "Iconic floating palace hotel on Lake Pichola"
+            }
+          ],
+          "meals": [
+            {
+              "mealTypeId": "breakfast-id",
+              "mealCategoryId": "continental-id",
+              "provider": "Hotel Restaurant",
+              "time": "07:00",
+              "description": "Early breakfast before departure"
+            },
+            {
+              "mealTypeId": "lunch-id",
+              "mealCategoryId": "vegetarian-id",
+              "provider": "Highway Restaurant",
+              "time": "12:00",
+              "description": "Lunch break during travel"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "mealCategoryId": "non-vegetarian-id",
+              "provider": "Hotel Restaurant",
+              "time": "20:00",
+              "description": "Welcome dinner at lake palace"
+            }
+          ]
+        },
+        {
+          "dayNumber": 4,
+          "startTime": "09:00",
+          "endTime": "18:00",
+          "startFrom": "Hotel",
+          "endAt": "Hotel",
+          "description": "Full day Udaipur sightseeing",
+          "travels": [
+            {
+              "type": "Local Sightseeing",
+              "carpooling": "Private",
+              "vehicleType": "Sedan",
+              "timeFrom": "09:00",
+              "timeTo": "18:00",
+              "description": "Full day city tour with private vehicle"
+            }
+          ],
+          "sightseeings": [
+            {
+              "sightseeingId": "city-palace-udaipur-id",
+              "ticket": "Entry fee: ₹300 per person",
+              "timeFrom": "10:00",
+              "timeTo": "13:00",
+              "description": "Explore the magnificent City Palace complex"
+            },
+            {
+              "sightseeingId": "lake-pichola-id",
+              "ticket": "Photography session",
+              "timeFrom": "15:00",
+              "timeTo": "17:00",
+              "description": "Photography session around the lake"
+            }
+          ],
+          "hotels": [
+            {
+              "hotelId": "taj-lake-palace-id",
+              "hotelType": "Heritage Hotel",
+              "roomType": "Lake View Room",
+              "starRating": 5,
+              "checkIn": "15:00",
+              "checkOut": "12:00",
+              "numberOfRooms": 1,
+              "description": "Continue stay at floating palace"
+            }
+          ],
+          "meals": [
+            {
+              "mealTypeId": "breakfast-id",
+              "mealCategoryId": "continental-id",
+              "provider": "Hotel Restaurant",
+              "time": "08:00",
+              "description": "Breakfast with lake view"
+            },
+            {
+              "mealTypeId": "lunch-id",
+              "mealCategoryId": "vegetarian-id",
+              "provider": "Palace Restaurant",
+              "time": "13:30",
+              "description": "Royal lunch at City Palace restaurant"
+            },
+            {
+              "mealTypeId": "dinner-id",
+              "mealCategoryId": "non-vegetarian-id",
+              "provider": "Rooftop Restaurant",
+              "time": "19:30",
+              "description": "Candlelight dinner with lake view"
+            }
+          ]
+        },
+        {
+          "dayNumber": 5,
+          "startTime": "10:00",
+          "endTime": "15:00",
+          "startFrom": "Hotel",
+          "endAt": "Udaipur Airport",
+          "description": "Check-out and departure",
+          "travels": [
+            {
+              "type": "Airport Transfer",
+              "carpooling": "Private",
+              "vehicleType": "Sedan",
+              "timeFrom": "13:00",
+              "timeTo": "14:00",
+              "description": "Private transfer to airport"
+            }
+          ],
+          "sightseeings": [],
+          "hotels": [],
+          "meals": [
+            {
+              "mealTypeId": "breakfast-id",
+              "mealCategoryId": "continental-id",
+              "provider": "Hotel Restaurant",
+              "time": "09:00",
+              "description": "Final breakfast at the palace"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pricing": [
+    {
+      "season": "ON_SEASON",
+      "dateFrom": "2024-10-01",
+      "dateTo": "2024-03-31",
+      "rackRate": 50000,
+      "publishedRate": 45000,
+      "customerDiscountPercentage": 10,
+      "customerDiscountAmount": 4500,
+      "adultRate": 45000,
+      "agentDiscountPercentage": 15,
+      "agentDiscountAmount": 6750,
+      "agentRate": 38250,
+      "childRate": 22500,
+      "infantRate": 0,
+      "createdBy": "admin-user-id"
+    },
+    {
+      "season": "OFF_SEASON",
+      "dateFrom": "2024-04-01",
+      "dateTo": "2024-09-30",
+      "rackRate": 40000,
+      "publishedRate": 35000,
+      "customerDiscountPercentage": 15,
+      "customerDiscountAmount": 5250,
+      "adultRate": 35000,
+      "agentDiscountPercentage": 20,
+      "agentDiscountAmount": 7000,
+      "agentRate": 28000,
+      "childRate": 17500,
+      "infantRate": 0,
+      "createdBy": "admin-user-id"
+    }
+  ],
+  "policies": {
+    "termsConditions": [
+      {
+        "content": "All bookings are subject to availability and confirmation. Prices are subject to change without prior notice.",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Valid photo ID is required for all travelers. Foreign nationals must carry passport and valid visa.",
+        "createdBy": "admin-user-id"
+      }
+    ],
+    "inclusions": [
+      {
+        "content": "Accommodation in luxury heritage hotels on twin sharing basis",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "All meals as mentioned in the itinerary",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Private air-conditioned vehicle for all transfers and sightseeing",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Professional English-speaking guide",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "All monument entrance fees as per itinerary",
+        "createdBy": "admin-user-id"
+      }
+    ],
+    "exclusions": [
+      {
+        "content": "Airfare to and from destination",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Personal expenses like laundry, telephone, tips, etc.",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Any meals not mentioned in the itinerary",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Travel insurance",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Any additional activities not mentioned in the itinerary",
+        "createdBy": "admin-user-id"
+      }
+    ],
+    "paymentPolicies": [
+      {
+        "content": "25% advance payment required at the time of booking",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Balance payment to be made 15 days before travel date",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Payment can be made via bank transfer, credit card, or online payment",
+        "createdBy": "admin-user-id"
+      }
+    ],
+    "cancellationPolicies": [
+      {
+        "content": "Cancellation 30 days before travel: 10% of total cost",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Cancellation 15-29 days before travel: 25% of total cost",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Cancellation 7-14 days before travel: 50% of total cost",
+        "createdBy": "admin-user-id"
+      },
+      {
+        "content": "Cancellation less than 7 days before travel: 100% of total cost",
+        "createdBy": "admin-user-id"
+      }
+    ]
+  },
+  "options": {
+    "includeGroupDeparture": true,
+    "includeFixedDeparture": false,
+    "includePackageAvailability": true
+  }
+}

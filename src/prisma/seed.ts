@@ -183,6 +183,17 @@ async function main() {
     },
   });
 
+  const udaipur = await prisma.city.upsert({
+    where: { id: 'udaipur-id' },
+    update: {},
+    create: {
+      id: 'udaipur-id',
+      name: 'Udaipur',
+      countryId: india.id,
+      stateId: rajasthan.id,
+    },
+  });
+
   const kochi = await prisma.city.upsert({
     where: { id: 'kochi-id' },
     update: {},
@@ -233,6 +244,16 @@ async function main() {
       id: 'hawa-mahal-id',
       name: 'Hawa Mahal',
       cityId: jaipur.id,
+    },
+    {
+      id: 'city-palace-udaipur-id',
+      name: 'City Palace Udaipur',
+      cityId: udaipur.id,
+    },
+    {
+      id: 'lake-pichola-id',
+      name: 'Lake Pichola',
+      cityId: udaipur.id,
     },
   ];
 
@@ -349,6 +370,22 @@ async function main() {
       cityId: jaipur.id,
       hotelTypeId: 'luxury-id',
       thumbnail: 'https://example.com/rambagh-palace.jpg',
+    },
+    {
+      id: 'taj-lake-palace-id',
+      name: 'Taj Lake Palace Udaipur',
+      rating: 5,
+      cityId: udaipur.id,
+      hotelTypeId: 'luxury-id',
+      thumbnail: 'https://example.com/taj-lake-palace.jpg',
+    },
+    {
+      id: 'oberoi-udaivilas-id',
+      name: 'The Oberoi Udaivilas',
+      rating: 5,
+      cityId: udaipur.id,
+      hotelTypeId: 'luxury-id',
+      thumbnail: 'https://example.com/oberoi-udaivilas.jpg',
     },
     {
       id: 'grand-hyatt-kochi-id',

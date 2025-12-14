@@ -14,7 +14,7 @@ export class PackageCityDayResponse {
   endTime?: string;
   startFrom?: string;
   endAt?: string;
-  description?: any;
+
   packageCity?: PackageCityResponse;
   packagecitydaytravels?: PackageCityDayTravelResponse[];
   packagecitydaysightseeings?: PackageCityDaySightseeingResponse[];
@@ -31,7 +31,7 @@ export class PackageCityDayResponse {
     this.endTime = packagecityday.endTime || undefined;
     this.startFrom = packagecityday.startFrom || undefined;
     this.endAt = packagecityday.endAt || undefined;
-    this.description = packagecityday.description || undefined;
+
     this.packageCity = packagecityday.packageCity && typeof packagecityday.packageCity === 'object' ? new PackageCityResponse({ ...(packagecityday.packageCity as any) }) : undefined;
     this.packagecitydaytravels = Array.isArray(packagecityday.packagecitydaytravels) ? packagecityday.packagecitydaytravels.map((r: any) => new PackageCityDayTravelResponse({ ...(r as any) })) : [];
     this.packagecitydaysightseeings = Array.isArray(packagecityday.packagecitydaysightseeings) ? packagecityday.packagecitydaysightseeings.map((r: any) => new PackageCityDaySightseeingResponse({ ...(r as any) })) : [];

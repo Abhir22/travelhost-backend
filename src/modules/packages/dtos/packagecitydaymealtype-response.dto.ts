@@ -4,6 +4,7 @@ export class PackageCityDayMealTypeResponseDto {
   id: string;
   packageCityDayId: string;
   mealTypeId: string;
+  mealCategoryId?: string;
   provider?: string;
   time?: string;
   description?: string;
@@ -12,6 +13,10 @@ export class PackageCityDayMealTypeResponseDto {
     name: string;
     description?: string;
   };
+  mealCategory?: {
+    id: string;
+    name: string;
+  };
   createdAt?: string;
   updatedAt?: string;
 
@@ -19,9 +24,11 @@ export class PackageCityDayMealTypeResponseDto {
     this.id = packagecitydaymealtype.id;
     this.packageCityDayId = packagecitydaymealtype.packageCityDayId;
     this.mealTypeId = packagecitydaymealtype.mealTypeId;
+    this.mealCategoryId = packagecitydaymealtype.mealCategoryId || undefined;
     this.provider = packagecitydaymealtype.provider || undefined;
     this.time = packagecitydaymealtype.time || undefined;
     this.description = packagecitydaymealtype.description || undefined;
+    
     if (packagecitydaymealtype.mealType) {
       this.mealType = {
         id: packagecitydaymealtype.mealType.id,
@@ -29,6 +36,14 @@ export class PackageCityDayMealTypeResponseDto {
         description: packagecitydaymealtype.mealType.description || undefined,
       };
     }
+    
+    if (packagecitydaymealtype.mealCategory) {
+      this.mealCategory = {
+        id: packagecitydaymealtype.mealCategory.id,
+        name: packagecitydaymealtype.mealCategory.name,
+      };
+    }
+    
     if ('createdAt' in packagecitydaymealtype && packagecitydaymealtype.createdAt) this.createdAt = moment(packagecitydaymealtype.createdAt).format('DD-MM-YYYY');
     if ('updatedAt' in packagecitydaymealtype && packagecitydaymealtype.updatedAt) this.updatedAt = moment(packagecitydaymealtype.updatedAt).format('DD-MM-YYYY');
   }

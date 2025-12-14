@@ -1,0 +1,310 @@
+{
+  "packageData": {
+    "packageName": "Amazing Rajasthan Heritage Tour",
+    "shortDescription": "Explore the royal heritage of Rajasthan with magnificent palaces, forts, and cultural experiences",
+    "longDescription": "Embark on a mesmerizing journey through the royal state of Rajasthan, where every city tells a story of valor, romance, and grandeur. This comprehensive tour takes you through the golden triangle of Rajasthan - Jaipur, Udaipur, and Jodhpur - showcasing magnificent palaces, imposing forts, vibrant markets, and rich cultural heritage. Experience the warm hospitality of Rajasthani people, savor authentic cuisine, and witness breathtaking sunsets over the Thar Desert.",
+    "packageTypeId": "package-type-uuid-here",
+    "duration": "7",
+    "price": 45000,
+    "categories": [
+      {
+        "packageCategoryId": "heritage-category-uuid"
+      },
+      {
+        "packageCategoryId": "cultural-category-uuid"
+      }
+    ],
+    "activities": [
+      {
+        "packageActivityId": "palace-tour-activity-uuid"
+      },
+      {
+        "packageActivityId": "camel-safari-activity-uuid"
+      }
+    ],
+    "snapshots": [
+      {
+        "packageSnapshotId": "royal-experience-snapshot-uuid"
+      }
+    ],
+    "cities": [
+      {
+        "cityId": "jaipur-city-uuid",
+        "days": [
+          {
+            "dayNumber": 1,
+            "startTime": "09:00",
+            "endTime": "18:00",
+            "startFrom": "Jaipur Airport",
+            "endAt": "Hotel",
+            "description": "Arrival in Jaipur - The Pink City",
+            "travels": [
+              {
+                "type": "Airport Transfer",
+                "carpooling": "Private",
+                "vehicleType": "AC Sedan",
+                "timeFrom": "09:00",
+                "timeTo": "10:00",
+                "description": "Airport to hotel transfer"
+              }
+            ],
+            "sightseeings": [
+              {
+                "sightseeingId": "city-palace-jaipur-uuid",
+                "ticket": "Entry fee included (550 INR per person)",
+                "description": "Explore the magnificent City Palace complex",
+                "timeFrom": "14:00",
+                "timeTo": "16:00"
+              }
+            ],
+            "hotels": [
+              {
+                "hotelId": "heritage-hotel-jaipur-uuid",
+                "hotelType": "Heritage",
+                "starRating": 5,
+                "roomType": "Deluxe Room",
+                "checkIn": "12:00",
+                "checkOut": "11:00",
+                "numberOfRooms": 1
+              }
+            ],
+            "meals": [
+              {
+                "mealTypeId": "lunch-meal-type-uuid",
+                "mealCategoryId": "vegetarian-category-uuid",
+                "provider": "Hotel Restaurant",
+                "time": "13:00",
+                "description": "Welcome lunch with traditional Rajasthani cuisine"
+              },
+              {
+                "mealTypeId": "dinner-meal-type-uuid",
+                "mealCategoryId": "non-vegetarian-category-uuid",
+                "provider": "Local Restaurant",
+                "time": "19:30",
+                "description": "Dinner at famous local restaurant"
+              }
+            ]
+          },
+          {
+            "dayNumber": 2,
+            "startTime": "08:00",
+            "endTime": "19:00",
+            "startFrom": "Hotel",
+            "endAt": "Hotel",
+            "description": "Full day Jaipur sightseeing",
+            "travels": [
+              {
+                "type": "Local Sightseeing",
+                "vehicleType": "AC Tempo Traveller",
+                "timeFrom": "08:00",
+                "timeTo": "19:00",
+                "description": "Full day sightseeing vehicle"
+              }
+            ],
+            "sightseeings": [
+              {
+                "sightseeingId": "amber-fort-uuid",
+                "ticket": "Entry fee + Elephant ride (1500 INR per person)",
+                "description": "Visit the majestic Amber Fort with elephant ride",
+                "timeFrom": "09:00",
+                "timeTo": "12:00"
+              },
+              {
+                "sightseeingId": "hawa-mahal-uuid",
+                "ticket": "Entry fee included (50 INR per person)",
+                "description": "Photo stop at the iconic Palace of Winds",
+                "timeFrom": "14:00",
+                "timeTo": "15:00"
+              }
+            ],
+            "hotels": [
+              {
+                "hotelId": "heritage-hotel-jaipur-uuid",
+                "roomType": "Deluxe Room"
+              }
+            ],
+            "meals": [
+              {
+                "mealTypeId": "breakfast-meal-type-uuid",
+                "provider": "Hotel Restaurant",
+                "time": "07:30"
+              },
+              {
+                "mealTypeId": "lunch-meal-type-uuid",
+                "provider": "Local Restaurant",
+                "time": "13:00"
+              },
+              {
+                "mealTypeId": "dinner-meal-type-uuid",
+                "provider": "Hotel Restaurant",
+                "time": "19:30"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cityId": "udaipur-city-uuid",
+        "days": [
+          {
+            "dayNumber": 3,
+            "startTime": "08:00",
+            "endTime": "18:00",
+            "startFrom": "Jaipur Hotel",
+            "endAt": "Udaipur Hotel",
+            "description": "Travel to Udaipur - City of Lakes",
+            "travels": [
+              {
+                "type": "Inter-city Transfer",
+                "vehicleType": "AC Sedan",
+                "timeFrom": "08:00",
+                "timeTo": "14:00",
+                "description": "Jaipur to Udaipur by road (6 hours)"
+              }
+            ],
+            "sightseeings": [
+              {
+                "sightseeingId": "lake-pichola-uuid",
+                "description": "Evening boat ride on Lake Pichola",
+                "timeFrom": "16:00",
+                "timeTo": "17:30"
+              }
+            ],
+            "hotels": [
+              {
+                "hotelId": "lake-view-hotel-udaipur-uuid",
+                "roomType": "Lake View Room",
+                "checkIn": "15:00",
+                "checkOut": "11:00",
+                "numberOfRooms": 1
+              }
+            ],
+            "meals": [
+              {
+                "mealTypeId": "breakfast-meal-type-uuid",
+                "provider": "Hotel Restaurant",
+                "time": "07:30"
+              },
+              {
+                "mealTypeId": "lunch-meal-type-uuid",
+                "provider": "Highway Restaurant",
+                "time": "12:00"
+              },
+              {
+                "mealTypeId": "dinner-meal-type-uuid",
+                "provider": "Hotel Restaurant",
+                "time": "19:30"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "pricing": [
+      {
+        "season": "ON_SEASON",
+        "dateFrom": "2024-10-01",
+        "dateTo": "2024-03-31",
+        "rackRate": 50000,
+        "publishedRate": 45000,
+        "customerDiscountPercentage": 10,
+        "customerDiscountAmount": 4500,
+        "adultRate": 45000,
+        "agentDiscountPercentage": 15,
+        "agentDiscountAmount": 6750,
+        "agentRate": 38250,
+        "childRate": 22500,
+        "infantRate": 0
+      },
+      {
+        "season": "OFF_SEASON",
+        "dateFrom": "2024-04-01",
+        "dateTo": "2024-09-30",
+        "rackRate": 40000,
+        "publishedRate": 35000,
+        "customerDiscountPercentage": 12,
+        "customerDiscountAmount": 4200,
+        "adultRate": 35000,
+        "agentDiscountPercentage": 18,
+        "agentDiscountAmount": 6300,
+        "agentRate": 28700,
+        "childRate": 17500,
+        "infantRate": 0
+      }
+    ],
+    "policies": {
+      "termsConditions": [
+        {
+          "content": "All bookings are subject to availability and confirmation. Prices are subject to change without prior notice."
+        },
+        {
+          "content": "Valid photo ID proof is mandatory for all travelers during the tour."
+        }
+      ],
+      "inclusions": [
+        {
+          "content": "Accommodation in well-appointed hotels with daily breakfast"
+        },
+        {
+          "content": "All transfers and sightseeing by private AC vehicle"
+        },
+        {
+          "content": "Professional English-speaking guide"
+        },
+        {
+          "content": "All monument entrance fees as per itinerary"
+        },
+        {
+          "content": "Boat ride on Lake Pichola"
+        }
+      ],
+      "exclusions": [
+        {
+          "content": "Airfare/train fare to and from the destination"
+        },
+        {
+          "content": "Personal expenses like laundry, telephone calls, tips, etc."
+        },
+        {
+          "content": "Any meals not mentioned in the itinerary"
+        },
+        {
+          "content": "Travel insurance"
+        },
+        {
+          "content": "Any expenses arising due to unforeseen circumstances"
+        }
+      ],
+      "paymentPolicies": [
+        {
+          "content": "25% advance payment required at the time of booking"
+        },
+        {
+          "content": "Balance payment to be made 15 days before departure"
+        },
+        {
+          "content": "Payment can be made via bank transfer, credit card, or cash"
+        }
+      ],
+      "cancellationPolicies": [
+        {
+          "content": "Cancellation 30 days before departure: 10% of total cost"
+        },
+        {
+          "content": "Cancellation 15-29 days before departure: 25% of total cost"
+        },
+        {
+          "content": "Cancellation 7-14 days before departure: 50% of total cost"
+        },
+        {
+          "content": "Cancellation less than 7 days: 100% of total cost"
+        }
+      ]
+    },
+    "options": {
+      "includeGroupDeparture": true,
+      "includeFixedDeparture": false,
+      "includePackageAvailability": true
+    }
+  }
+}
