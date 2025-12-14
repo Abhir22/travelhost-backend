@@ -51,7 +51,6 @@ model City {
   country           Country           @relation(fields: [countryId], references: [id], onDelete: Cascade)
   state             State?            @relation(fields: [stateId], references: [id], onDelete: SetNull)
   hotels            Hotel[]
-  transferModes     TransferMode[]
   packageCities     PackageCity[]
   sightings         Sightseeing[]
   destinationCities DestinationCity[]
@@ -68,7 +67,6 @@ model Sightseeing {
   cityId            String
   name              String
   city              City               @relation(fields: [cityId], references: [id], onDelete: Cascade)
-  transferModes     TransferMode[]
   hotelSightseeings HotelSightseeing[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
@@ -150,28 +148,17 @@ model RoomImage {
 }
 
 model TravelType {
-  id            String         @id @default(uuid())
-  name          String
-  transferModes TransferMode[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TransferMode {
-  id            String       @id @default(uuid())
-  cityId        String
-  sightseeingId String?
-  travelTypeId  String?
-  name          String
-  city          City         @relation(fields: [cityId], references: [id], onDelete: Cascade)
-  sightseeing   Sightseeing? @relation(fields: [sightseeingId], references: [id], onDelete: SetNull)
-  travelType    TravelType?  @relation(fields: [travelTypeId], references: [id], onDelete: SetNull)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-
-  @@index([cityId])
-  @@index([sightseeingId])
-  @@index([travelTypeId])
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Destination {

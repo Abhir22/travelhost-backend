@@ -17,15 +17,6 @@ export class PackageActivityController extends BaseController<PackageActivity, P
       updateSchema: packageactivityValidation.update,
       searchFields: ['name'], // Search by activity name
       defaultInclude: {
-        packageactivitymappings: {
-          include: {
-            package: {
-              include: {
-                packageType: true
-              }
-            }
-          }
-        }
       },
     });
   }

@@ -3,48 +3,28 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createTravelModeSchema = flatToNestedSchema(
   z.object({
-  countryId: z.string().uuid(),
-  stateId: z.string().uuid(),
-  cityId: z.string().uuid(),
-  sightseeingId: z.string().uuid(),
-  travelTypeId: z.string().uuid(),
-  name: z.string().min(1),
+    name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters'),
   }),
   data => ({
-    name: data.name,
-    country: { connect: { id: data.countryId } },
-    state: { connect: { id: data.stateId } },
-    city: { connect: { id: data.cityId } },
-    sightseeing: { connect: { id: data.sightseeingId } },
-    travelType: { connect: { id: data.travelTypeId } },
+    name: data.name.trim(),
   })
 );
 
 export const updateTravelModeSchema = flatToNestedSchema(
   z.object({
-    countryId: z.string().uuid().optional(),
-    stateId: z.string().uuid().optional(),
-    cityId: z.string().uuid().optional(),
-    sightseeingId: z.string().uuid().optional(),
-    travelTypeId: z.string().uuid().optional(),
-    name: z.string().min(1).optional(),
+    name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters').optional(),
   }),
   data => ({
-    ...(data.name !== undefined ? { name: data.name } : {}),
-    ...(data.countryId !== undefined ? { country: { connect: { id: data.countryId } } } : {}),
-    ...(data.stateId !== undefined ? { state: { connect: { id: data.stateId } } } : {}),
-    ...(data.cityId !== undefined ? { city: { connect: { id: data.cityId } } } : {}),
-    ...(data.sightseeingId !== undefined ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.travelTypeId !== undefined ? { travelType: { connect: { id: data.travelTypeId } } } : {}),
+    ...(data.name !== undefined ? { name: data.name.trim() } : {}),
   })
 );
 
 export const travelmodeIdParamSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().uuid('Invalid ID format'),
 });
 
 export const searchQuerySchema = z.object({
-  q: z.string().min(3),
+  q: z.string().min(1, 'Search query is required').max(100, 'Search query too long'),
 });
 
 export const travelmodeValidation = {

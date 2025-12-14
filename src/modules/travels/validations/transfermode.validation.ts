@@ -3,40 +3,28 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createTransferModeSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string().uuid(),
-    sightseeingId: z.string().uuid().optional(),
-    travelTypeId: z.string().uuid().optional(),
-    name: z.string().min(1),
+    name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters'),
   }),
   data => ({
-    name: data.name,
-    city: { connect: { id: data.cityId } },
-    ...(data.sightseeingId ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.travelTypeId ? { travelType: { connect: { id: data.travelTypeId } } } : {}),
+    name: data.name.trim(),
   })
 );
 
 export const updateTransferModeSchema = flatToNestedSchema(
   z.object({
-    cityId: z.string().uuid().optional(),
-    sightseeingId: z.string().uuid().optional(),
-    travelTypeId: z.string().uuid().optional(),
-    name: z.string().min(1).optional(),
+    name: z.string().min(1, 'Name is required').max(255, 'Name must be less than 255 characters').optional(),
   }),
   data => ({
-    ...(data.name !== undefined ? { name: data.name } : {}),
-    ...(data.cityId !== undefined ? { city: { connect: { id: data.cityId } } } : {}),
-    ...(data.sightseeingId !== undefined ? { sightseeing: { connect: { id: data.sightseeingId } } } : {}),
-    ...(data.travelTypeId !== undefined ? { travelType: { connect: { id: data.travelTypeId } } } : {}),
+    ...(data.name !== undefined ? { name: data.name.trim() } : {}),
   })
 );
 
 export const transfermodeIdParamSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().uuid('Invalid ID format'),
 });
 
 export const searchQuerySchema = z.object({
-  q: z.string().min(3),
+  q: z.string().min(1, 'Search query is required').max(100, 'Search query too long'),
 });
 
 export const transfermodeValidation = {

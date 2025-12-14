@@ -6,7 +6,7 @@ export class PackageCategoryResponse {
   id?: string;
   name: string;
   icon?: string;
-  packagecategorymappings?: PackageCategoryMappingResponse[];
+  // packagecategorymappings?: PackageCategoryMappingResponse[];
   createdAt?: string;
   updatedAt?: string;
 
@@ -14,7 +14,7 @@ export class PackageCategoryResponse {
     if ('id' in packagecategory && packagecategory.id) this.id = packagecategory.id;
     this.name = packagecategory.name;
     this.icon = packagecategory.icon || undefined;
-    this.packagecategorymappings = Array.isArray(packagecategory.packagecategorymappings) ? packagecategory.packagecategorymappings.map((r: any) => new PackageCategoryMappingResponse({ ...(r as any) })) : [];
+    // this.packagecategorymappings = Array.isArray(packagecategory.packagecategorymappings) ? packagecategory.packagecategorymappings.map((r: any) => new PackageCategoryMappingResponse({ ...(r as any) })) : [];
     if ('createdAt' in packagecategory && packagecategory.createdAt) this.createdAt = moment(packagecategory.createdAt).format('DD-MM-YYYY');
     if ('updatedAt' in packagecategory && packagecategory.updatedAt) this.updatedAt = moment(packagecategory.updatedAt).format('DD-MM-YYYY');
   }

@@ -17,15 +17,6 @@ export class PackageCategoryController extends BaseController<PackageCategory, P
       updateSchema: packagecategoryValidation.update,
       searchFields: ['name'], // Search by category name
       defaultInclude: {
-        packagecategorymappings: {
-          include: {
-            package: {
-              include: {
-                packageType: true
-              }
-            }
-          }
-        }
       },
     });
   }

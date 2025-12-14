@@ -17,15 +17,6 @@ export class PackageSnapshotController extends BaseController<PackageSnapshot, P
       updateSchema: packagesnapshotValidation.update,
       searchFields: ['name'], // Search by snapshot name
       defaultInclude: {
-        packagesnapshotmappings: {
-          include: {
-            package: {
-              include: {
-                packageType: true
-              }
-            }
-          }
-        }
       },
     });
   }

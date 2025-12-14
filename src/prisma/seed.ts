@@ -442,27 +442,22 @@ async function main() {
     {
       id: 'adventure-kolkata',
       name: 'Adventure Tourism',
-      cityId: kolkata.id,
     },
     {
       id: 'cultural-kolkata',
       name: 'Cultural Tourism',
-      cityId: kolkata.id,
     },
     {
       id: 'heritage-kolkata',
       name: 'Heritage Tourism',
-      cityId: kolkata.id,
     },
     {
       id: 'eco-darjeeling',
       name: 'Eco Tourism',
-      cityId: darjeeling.id,
     },
     {
       id: 'business-mumbai',
       name: 'Business Tourism',
-      cityId: mumbai.id,
     },
   ];
 
@@ -481,32 +476,22 @@ async function main() {
     {
       id: 'flight-kolkata',
       name: 'Flight',
-      cityId: kolkata.id,
-      travelTypeId: 'business-mumbai',
     },
     {
       id: 'train-kolkata',
       name: 'Train',
-      cityId: kolkata.id,
-      travelTypeId: 'cultural-kolkata',
     },
     {
       id: 'bus-kolkata',
       name: 'Bus',
-      cityId: kolkata.id,
-      travelTypeId: 'adventure-kolkata',
     },
     {
       id: 'car-darjeeling',
       name: 'Car',
-      cityId: darjeeling.id,
-      travelTypeId: 'eco-darjeeling',
     },
     {
       id: 'taxi-mumbai',
       name: 'Taxi',
-      cityId: mumbai.id,
-      travelTypeId: 'business-mumbai',
     },
   ];
 
