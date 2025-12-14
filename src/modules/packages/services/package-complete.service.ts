@@ -4,7 +4,7 @@ import { IPackageCompleteService } from './interfaces/package-complete.service.i
 import { BadRequestException, NotFoundException, ConflictException } from '@/core/exceptions/http.exception';
 import { prisma } from '@/loaders/prisma';
 import logger from '@/core/utils/logger';
-import { PackageImageUploadService, PackageImageUpload } from './package-image-upload.service';
+import { PackageImageUploadService } from './package-image-upload.service';
 
 // Constants and Enums
 const DEFAULT_MEAL_PROVIDER = 'Hotel Restaurant';
@@ -17,12 +17,44 @@ enum PrismaErrorCode {
   RECORD_NOT_FOUND = 'P2025'
 }
 
+interface CityRecord {
+  id: string;
+  countryId: string;
+  stateId: string | null;
+  name: string;
+  state?: { id: string; name: string; country?: { id: string; name: string } } | null;
+  country?: { id: string; name: string } | null;
+}
+
+interface SightseeingRecord {
+  id: string;
+  name: string;
+  cityId: string;
+}
+
+interface HotelRecord {
+  id: string;
+  name: string;
+  cityId: string;
+  rating: number | null;
+}
+
+interface MealTypeRecord {
+  id: string;
+  name: string;
+}
+
+interface MealCategoryRecord {
+  id: string;
+  name: string;
+}
+
 interface LookupData {
-  cities: Map<string, any>;
-  sightseeings: Map<string, any>;
-  hotels: Map<string, any>;
-  mealTypes: Map<string, any>;
-  mealCategories: Map<string, any>;
+  cities: Map<string, CityRecord>;
+  sightseeings: Map<string, SightseeingRecord>;
+  hotels: Map<string, HotelRecord>;
+  mealTypes: Map<string, MealTypeRecord>;
+  mealCategories: Map<string, MealCategoryRecord>;
 }
 
 interface PackageCreationResult {
@@ -198,11 +230,11 @@ export class PackageCompleteService implements IPackageCompleteService {
 
     // Create lookup maps for fast access
     return {
-      cities: new Map(cities.map(c => [c.id, c])),
-      sightseeings: new Map(sightseeings.map(s => [s.id, s])),
-      hotels: new Map(hotels.map(h => [h.id, h])),
-      mealTypes: new Map(mealTypes.map(m => [m.id, m])),
-      mealCategories: new Map(mealCategories.map(mc => [mc.id, mc]))
+      cities: new Map(cities.map((c: CityRecord) => [c.id, c])),
+      sightseeings: new Map(sightseeings.map((s: SightseeingRecord) => [s.id, s])),
+      hotels: new Map(hotels.map((h: HotelRecord) => [h.id, h])),
+      mealTypes: new Map(mealTypes.map((m: MealTypeRecord) => [m.id, m])),
+      mealCategories: new Map(mealCategories.map((mc: MealCategoryRecord) => [mc.id, mc]))
     };
   }
 
@@ -352,6 +384,7 @@ export class PackageCompleteService implements IPackageCompleteService {
 
   /**
    * Creates package pricing records
+   * Fix: Use explicit undefined/null checks instead of truthy checks to correctly store 0 values
    */
   private async createPackagePricing(
     packageId: string,
@@ -369,14 +402,14 @@ export class PackageCompleteService implements IPackageCompleteService {
       dateTo: new Date(pricing.dateTo),
       rackRate: parseFloat(pricing.rackRate),
       publishedRate: parseFloat(pricing.publishedRate),
-      customerDiscountPercentage: pricing.customerDiscountPercentage ? parseFloat(pricing.customerDiscountPercentage) : null,
-      customerDiscountAmount: pricing.customerDiscountAmount ? parseFloat(pricing.customerDiscountAmount) : null,
-      adultRate: pricing.adultRate ? parseFloat(pricing.adultRate) : null,
-      agentDiscountPercentage: pricing.agentDiscountPercentage ? parseFloat(pricing.agentDiscountPercentage) : null,
-      agentDiscountAmount: pricing.agentDiscountAmount ? parseFloat(pricing.agentDiscountAmount) : null,
-      agentRate: pricing.agentRate ? parseFloat(pricing.agentRate) : null,
-      childRate: pricing.childRate ? parseFloat(pricing.childRate) : null,
-      infantRate: pricing.infantRate ? parseFloat(pricing.infantRate) : null,
+      customerDiscountPercentage: pricing.customerDiscountPercentage !== undefined ? Number(pricing.customerDiscountPercentage) : null,
+      customerDiscountAmount: pricing.customerDiscountAmount !== undefined ? Number(pricing.customerDiscountAmount) : null,
+      adultRate: pricing.adultRate !== undefined ? Number(pricing.adultRate) : null,
+      agentDiscountPercentage: pricing.agentDiscountPercentage !== undefined ? Number(pricing.agentDiscountPercentage) : null,
+      agentDiscountAmount: pricing.agentDiscountAmount !== undefined ? Number(pricing.agentDiscountAmount) : null,
+      agentRate: pricing.agentRate !== undefined ? Number(pricing.agentRate) : null,
+      childRate: pricing.childRate !== undefined ? Number(pricing.childRate) : null,
+      infantRate: pricing.infantRate !== undefined ? Number(pricing.infantRate) : null,
       createdBy: pricing.createdBy
     }));
 
@@ -521,23 +554,25 @@ export class PackageCompleteService implements IPackageCompleteService {
     const promises: Promise<any>[] = [];
 
     // Create travels
+    // Fix: Persist carpooling, vehicleType, timeFrom, timeTo, description exactly as sent
     if (dayData.travels?.length > 0) {
       promises.push(
         tx.packageCityDayTravel.createMany({
           data: dayData.travels.map((travel: any) => ({
             packageCityDayId,
             type: travel.type,
-            carpooling: travel.carpooling,
-            vehicleType: travel.vehicleType,
-            timeFrom: travel.timeFrom,
-            timeTo: travel.timeTo,
-            description: travel.description,
+            carpooling: travel.carpooling !== undefined ? travel.carpooling : null,
+            vehicleType: travel.vehicleType !== undefined ? travel.vehicleType : null,
+            timeFrom: travel.timeFrom !== undefined ? travel.timeFrom : null,
+            timeTo: travel.timeTo !== undefined ? travel.timeTo : null,
+            description: travel.description !== undefined ? travel.description : null,
           })),
         })
       );
     }
 
     // Create sightseeings
+    // Fix: Store ticket as STRING exactly as sent (do not convert to number)
     if (dayData.sightseeings?.length > 0) {
       const sightseeingData = dayData.sightseeings.map((sightseeing: any) => {
         const sightseeingRecord = lookupData.sightseeings.get(sightseeing.sightseeingId);
@@ -547,7 +582,8 @@ export class PackageCompleteService implements IPackageCompleteService {
         return {
           packageCityDayId,
           sightseeingName: sightseeingRecord.name,
-          ticket: sightseeing.ticket || sightseeing.description || '',  // Use ticket field, fallback to description
+          // Store ticket as string exactly as provided - do not convert to number
+          ticket: sightseeing.ticket !== undefined ? String(sightseeing.ticket) : null,
           timeFrom: sightseeing.timeFrom,
           timeTo: sightseeing.timeTo,
         };
@@ -561,17 +597,28 @@ export class PackageCompleteService implements IPackageCompleteService {
     }
 
     // Create hotels
+    // Fix: Hotel rating priority - request.starRating first, then Hotel.rating, then DEFAULT_HOTEL_RATING
     if (dayData.hotels?.length > 0) {
       const hotelData = dayData.hotels.map((hotel: any) => {
         const hotelRecord = lookupData.hotels.get(hotel.hotelId);
         if (!hotelRecord) {
           throw new NotFoundException(`Hotel with ID ${hotel.hotelId} not found`);
         }
+        
+        // Priority: 1. request.starRating, 2. Hotel.rating, 3. DEFAULT_HOTEL_RATING
+        let starRating: number;
+        if (hotel.starRating !== undefined && hotel.starRating !== null) {
+          starRating = hotel.starRating;
+        } else if (hotelRecord.rating !== undefined && hotelRecord.rating !== null) {
+          starRating = hotelRecord.rating;
+        } else {
+          starRating = DEFAULT_HOTEL_RATING;
+        }
+        
         return {
           packageCityDayId,
           hotelName: hotelRecord.name,
-          // Use starRating from input if provided, otherwise fall back to hotel record or default
-          starRating: hotel.starRating || hotelRecord.rating || DEFAULT_HOTEL_RATING,
+          starRating,
           hotelType: hotel.hotelType,
           checkInTime: hotel.checkIn,
           checkOutTime: hotel.checkOut,
@@ -587,13 +634,20 @@ export class PackageCompleteService implements IPackageCompleteService {
       );
     }
 
-    // Create meals using PackageCityDayMealType (supports meal category)
+    // Create meals using ONLY PackageCityDayMealType (supports meal category)
+    // Fix: Removed PackageCityDayMeal usage - use only PackageCityDayMealType for meal creation
     if (dayData.meals?.length > 0) {
       const mealData = dayData.meals.map((meal: any) => {
         const mealTypeRecord = lookupData.mealTypes.get(meal.mealTypeId);
         if (!mealTypeRecord) {
           throw new NotFoundException(`Meal type with ID ${meal.mealTypeId} not found`);
         }
+        
+        // Validate mealCategoryId only if provided
+        if (meal.mealCategoryId && !lookupData.mealCategories.get(meal.mealCategoryId)) {
+          throw new NotFoundException(`Meal category with ID ${meal.mealCategoryId} not found`);
+        }
+        
         return {
           packageCityDayId,
           mealTypeId: meal.mealTypeId,           // Link to MealType table
@@ -768,7 +822,7 @@ export class PackageCompleteService implements IPackageCompleteService {
    * Creates a complete package with all relations and images
    */
   async createCompletePackage(data: PackageCompleteData): Promise<PackageCreationResult> {
-    const transactionId = `pkg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const transactionId = `pkg_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
     const { packageData, images } = data;
 
     try {
