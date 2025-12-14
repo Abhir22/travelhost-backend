@@ -536,9 +536,9 @@ export class PackageCompleteService implements IPackageCompleteService {
             endTime: dayData.endTime,
             startFrom: dayData.startFrom,
             endAt: dayData.endAt,
-            // Use start_description/end_description from input, or fallback description to start_description
-            start_description: dayData.start_description || dayData.description,
-            end_description: dayData.end_description,
+            // Map startAtDescription and endAtDescription from request to DB fields
+            start_description: dayData.startAtDescription,
+            end_description: dayData.endAtDescription,
           },
         });
 

@@ -96,6 +96,8 @@ import { PackageGalleryService } from './services/package-gallery.service';
 import { IPackageGalleryRepository } from './repositories/interfaces/package-gallery.repository.interface';
 import { PackageGalleryRepository } from './repositories/package-gallery.repository';
 import { PackageImageUploadService } from './services/package-image-upload.service';
+import { IPackageFilterService } from './services/interfaces/package-filter.service.interface';
+import { PackageFilterService } from './services/package-filter.service';
 
 export const registerDependencies = () => {
   // ... existing registrations ...
@@ -150,6 +152,7 @@ export const registerDependencies = () => {
   container.register<IPackageGalleryService>('IPackageGalleryService', { useClass: PackageGalleryService });
   container.register<IPackageGalleryRepository>('IPackageGalleryRepository', { useClass: PackageGalleryRepository });
   container.register(PackageImageUploadService, { useClass: PackageImageUploadService });
+  container.register<IPackageFilterService>('IPackageFilterService', { useClass: PackageFilterService });
 
   console.log('All module dependencies registered');
 };

@@ -50,7 +50,8 @@ const packageCityDaySchema = z.object({
   endTime: z.string().optional(),
   startFrom: z.string().optional(),
   endAt: z.string().optional(),
-  description: z.string().optional(),
+  startAtDescription: z.string().optional(),  // Description for start of day
+  endAtDescription: z.string().optional(),    // Description for end of day
   travels: z.array(travelSchema).optional(),
   sightseeings: z.array(sightseeingSchema).optional(),
   hotels: z.array(hotelSchema).optional(),
