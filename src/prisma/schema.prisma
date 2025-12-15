@@ -13,7 +13,7 @@ enum DESTINATIONTYPE_ENUM {
 }
 
 model Country {
-  id                   String               @id @default(uuid())
+  id                   String               @id @default(uuid()) @db.Char(36)
   name                 String               @unique
   isoCode              String?              @unique
   states               State[]
@@ -28,7 +28,7 @@ model Country {
 }
 
 model State {
-  id                String             @id @default(uuid())
+  id                String             @id @default(uuid()) @db.Char(36)
   countryId         String
   name              String
   country           Country            @relation(fields: [countryId], references: [id], onDelete: Cascade)
@@ -44,7 +44,7 @@ model State {
 }
 
 model City {
-  id                String            @id @default(uuid())
+  id                String            @id @default(uuid()) @db.Char(36)
   countryId         String
   stateId           String?
   name              String
@@ -63,7 +63,7 @@ model City {
 }
 
 model Sightseeing {
-  id                String             @id @default(uuid())
+  id                String             @id @default(uuid()) @db.Char(36)
   cityId            String
   name              String
   city              City               @relation(fields: [cityId], references: [id], onDelete: Cascade)
@@ -76,7 +76,7 @@ model Sightseeing {
 }
 
 model Hotel {
-  id                String             @id @default(uuid())
+  id                String             @id @default(uuid()) @db.Char(36)
   cityId            String
   hotelTypeId       String?
   name              String
@@ -95,7 +95,7 @@ model Hotel {
 }
 
 model HotelSightseeing {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   hotelId       String
   sightseeingId String
   hotel         Hotel       @relation(fields: [hotelId], references: [id], onDelete: Cascade)
@@ -109,7 +109,7 @@ model HotelSightseeing {
 }
 
 model HotelType {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @db.Char(36)
   name        String
   description String?
   hotels      Hotel[]
@@ -118,7 +118,7 @@ model HotelType {
 }
 
 model MealCategory {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   name                    String                   @unique
   packagecitydaymealtypes PackageCityDayMealType[]
   createdAt               DateTime                 @default(now())
@@ -126,7 +126,7 @@ model MealCategory {
 }
 
 model HotelRoom {
-  id          String      @id @default(uuid())
+  id          String      @id @default(uuid()) @db.Char(36)
   hotelId     String
   roomType    String      @default("Standard Room")
   roomNumber  String?
@@ -140,7 +140,7 @@ model HotelRoom {
 }
 
 model RoomImage {
-  id          String    @id @default(uuid())
+  id          String    @id @default(uuid()) @db.Char(36)
   hotelRoomId String
   imageUrl    String
   hotelRoom   HotelRoom @relation(fields: [hotelRoomId], references: [id], onDelete: Cascade)
@@ -149,21 +149,21 @@ model RoomImage {
 }
 
 model TravelType {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model TransferMode {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Destination {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   destinationType         DESTINATIONTYPE_ENUM
   name                    String
   description             String?                  @db.Text
@@ -184,7 +184,7 @@ model Destination {
 }
 
 model DestinationCountry {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   destinationId String
   countryId     String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
@@ -198,7 +198,7 @@ model DestinationCountry {
 }
 
 model DestinationState {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   destinationId String
   stateId       String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
@@ -212,7 +212,7 @@ model DestinationState {
 }
 
 model DestinationCity {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   destinationId String
   cityId        String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
@@ -226,7 +226,7 @@ model DestinationCity {
 }
 
 model DestinationPackage {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   destinationId String
   packageId     String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
@@ -240,7 +240,7 @@ model DestinationPackage {
 }
 
 model DestinationPackageType {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   destinationId String
   packageTypeId String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
@@ -254,7 +254,7 @@ model DestinationPackageType {
 }
 
 model PackageType {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   name                    String                   @unique
   image                   String?
   isInternational         Boolean                  @default(false)
@@ -267,7 +267,7 @@ model PackageType {
 }
 
 model PackageCountry {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   packageTypeId String
   countryId     String
   packageType   PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
@@ -279,7 +279,7 @@ model PackageCountry {
 }
 
 model PackageState {
-  id            String      @id @default(uuid())
+  id            String      @id @default(uuid()) @db.Char(36)
   packageTypeId String
   stateId       String
   packageType   PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
@@ -291,7 +291,7 @@ model PackageState {
 }
 
 model Package {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   packageTypeId           String
   packageName             String
   shortDescription        String?                  @db.Text
@@ -320,7 +320,7 @@ model Package {
 }
 
 model PackageCategory {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   name                    String                   @unique
   icon                    String?
   packagecategorymappings PackageCategoryMapping[]
@@ -329,7 +329,7 @@ model PackageCategory {
 }
 
 model PackageCategoryMapping {
-  id         String          @id @default(uuid())
+  id         String          @id @default(uuid()) @db.Char(36)
   packageId  String
   categoryId String
   package    Package         @relation(fields: [packageId], references: [id], onDelete: Cascade)
@@ -337,7 +337,7 @@ model PackageCategoryMapping {
 }
 
 model PackageActivity {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   name                    String                   @unique
   image                   String?
   packageactivitymappings PackageActivityMapping[]
@@ -346,7 +346,7 @@ model PackageActivity {
 }
 
 model PackageActivityMapping {
-  id         String          @id @default(uuid())
+  id         String          @id @default(uuid()) @db.Char(36)
   packageId  String
   activityId String
   package    Package         @relation(fields: [packageId], references: [id], onDelete: Cascade)
@@ -354,7 +354,7 @@ model PackageActivityMapping {
 }
 
 model PackageSnapshot {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   name                    String                   @unique
   icon                    String?
   packagesnapshotmappings PackageSnapshotMapping[]
@@ -363,7 +363,7 @@ model PackageSnapshot {
 }
 
 model PackageSnapshotMapping {
-  id         String          @id @default(uuid())
+  id         String          @id @default(uuid()) @db.Char(36)
   packageId  String
   snapshotId String
   package    Package         @relation(fields: [packageId], references: [id], onDelete: Cascade)
@@ -371,7 +371,7 @@ model PackageSnapshotMapping {
 }
 
 model PackageCity {
-  id               String           @id @default(uuid())
+  id               String           @id @default(uuid()) @db.Char(36)
   packageId        String
   countryId        String
   stateId          String?
@@ -388,7 +388,7 @@ model PackageCity {
 }
 
 model PackageCityDay {
-  id                         String                      @id @default(uuid())
+  id                         String                      @id @default(uuid()) @db.Char(36)
   packageCityId              String
   dayNumber                  Int
   startTime                  String?
@@ -408,7 +408,7 @@ model PackageCityDay {
 }
 
 model PackageCityDayTravel {
-  id               String         @id @default(uuid())
+  id               String         @id @default(uuid()) @db.Char(36)
   packageCityDayId String
   type             String
   carpooling       String?
@@ -422,7 +422,7 @@ model PackageCityDayTravel {
 }
 
 model PackageCityDaySightseeing {
-  id               String         @id @default(uuid())
+  id               String         @id @default(uuid()) @db.Char(36)
   packageCityDayId String
   sightseeingName  String
   ticket           String?
@@ -434,7 +434,7 @@ model PackageCityDaySightseeing {
 }
 
 model PackageCityDayHotel {
-  id               String         @id @default(uuid())
+  id               String         @id @default(uuid()) @db.Char(36)
   packageCityDayId String
   hotelName        String
   starRating       Int
@@ -449,7 +449,7 @@ model PackageCityDayHotel {
 }
 
 model PackageCityDayMeal {
-  id               String         @id @default(uuid())
+  id               String         @id @default(uuid()) @db.Char(36)
   packageCityDayId String
   mealType         String
   provider         String
@@ -461,7 +461,7 @@ model PackageCityDayMeal {
 }
 
 model PackageCityDayMealType {
-  id               String         @id @default(uuid())
+  id               String         @id @default(uuid()) @db.Char(36)
   packageCityDayId String
   mealTypeId       String
   mealCategoryId   String?
@@ -478,7 +478,7 @@ model PackageCityDayMealType {
 }
 
 model MealType {
-  id                      String                   @id @default(uuid())
+  id                      String                   @id @default(uuid()) @db.Char(36)
   name                    String                   @unique
   description             String?
   packagecitydaymealtypes PackageCityDayMealType[]
@@ -487,7 +487,7 @@ model MealType {
 }
 
 model VehicleType {
-  id              String   @id @default(uuid())
+  id              String   @id @default(uuid()) @db.Char(36)
   name            String
   vehicleCategory String
   createdAt       DateTime @default(now())
@@ -497,7 +497,7 @@ model VehicleType {
 
 
 model PackageTermsCondition {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   packageId String
   content   String   @db.LongText
   linkText  String?  @db.VarChar(255)
@@ -515,7 +515,7 @@ model PackageTermsCondition {
 }
 
 model PackageInclusion {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   packageId String
   content   String   @db.LongText
   createdBy String?  @db.VarChar(36)
@@ -525,7 +525,7 @@ model PackageInclusion {
 }
 
 model PackageExclusion {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   packageId String
   content   String   @db.LongText
   createdBy String?  @db.VarChar(36)
@@ -535,7 +535,7 @@ model PackageExclusion {
 }
 
 model PackagePaymentPolicy {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   packageId String
   content   String   @db.LongText
   createdBy String?  @db.VarChar(36)
@@ -545,7 +545,7 @@ model PackagePaymentPolicy {
 }
 
 model PackageCancellationPolicy {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Char(36)
   packageId String
   content   String   @db.LongText
   createdBy String?  @db.VarChar(36)
@@ -562,7 +562,7 @@ enum SEASON_ENUM {
 }
 
 model PackagePricing {
-  id                         String      @id @default(uuid())
+  id                         String      @id @default(uuid()) @db.Char(36)
   packageId                  String
   season                     SEASON_ENUM
   dateFrom                   DateTime    @db.Date
@@ -584,7 +584,7 @@ model PackagePricing {
 }
 
 model PackageOption {
-  id                         String   @id @default(uuid())
+  id                         String   @id @default(uuid()) @db.Char(36)
   packageId                  String
   includeGroupDeparture      Boolean  @default(false)
   includeFixedDeparture      Boolean  @default(false)
@@ -595,7 +595,7 @@ model PackageOption {
 }
 
 model PackageGallery {
-  id         String   @id @default(uuid())
+  id         String   @id @default(uuid()) @db.Char(36)
   packageId  String
   imageUrl   String   @db.VarChar(500)
   imageOrder Int

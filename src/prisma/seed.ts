@@ -1,4 +1,4 @@
-import { PrismaClient, DESTINATIONTYPE_ENUM } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -542,92 +542,7 @@ async function main() {
 
   console.log('✅ Travel modes created');
 
-  // Create Destinations
-  const destinations = [
-    {
-      id: 'kolkata-heritage',
-      name: 'Kolkata Heritage Tour',
-      destinationType: DESTINATIONTYPE_ENUM.DOMESTIC,
-      description: 'Explore the rich heritage and culture of Kolkata with visits to historical monuments and cultural sites.',
-      priceRange: '₹5,000 - ₹15,000',
-      thumbnailPhoto: 'https://example.com/kolkata-heritage.jpg',
-      bannerPhoto: 'https://example.com/kolkata-banner.jpg',
-      countries: [india.id],
-      states: [westBengal.id],
-      cities: [kolkata.id],
-    },
-    {
-      id: 'darjeeling-hills',
-      name: 'Darjeeling Hill Station',
-      destinationType: DESTINATIONTYPE_ENUM.DOMESTIC,
-      description: 'Experience the scenic beauty of Darjeeling hills with tea gardens and mountain views.',
-      priceRange: '₹8,000 - ₹20,000',
-      thumbnailPhoto: 'https://example.com/darjeeling-hills.jpg',
-      bannerPhoto: 'https://example.com/darjeeling-banner.jpg',
-      countries: [india.id],
-      states: [westBengal.id],
-      cities: [darjeeling.id],
-    },
-    {
-      id: 'mumbai-business',
-      name: 'Mumbai Business Hub',
-      destinationType: DESTINATIONTYPE_ENUM.DOMESTIC,
-      description: 'Discover Mumbai, the financial capital of India, with its business districts and modern attractions.',
-      priceRange: '₹10,000 - ₹30,000',
-      thumbnailPhoto: 'https://example.com/mumbai-business.jpg',
-      bannerPhoto: 'https://example.com/mumbai-banner.jpg',
-      countries: [india.id],
-      states: [maharashtra.id],
-      cities: [mumbai.id],
-    },
-    {
-      id: 'rajasthan-royal',
-      name: 'Royal Rajasthan',
-      destinationType: DESTINATIONTYPE_ENUM.DOMESTIC,
-      description: 'Experience the royal heritage of Rajasthan with palaces, forts, and desert landscapes.',
-      priceRange: '₹12,000 - ₹35,000',
-      thumbnailPhoto: 'https://example.com/rajasthan-royal.jpg',
-      bannerPhoto: 'https://example.com/rajasthan-banner.jpg',
-      countries: [india.id],
-      states: [rajasthan.id],
-      cities: [jaipur.id],
-    },
-    {
-      id: 'west-bengal-complete',
-      name: 'Complete West Bengal Tour',
-      destinationType: DESTINATIONTYPE_ENUM.DOMESTIC,
-      description: 'A comprehensive tour covering multiple cities in West Bengal including Kolkata and Darjeeling.',
-      priceRange: '₹15,000 - ₹40,000',
-      thumbnailPhoto: 'https://example.com/west-bengal-complete.jpg',
-      bannerPhoto: 'https://example.com/west-bengal-banner.jpg',
-      countries: [india.id],
-      states: [westBengal.id],
-      cities: [kolkata.id, darjeeling.id], // Multiple cities
-    },
-  ];
-
-  for (const destination of destinations) {
-    const { countries, states, cities, ...destinationData } = destination;
-    
-    await prisma.destination.upsert({
-      where: { id: destination.id },
-      update: {},
-      create: {
-        ...destinationData,
-        destinationCountries: {
-          create: countries.map(countryId => ({ countryId }))
-        },
-        destinationStates: {
-          create: states.map(stateId => ({ stateId }))
-        },
-        destinationCities: {
-          create: cities.map(cityId => ({ cityId }))
-        },
-      },
-    });
-  }
-
-  console.log('✅ Destinations created');
+  // Skipping Destination seeding (and Package-related tables) as requested
 
   // Create Package Types
   const packageTypes = [
