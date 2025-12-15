@@ -35,7 +35,6 @@ model State {
   cities            City[]
   packageCities     PackageCity[]
   packagestates     PackageState[]
-  destinationStates DestinationState[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 
@@ -165,22 +164,14 @@ model TransferMode {
 model Destination {
   id                      String                   @id @default(uuid()) @db.Char(36)
   destinationType         DESTINATIONTYPE_ENUM
-  name                    String
-  description             String?                  @db.Text
-  priceRange              String?
-  thumbnailPhoto          String?
-  bannerPhoto             String?
-  video                   String?
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
   destinationCountries    DestinationCountry[]
-  destinationStates       DestinationState[]
   destinationCities       DestinationCity[]
   destinationPackages     DestinationPackage[]
   destinationPackageTypes DestinationPackageType[]
 
   @@index([destinationType])
-  @@index([name])
 }
 
 model DestinationCountry {
@@ -194,19 +185,6 @@ model DestinationCountry {
 
   @@index([destinationId])
   @@index([countryId])
-}
-
-model DestinationState {
-  id            String      @id @default(uuid()) @db.Char(36)
-  destinationId String
-  stateId       String
-  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  state         State       @relation(fields: [stateId], references: [id], onDelete: Cascade)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-
-  @@index([destinationId])
-  @@index([stateId])
 }
 
 model DestinationCity {
@@ -238,14 +216,13 @@ model DestinationPackage {
 model DestinationPackageType {
   id            String      @id @default(uuid()) @db.Char(36)
   destinationId String
-  packageTypeId String
+  packageType   String
   destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
-  packageType   PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
   @@index([destinationId])
-  @@index([packageTypeId])
+  @@index([packageType])
 }
 
 model PackageType {
@@ -253,7 +230,6 @@ model PackageType {
   name                    String                   @unique
   image                   String?
   isInternational         Boolean                  @default(false)
-  destinationPackageTypes DestinationPackageType[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
 }

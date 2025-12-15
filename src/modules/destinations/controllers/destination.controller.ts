@@ -15,20 +15,11 @@ export class DestinationController extends BaseController<Destination, Destinati
       responseClass: DestinationResponse,
       createSchema: destinationValidation.create,
       updateSchema: destinationValidation.update,
-      searchFields: ['name', 'destinationType', 'priceRange'], // Search by name, type, and price range
+      searchFields: ['destinationType'],
       defaultInclude: {
         destinationCountries: {
           include: {
             country: true
-          }
-        },
-        destinationStates: {
-          include: {
-            state: {
-              include: {
-                country: true
-              }
-            }
           }
         },
         destinationCities: {
@@ -43,18 +34,10 @@ export class DestinationController extends BaseController<Destination, Destinati
         },
         destinationPackages: {
           include: {
-            package: {
-              include: {
-                packageType: true
-              }
-            }
+            package: true
           }
         },
-        destinationPackageTypes: {
-          include: {
-            packageType: true
-          }
-        }
+        destinationPackageTypes: true
       },
     });
   }

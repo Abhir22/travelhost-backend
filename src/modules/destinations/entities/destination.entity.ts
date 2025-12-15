@@ -7,11 +7,6 @@ export type Destination = Prisma.DestinationGetPayload<{
         country: true;
       }
     };
-    destinationStates: {
-      include: {
-        state: true;
-      }
-    };
     destinationCities: {
       include: {
         city: true;
@@ -22,11 +17,7 @@ export type Destination = Prisma.DestinationGetPayload<{
         package: true;
       }
     };
-    destinationPackageTypes: {
-      include: {
-        packageType: true;
-      }
-    };
+    destinationPackageTypes: true;
   }
 }>;
 

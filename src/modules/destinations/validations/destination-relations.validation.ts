@@ -5,11 +5,6 @@ export const addDestinationCountriesSchema = z.object({
   countryIds: z.array(z.string().uuid()).min(1),
 });
 
-export const addDestinationStatesSchema = z.object({
-  destinationId: z.string().uuid(),
-  stateIds: z.array(z.string().uuid()).min(1),
-});
-
 export const addDestinationCitiesSchema = z.object({
   destinationId: z.string().uuid(),
   cityIds: z.array(z.string().uuid()).min(1),
@@ -22,7 +17,7 @@ export const addDestinationPackagesSchema = z.object({
 
 export const addDestinationPackageTypesSchema = z.object({
   destinationId: z.string().uuid(),
-  packageTypeIds: z.array(z.string().uuid()).min(1),
+  packageTypes: z.array(z.string().trim().min(1)).min(1),
 });
 
 export const removeDestinationRelationSchema = z.object({
@@ -32,7 +27,6 @@ export const removeDestinationRelationSchema = z.object({
 
 export const destinationRelationsValidation = {
   addCountries: addDestinationCountriesSchema,
-  addStates: addDestinationStatesSchema,
   addCities: addDestinationCitiesSchema,
   addPackages: addDestinationPackagesSchema,
   addPackageTypes: addDestinationPackageTypesSchema,
