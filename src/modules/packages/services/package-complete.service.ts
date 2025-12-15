@@ -115,12 +115,45 @@ export class PackageCompleteService implements IPackageCompleteService {
     hotelIds: string[];
     mealTypeIds: string[];
     mealCategoryIds: string[];
+    categoryIds: string[];
+    activityIds: string[];
+    snapshotIds: string[];
   } {
     const cityIds = new Set<string>();
     const sightseeingIds = new Set<string>();
     const hotelIds = new Set<string>();
     const mealTypeIds = new Set<string>();
     const mealCategoryIds = new Set<string>();
+    const categoryIds = new Set<string>();
+    const activityIds = new Set<string>();
+    const snapshotIds = new Set<string>();
+
+    // Collect category IDs
+    if (data.categories) {
+      data.categories.forEach((c: any) => {
+        if (c.packageCategoryId) {
+          categoryIds.add(c.packageCategoryId);
+        }
+      });
+    }
+
+    // Collect activity IDs
+    if (data.activities) {
+      data.activities.forEach((a: any) => {
+        if (a.packageActivityId) {
+          activityIds.add(a.packageActivityId);
+        }
+      });
+    }
+
+    // Collect snapshot IDs
+    if (data.snapshots) {
+      data.snapshots.forEach((s: any) => {
+        if (s.packageSnapshotId) {
+          snapshotIds.add(s.packageSnapshotId);
+        }
+      });
+    }
 
     // Collect city IDs
     data.cities.forEach((city: any) => {
@@ -173,7 +206,10 @@ export class PackageCompleteService implements IPackageCompleteService {
       sightseeingIds: Array.from(sightseeingIds),
       hotelIds: Array.from(hotelIds),
       mealTypeIds: Array.from(mealTypeIds),
-      mealCategoryIds: Array.from(mealCategoryIds)
+      mealCategoryIds: Array.from(mealCategoryIds),
+      categoryIds: Array.from(categoryIds),
+      activityIds: Array.from(activityIds),
+      snapshotIds: Array.from(snapshotIds)
     };
   }
 
@@ -181,18 +217,21 @@ export class PackageCompleteService implements IPackageCompleteService {
    * Fetches and validates all required lookup data
    */
   private async prepareLookupData(data: any): Promise<LookupData> {
-    const { cityIds, sightseeingIds, hotelIds, mealTypeIds, mealCategoryIds } = this.collectUniqueIds(data);
+    const { cityIds, sightseeingIds, hotelIds, mealTypeIds, mealCategoryIds, categoryIds, activityIds, snapshotIds } = this.collectUniqueIds(data);
 
     logger.info('Fetching lookup data', {
       cityCount: cityIds.length,
       sightseeingCount: sightseeingIds.length,
       hotelCount: hotelIds.length,
       mealTypeCount: mealTypeIds.length,
-      mealCategoryCount: mealCategoryIds.length
+      mealCategoryCount: mealCategoryIds.length,
+      categoryCount: categoryIds.length,
+      activityCount: activityIds.length,
+      snapshotCount: snapshotIds.length
     });
 
     // Fetch all data in parallel
-    const [cities, sightseeings, hotels, mealTypes, mealCategories] = await Promise.all([
+    const [cities, sightseeings, hotels, mealTypes, mealCategories, categories, activities, snapshots] = await Promise.all([
       prisma.city.findMany({
         where: { id: { in: cityIds } },
         include: {
@@ -215,6 +254,15 @@ export class PackageCompleteService implements IPackageCompleteService {
       }) : [],
       mealCategoryIds.length > 0 ? prisma.mealCategory.findMany({
         where: { id: { in: mealCategoryIds } }
+      }) : [],
+      categoryIds.length > 0 ? prisma.packageCategory.findMany({
+        where: { id: { in: categoryIds } }
+      }) : [],
+      activityIds.length > 0 ? prisma.packageActivity.findMany({
+        where: { id: { in: activityIds } }
+      }) : [],
+      snapshotIds.length > 0 ? prisma.packageSnapshot.findMany({
+        where: { id: { in: snapshotIds } }
       }) : []
     ]);
 
@@ -226,6 +274,16 @@ export class PackageCompleteService implements IPackageCompleteService {
     // Meal categories are optional, so we don't validate them strictly
     if (mealCategoryIds.length > 0) {
       this.validateRequiredEntities(mealCategoryIds, mealCategories, 'meal categories');
+    }
+    // Validate categories, activities, and snapshots
+    if (categoryIds.length > 0) {
+      this.validateRequiredEntities(categoryIds, categories, 'package categories');
+    }
+    if (activityIds.length > 0) {
+      this.validateRequiredEntities(activityIds, activities, 'package activities');
+    }
+    if (snapshotIds.length > 0) {
+      this.validateRequiredEntities(snapshotIds, snapshots, 'package snapshots');
     }
 
     // Create lookup maps for fast access
