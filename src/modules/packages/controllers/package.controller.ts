@@ -17,7 +17,6 @@ export class PackageController extends BaseController<Package, PackageCreateDto,
       updateSchema: packageValidation.update,
       searchFields: ['packageName', 'description'], // Search by package name and description
       defaultInclude: {
-        packageType: true,
         packagecategorymappings: {
           include: {
             category: true
