@@ -30,9 +30,7 @@ export class PackageFilterService implements IPackageFilterService {
 
         // Filter by package type (domestic/international)
         if (packageType) {
-            whereClause.packageType = {
-                isInternational: packageType === 'international',
-            };
+            whereClause.packageType = packageType;
         }
 
         // Build location filters based on packageCities relationship
@@ -74,7 +72,6 @@ export class PackageFilterService implements IPackageFilterService {
 
         // Build the complete query with all includes
         const includeClause = {
-            packageType: true,
             packagecategorymappings: {
                 include: {
                     category: true,
@@ -206,12 +203,11 @@ export class PackageFilterService implements IPackageFilterService {
         const whereClause: any = {};
 
         if (isInternational !== undefined) {
+            const packageTypeValue = isInternational ? 'international' : 'domestic';
             whereClause.packagecities = {
                 some: {
                     package: {
-                        packageType: {
-                            isInternational,
-                        },
+                        packageType: packageTypeValue,
                     },
                 },
             };
@@ -248,9 +244,7 @@ export class PackageFilterService implements IPackageFilterService {
                         },
                         ...(isInternational !== undefined
                             ? {
-                                packageType: {
-                                    isInternational,
-                                },
+                                packageType: isInternational ? 'international' : 'domestic',
                             }
                             : {}),
                     },

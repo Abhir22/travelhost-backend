@@ -1,8 +1,5 @@
 import { container } from 'tsyringe';
-import { IPackageTypeService } from './services/interfaces/packagetype.service.interface';
-import { PackageTypeService } from './services/packagetype.service';
-import { IPackageTypeRepository } from './repositories/interfaces/packagetype.repository.interface';
-import { PackageTypeRepository } from './repositories/packagetype.repository';
+
 import { IPackageCategoryService } from './services/interfaces/packagecategory.service.interface';
 import { PackageCategoryService } from './services/packagecategory.service';
 import { IPackageCategoryRepository } from './repositories/interfaces/packagecategory.repository.interface';
@@ -100,10 +97,7 @@ import { IPackageFilterService } from './services/interfaces/package-filter.serv
 import { PackageFilterService } from './services/package-filter.service';
 
 export const registerDependencies = () => {
-  // ... existing registrations ...
-  container.register<IPackageTypeService>('IPackageTypeService', { useClass: PackageTypeService });
-  container.register<IPackageTypeRepository>('IPackageTypeRepository', { useClass: PackageTypeRepository });
-  // ... (keep all existing)
+
   container.register<IPackageCategoryService>('IPackageCategoryService', { useClass: PackageCategoryService });
   container.register<IPackageCategoryRepository>('IPackageCategoryRepository', { useClass: PackageCategoryRepository });
   container.register<IPackageCategoryMappingService>('IPackageCategoryMappingService', { useClass: PackageCategoryMappingService });

@@ -2,7 +2,6 @@ import moment from 'moment';
 import { PackageCategoryMappingResponse } from '@/modules/packages/dtos/packagecategorymapping-response.dto';
 import { PackageActivityMappingResponse } from '@/modules/packages/dtos/packageactivitymapping-response.dto';
 import { PackageSnapshotMappingResponse } from '@/modules/packages/dtos/packagesnapshotmapping-response.dto';
-import { PackageTypeResponse } from '@/modules/packages/dtos/packagetype-response.dto';
 import { PackageCityResponse } from '@/modules/packages/dtos/packagecity-response.dto';
 import { PackageGalleryResponse } from '@/modules/packages/dtos/package-gallery-response.dto';
 import { PackagePricingResponse } from '@/modules/packages/dtos/package-pricing-response.dto';
@@ -17,7 +16,7 @@ import { Package } from '@/modules/packages/entities/package.entity';
 
 export class PackageResponse {
   id?: string;
-  packageTypeId: string;
+  packageType: string;
   packageName: string;
   shortDescription?: string;
   longDescription?: string;
@@ -29,7 +28,6 @@ export class PackageResponse {
   packagecategorymappings?: PackageCategoryMappingResponse[];
   packageactivitymappings?: PackageActivityMappingResponse[];
   packagesnapshotmappings?: PackageSnapshotMappingResponse[];
-  packageType?: PackageTypeResponse;
   packagecities?: PackageCityResponse[];
   packageGalleries?: PackageGalleryResponse[];
   packagePricings?: PackagePricingResponse[];
@@ -44,7 +42,7 @@ export class PackageResponse {
 
   constructor(pkg: Package) {
     if ('id' in pkg && pkg.id) this.id = pkg.id;
-    this.packageTypeId = pkg.packageTypeId;
+    this.packageType = pkg.packageType;
     this.packageName = pkg.packageName;
     this.shortDescription = pkg.shortDescription || undefined;
     this.longDescription = pkg.longDescription || undefined;
@@ -56,7 +54,6 @@ export class PackageResponse {
     this.packagecategorymappings = Array.isArray(pkg.packagecategorymappings) ? pkg.packagecategorymappings.map((r: any) => new PackageCategoryMappingResponse({ ...(r as any) })) : [];
     this.packageactivitymappings = Array.isArray(pkg.packageactivitymappings) ? pkg.packageactivitymappings.map((r: any) => new PackageActivityMappingResponse({ ...(r as any) })) : [];
     this.packagesnapshotmappings = Array.isArray(pkg.packagesnapshotmappings) ? pkg.packagesnapshotmappings.map((r: any) => new PackageSnapshotMappingResponse({ ...(r as any) })) : [];
-    this.packageType = pkg.packageType && typeof pkg.packageType === 'object' ? new PackageTypeResponse({ ...(pkg.packageType as any) }) : undefined;
     this.packagecities = Array.isArray(pkg.packagecities) ? pkg.packagecities.map((r: any) => new PackageCityResponse({ ...(r as any) })) : [];
 
     // Package galleries with S3 URL transformation

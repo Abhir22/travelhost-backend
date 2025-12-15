@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export class PackageStateResponseDto {
   id: string;
-  packageTypeId: string;
+  packageType: string;
   stateId: string;
   state?: {
     id: string;
@@ -14,7 +14,7 @@ export class PackageStateResponseDto {
 
   constructor(packagestate: any) {
     this.id = packagestate.id;
-    this.packageTypeId = packagestate.packageTypeId;
+    this.packageType = packagestate.packageType;
     this.stateId = packagestate.stateId;
     if (packagestate.state) {
       this.state = {

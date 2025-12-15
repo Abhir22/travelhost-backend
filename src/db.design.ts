@@ -99,17 +99,17 @@ export const dbDesign = {
     columns: {
       id: { type: "String", primary: true, randomUUID: true, nullable: false },
 
-      packageTypeId: { type: "String", nullable: false },
+      packageType: { type: "String", nullable: false },
 
       packageName: { type: "String", maxLength: 200, nullable: false },
 
       description: { type: "Text", nullable: true },
       video: { type: "String", nullable: true },
 
-      basePrice: { 
-        type: "Decimal", 
-        precision: 10, 
-        scale: 2, 
+      basePrice: {
+        type: "Decimal",
+        precision: 10,
+        scale: 2,
         nullable: true,
         check: "basePrice >= 0"
       },
@@ -119,15 +119,6 @@ export const dbDesign = {
 
       createdAt: { type: "DateTime", default: "now()", nullable: false },
       updatedAt: { type: "DateTime", default: "now()", nullable: false }
-    },
-
-    relations: {
-      packageType: {
-        type: "PackageType",
-        relation: "many-to-one",
-        foreignKey: "packageTypeId",
-        onDelete: "CASCADE"
-      }
     },
 
     indexes: [

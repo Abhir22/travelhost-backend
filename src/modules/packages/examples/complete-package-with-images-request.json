@@ -3,7 +3,7 @@
     "packageName": "Amazing Rajasthan Heritage Tour",
     "shortDescription": "Explore the royal heritage of Rajasthan with magnificent palaces, forts, and cultural experiences",
     "longDescription": "Embark on a mesmerizing journey through the royal state of Rajasthan, where every city tells a story of valor, romance, and grandeur. This comprehensive tour takes you through the golden triangle of Rajasthan - Jaipur, Udaipur, and Jodhpur - showcasing magnificent palaces, imposing forts, vibrant markets, and rich cultural heritage. Experience the warm hospitality of Rajasthani people, savor authentic cuisine, and witness breathtaking sunsets over the Thar Desert.",
-    "packageTypeId": "package-type-uuid-here",
+    "packageType": "international",
     "duration": "7",
     "price": 45000,
     "categories": [

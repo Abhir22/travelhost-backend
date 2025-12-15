@@ -2,21 +2,21 @@ import { z } from 'zod';
 
 export const packagestateValidation = {
   create: z.object({
-    packageTypeId: z.string(),
+    packageType: z.string(),
     stateId: z.string(),
   }).transform(
     data => ({
-      packageTypeId: data.packageTypeId,
+      packageType: data.packageType,
       stateId: data.stateId,
     })
   ),
 
   update: z.object({
-    packageTypeId: z.string().optional(),
+    packageType: z.string().optional(),
     stateId: z.string().optional(),
   }).transform(
     data => ({
-      ...(data.packageTypeId !== undefined ? { packageTypeId: data.packageTypeId } : {}),
+      ...(data.packageType !== undefined ? { packageType: data.packageType } : {}),
       ...(data.stateId !== undefined ? { stateId: data.stateId } : {}),
     })
   ),

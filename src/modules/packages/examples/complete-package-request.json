@@ -6,7 +6,7 @@
   "mainImage": "https://example.com/packages/west-bengal-mumbai-explorer-main.jpg",
   "thumbnail": "https://example.com/packages/west-bengal-mumbai-explorer-thumb.jpg",
   "video": "https://example.com/packages/west-bengal-mumbai-explorer-video.mp4",
-  "packageTypeId": "family-id",
+  "packageType": "domestic",
   "duration": "7",
   "price": 89999.99,
   "categories": [

@@ -192,7 +192,6 @@ model DestinationCountry {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  @@unique([destinationId, countryId])
   @@index([destinationId])
   @@index([countryId])
 }
@@ -206,7 +205,6 @@ model DestinationState {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  @@unique([destinationId, stateId])
   @@index([destinationId])
   @@index([stateId])
 }
@@ -220,7 +218,6 @@ model DestinationCity {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  @@unique([destinationId, cityId])
   @@index([destinationId])
   @@index([cityId])
 }
@@ -234,7 +231,6 @@ model DestinationPackage {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  @@unique([destinationId, packageId])
   @@index([destinationId])
   @@index([packageId])
 }
@@ -248,7 +244,6 @@ model DestinationPackageType {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  @@unique([destinationId, packageTypeId])
   @@index([destinationId])
   @@index([packageTypeId])
 }
@@ -258,9 +253,6 @@ model PackageType {
   name                    String                   @unique
   image                   String?
   isInternational         Boolean                  @default(false)
-  packages                Package[]
-  packagecountries        PackageCountry[]
-  packagestates           PackageState[]
   destinationPackageTypes DestinationPackageType[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
@@ -268,31 +260,26 @@ model PackageType {
 
 model PackageCountry {
   id            String      @id @default(uuid()) @db.Char(36)
-  packageTypeId String
+  packageType   String
   countryId     String
-  packageType   PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
   country       Country     @relation(fields: [countryId], references: [id], onDelete: Cascade)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-
-  @@unique([packageTypeId, countryId])
 }
 
 model PackageState {
   id            String      @id @default(uuid()) @db.Char(36)
-  packageTypeId String
+  packageType   String
   stateId       String
-  packageType   PackageType @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
   state         State       @relation(fields: [stateId], references: [id], onDelete: Cascade)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-
-  @@unique([packageTypeId, stateId])
 }
+
 
 model Package {
   id                      String                   @id @default(uuid()) @db.Char(36)
-  packageTypeId           String
+  packageType             String
   packageName             String
   shortDescription        String?                  @db.Text
   longDescription         String?                  @db.Text
@@ -301,7 +288,6 @@ model Package {
   video                   String?
   basePrice               Decimal?
   duration                String
-  packageType             PackageType              @relation(fields: [packageTypeId], references: [id], onDelete: Cascade)
   packagecategorymappings PackageCategoryMapping[]
   packageactivitymappings PackageActivityMapping[]
   packagesnapshotmappings PackageSnapshotMapping[]

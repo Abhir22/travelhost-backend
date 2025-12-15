@@ -3,7 +3,7 @@ import { flatToNestedSchema } from '@/core/utils/flat-to-nested-schema';
 
 export const createPackageSchema = flatToNestedSchema(
   z.object({
-    packageTypeId: z.string().uuid(),
+    packageType: z.string(),
     packageName: z.string().min(1),
     shortDescription: z.string().min(1).optional(),
     longDescription: z.string().min(1).optional(),
@@ -22,13 +22,13 @@ export const createPackageSchema = flatToNestedSchema(
     video: data.video,
     basePrice: data.basePrice,
     duration: data.duration,
-    packageType: { connect: { id: data.packageTypeId } },
+    packageType: data.packageType,
   })
 );
 
 export const updatePackageSchema = flatToNestedSchema(
   z.object({
-    packageTypeId: z.string().uuid().optional(),
+    packageType: z.string().optional(),
     packageName: z.string().min(1).optional(),
     shortDescription: z.string().min(1).optional(),
     longDescription: z.string().min(1).optional(),
@@ -47,7 +47,7 @@ export const updatePackageSchema = flatToNestedSchema(
     ...(data.video !== undefined ? { video: data.video } : {}),
     ...(data.basePrice !== undefined ? { basePrice: data.basePrice } : {}),
     ...(data.duration !== undefined ? { duration: data.duration } : {}),
-    ...(data.packageTypeId !== undefined ? { packageType: { connect: { id: data.packageTypeId } } } : {}),
+    ...(data.packageType !== undefined ? { packageType: data.packageType } : {}),
   })
 );
 

@@ -86,8 +86,8 @@ export class PackageCompleteService implements IPackageCompleteService {
       throw new BadRequestException('Package name is required');
     }
 
-    if (!data.packageTypeId) {
-      throw new BadRequestException('Package type ID is required');
+    if (!data.packageType) {
+      throw new BadRequestException('Package type is required');
     }
 
     if (!data.cities || !Array.isArray(data.cities) || data.cities.length === 0) {
@@ -261,7 +261,7 @@ export class PackageCompleteService implements IPackageCompleteService {
       mainImage: data.mainImage?.trim(),
       thumbnail: data.thumbnail?.trim(),
       video: data.video?.trim(),
-      packageTypeId: data.packageTypeId,
+      packageType: data.packageType,
       duration: data.duration?.toString() || MIN_PACKAGE_DURATION.toString(),
       basePrice: data.price ? parseFloat(data.price) : null,
     };
@@ -694,7 +694,7 @@ export class PackageCompleteService implements IPackageCompleteService {
     const packageData = await prisma.package.findUnique({
       where: { id: packageId },
       include: {
-        packageType: true,
+
         packagecategorymappings: {
           include: {
             category: true
